@@ -1,0 +1,44 @@
+body {
+    font-family: 'Century Gothic', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.wheel {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+}
+
+.slot {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    background-color: white;
+    display: none;
+    font-size: 72px;
+    transition: all 0.5s ease-in-out;
+    text-align: center;
+}
+
+.vowel-blue {
+    color: blue;
+}
+
+.silent-e {
+    color: gray;
+}
+
+button {
+    margin-top: 20px;
+}
