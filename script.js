@@ -1,8 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wheel = document.querySelector('.wheel');
     const longVowelWords = [
-        'cake', 'hope', 'ride', 'plane', 'cube', 'note', 'dime', 'like', 'home', 
-        // ... add more long vowel words with silent 'e'
+        'bake', 'cane', 'dive', 'fume', 'gaze', 'hive', 'joke', 'kite', 'lime', 
+        'maze', 'nape', 'poke', 'rude', 'sage', 'tune', 'vape', 'wane', 'yoke', 
+        'zone', 'acne', 'bane', 'cope', 'dune', 'fare', 'gape', 'hale', 'june', 
+        'lace', 'mine', 'name', 'pike', 'robe', 'sake', 'tape', 'vase', 'wake', 
+        'yule', 'amuse', 'brace', 'crane', 'drape', 'flame', 'grape', 'haste', 
+        'juice', 'lance', 'moose', 'nose', 'pride', 'raise', 'shade', 'trace', 
+        'value', 'waste', 'alone', 'brace', 'crave', 'drive', 'flute', 'grime', 
+        'house', 'judge', 'lathe', 'mouse', 'noise', 'prize', 'range', 'shape', 
+        'trice', 'vague', 'waste', 'arise', 'blame', 'crone', 'drape', 'frame', 
+        'grove', 'horse', 'knife', 'leave', 'morse', 'noise', 'price', 'rathe', 
+        'shave', 'tripe', 'vane', 'wane', 'adore', 'blaze', 'crude', 'drone', 
+        'froze', 'guile', 'hose', 'knave', 'lease', 'more', 'niece', 'prune',
+        // ... any additional words can be added here
     ];
 
     longVowelWords.forEach(word => {
