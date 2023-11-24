@@ -35,6 +35,10 @@ body {
     color: blue;
 }
 
+.vowel-short {
+    color: red;
+}
+
 .silent-e {
     color: gray;
 }
