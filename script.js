@@ -30,6 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'alive', 'brine', 'clone', 'flute', 'groan', 'plume'
         // ... any additional words can be added here
     ];
+
+    const isLongVowelPair = (letter, nextLetter) => {
+        const longVowelPairs = ['ai', 'ea', 'ee', 'ie', 'oa', 'oe', 'ue', 'ei', 'ey'];
+        return longVowelPairs.includes(letter + nextLetter);
+    };
+
     longVowelWords.forEach(word => {
         const slot = document.createElement('div');
         slot.className = 'slot';
@@ -38,17 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < word.length; i++) {
             let letter = word[i];
             let nextLetter = word[i + 1] || '';
+            let nextNextLetter = word[i + 2] || '';
             let isVowel = 'aeiou'.includes(letter);
-            let isNextVowel = 'aeiou'.includes(nextLetter);
 
-            // Check for silent 'e'
             if (letter === 'e' && i === word.length - 1) {
                 coloredWord += `<span class="silent-e">${letter}</span>`;
-            } else if (isVowel && (nextLetter === 'e' || (isNextVowel && nextLetter !== ''))) {
-                // Long vowels
+            } else if (isVowel && (nextLetter === 'e' && nextNextLetter === '' || isLongVowelPair(letter, nextLetter))) {
                 coloredWord += `<span class="vowel-blue">${letter}</span>`;
             } else if (isVowel) {
-                // Short vowels
                 coloredWord += `<span class="vowel-short">${letter}</span>`;
             } else {
                 coloredWord += letter;
