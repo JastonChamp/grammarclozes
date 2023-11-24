@@ -35,15 +35,10 @@ body {
     color: blue;
 }
 
-.vowel-short {
-    color: red;
-}
-
 .silent-e {
     color: gray;
 }
 
 button {
     margin-top: 20px;
-    /* Additional button styling could go here */
 }
