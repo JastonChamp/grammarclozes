@@ -1,16 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wheel = document.querySelector('.wheel');
-    if (!wheel) {
-        console.error('Wheel element not found!');
-        return;
-    }
-
-    const spinButton = document.getElementById('spinButton');
-    if (!spinButton) {
-        console.error('Spin button not found!');
-        return;
-    }
-
     const longVowelWords = [
         'spade', 'mate', 'game', 'afraid', 'bake', 'gave', 'way', 'rake', 'great', 
         'holiday', 'clay', 'baked', 'wake', 'played', 'stayed', 'stay', 'against', 
@@ -39,77 +28,55 @@ document.addEventListener('DOMContentLoaded', () => {
         'grease', 'please', 'prone', 'scene', 'type', 'waste', 'whine', 'bride', 
         'crime', 'grime', 'phone', 'prime', 'rhyme', 'scope', 'spoke', 'thrive', 
         'alive', 'brine', 'clone', 'flute', 'groan', 'plume',
-        // ... any additional words can be added here
+        // ... add more long vowel words with silent 'e'
     ];
-
-    const isExceptionalWord = (word) => longVowelExceptions.includes(word.toLowerCase());
-    const isLongVowelPair = (letter, nextLetter) => {
-        const longVowelPairs = ['ai', 'ea', 'ee', 'ie', 'oa', 'oe', 'ue', 'ei', 'ey'];
-        return longVowelPairs.includes(letter + nextLetter);
-    };
 
     longVowelWords.forEach(word => {
         const slot = document.createElement('div');
         slot.className = 'slot';
         let coloredWord = '';
-        let isExceptional = isExceptionalWord(word);
 
         for (let i = 0; i < word.length; i++) {
             let letter = word[i];
-            let nextLetter = word[i + 1] || '';
-            let isVowel = 'aeiou'.includes(letter);
-
-            if (isExceptional && isVowel) {
+            if ('aeiou'.includes(letter) && i !== word.length - 1) {
                 coloredWord += `<span class="vowel-blue">${letter}</span>`;
-            } else if (letter === 'e' && i === word.length - 1) {
+            } else if (i === word.length - 1 && letter === 'e') {
                 coloredWord += `<span class="silent-e">${letter}</span>`;
-            } else if (isVowel && (nextLetter === 'e' || isLongVowelPair(letter, nextLetter))) {
-                coloredWord += `<span class="vowel-blue">${letter}</span>`;
-            } else if (isVowel) {
-                coloredWord += `<span class="vowel-short">${letter}</span>`;
             } else {
                 coloredWord += letter;
             }
         }
 
         slot.innerHTML = coloredWord;
+        slot.style.display = 'none';
         wheel.appendChild(slot);
     });
 
-    let currentSlot = 0;
     const slots = document.querySelectorAll('.slot');
+    let currentSlot = 0;
     slots[currentSlot].style.display = 'flex';
 
-    spinButton.addEventListener('click', () => {
+    document.getElementById('spinButton').addEventListener('click', () => {
         let shuffleCount = 0;
         let lastRandom = 0;
 
         const shuffleEffect = setInterval(() => {
-            if (slots[lastRandom]) {
-                slots[lastRandom].style.display = 'none';
-            }
+            slots[lastRandom].style.display = 'none';
             let randomSlot = Math.floor(Math.random() * longVowelWords.length);
-            if (slots[randomSlot]) {
-                slots[randomSlot].style.display = 'flex';
-            }
+            slots[randomSlot].style.display = 'flex';
             lastRandom = randomSlot;
             shuffleCount++;
             if (shuffleCount > 20) {
                 clearInterval(shuffleEffect);
-                if (slots[currentSlot]) {
-                    slots[currentSlot].style.display = 'flex';
-                }
+                slots[lastRandom].style.display = 'none';
+                slots[currentSlot].style.display = 'flex';
             }
         }, 100);
 
         setTimeout(() => {
             let randomSlot = Math.floor(Math.random() * longVowelWords.length);
-            if (slots[currentSlot]) {
-                slots[currentSlot].style.display = 'none';
-            }
-            if (slots[randomSlot]) {
-                slots[randomSlot].style.display = 'flex';
-            }
+            slots[currentSlot].style.display = 'none';
+            slots[randomSlot].style.display = 'flex';
             currentSlot = randomSlot;
         }, 2500);
     });
