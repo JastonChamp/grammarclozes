@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wheel = document.querySelector('.wheel');
+    if (!wheel) {
+        console.error('Wheel element not found!');
+        return;
+    }
+
+    const spinButton = document.getElementById('spinButton');
+    if (!spinButton) {
+        console.error('Spin button not found!');
+        return;
+    }
+
     const longVowelWords = [
         'spade', 'mate', 'game', 'afraid', 'bake', 'gave', 'way', 'rake', 'great', 
         'holiday', 'clay', 'baked', 'wake', 'played', 'stayed', 'stay', 'against', 
@@ -68,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // ... any additional words can be added here
     ];
 
-    const isExceptionalWord = (word) => longVowelExceptions.includes(word.toLowerCase());
+   const isExceptionalWord = (word) => longVowelExceptions.includes(word.toLowerCase());
     const isLongVowelPair = (letter, nextLetter) => {
         const longVowelPairs = ['ai', 'ea', 'ee', 'ie', 'oa', 'oe', 'ue', 'ei', 'ey'];
         return longVowelPairs.includes(letter + nextLetter);
@@ -107,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSlot = 0;
     slots[currentSlot].style.display = 'flex';
 
-    document.getElementById('spinButton').addEventListener('click', () => {
+    spinButton.addEventListener('click', () => {
         let shuffleCount = 0;
         let lastRandom = 0;
 
