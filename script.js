@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Spin button not found!');
         return;
     }
+
     const longVowelWords = [
         'spade', 'mate', 'game', 'afraid', 'bake', 'gave', 'way', 'rake', 'great', 
         'holiday', 'clay', 'baked', 'wake', 'played', 'stayed', 'stay', 'against', 
