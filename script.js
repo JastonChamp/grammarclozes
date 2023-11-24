@@ -18,19 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
         'lathe', 'mouse', 'noise', 'prize', 'range', 'shape', 'trice', 'vague', 'arise', 
         'blame', 'crone', 'frame', 'grove', 'horse', 'knife', 'leave', 'morse', 'price', 
         'rathe', 'shave', 'tripe', 'vane', 'adore', 'blaze', 'crude', 'drone', 'froze', 
-        'guile', 'hose', 'knave', 'lease', 'more', 'niece', 'prune'
-        'celebrate', 'activate', 'elevate', 'meditate', 'emulate', 'illustrate',
-        'investigate', 'navigate', 'originate', 'regulate', 'vibrate', 'fabricate',
-        'motivate', 'replicate', 'dominate', 'evaluate', 'grace', 'plate', 'trade',
-        'brave', 'chase', 'glaze', 'praise', 'shame', 'whale', 'crave', 'flame',
-        'plane', 'slide', 'stripe', 'throne', 'grove', 'shine', 'smile', 'stone',
-        'swipe', 'drive', 'prize', 'slice', 'spine', 'stripe', 'throne', 'blame',
-        'freeze', 'grease', 'please', 'prone', 'scene', 'type', 'waste', 'whine',
-        'bride', 'crime', 'grime', 'phone', 'prime', 'rhyme', 'scope', 'spoke',
-        'thrive', 'alive', 'brine', 'clone', 'flute', 'groan', 'plume'
+        'guile', 'hose', 'knave', 'lease', 'more', 'niece', 'prune', 'celebrate', 
+        'activate', 'elevate', 'meditate', 'emulate', 'illustrate', 'investigate', 
+        'navigate', 'originate', 'regulate', 'vibrate', 'fabricate', 'motivate', 
+        'replicate', 'dominate', 'evaluate', 'grace', 'plate', 'trade', 'brave', 
+        'chase', 'glaze', 'praise', 'shame', 'whale', 'crave', 'flame', 'plane', 
+        'slide', 'stripe', 'throne', 'grove', 'shine', 'smile', 'stone', 'swipe', 
+        'drive', 'prize', 'slice', 'spine', 'stripe', 'throne', 'blame', 'freeze', 
+        'grease', 'please', 'prone', 'scene', 'type', 'waste', 'whine', 'bride', 
+        'crime', 'grime', 'phone', 'prime', 'rhyme', 'scope', 'spoke', 'thrive', 
+        'alive', 'brine', 'clone', 'flute', 'groan', 'plume'
         // ... any additional words can be added here
-];
-
+    ];
     longVowelWords.forEach(word => {
         const slot = document.createElement('div');
         slot.className = 'slot';
