@@ -31,6 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // ... any additional words can be added here
     ];
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const wheel = document.querySelector('.wheel');
+    const longVowelWords = [
+        // ... your list of words
+    ];
+
+    const longVowelExceptions = ['glaze', 'prize', 'drive', 'type', 'scope', 'prone', 'crime', 'shame', 
+        'whale', 'stone', 'throne', 'alive', 'brine', 'spine', 'slice', 'dive', 'praise', 'maze', 
+        'grove', 'hose'
+        // ... add any additional exceptional words here
+    ];
+
+    const isExceptionalWord = (word) => longVowelExceptions.includes(word.toLowerCase());
     const isLongVowelPair = (letter, nextLetter) => {
         const longVowelPairs = ['ai', 'ea', 'ee', 'ie', 'oa', 'oe', 'ue', 'ei', 'ey'];
         return longVowelPairs.includes(letter + nextLetter);
@@ -40,16 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const slot = document.createElement('div');
         slot.className = 'slot';
         let coloredWord = '';
+        let isExceptional = isExceptionalWord(word);
 
         for (let i = 0; i < word.length; i++) {
             let letter = word[i];
             let nextLetter = word[i + 1] || '';
-            let nextNextLetter = word[i + 2] || '';
             let isVowel = 'aeiou'.includes(letter);
 
-            if (letter === 'e' && i === word.length - 1) {
+            if (isExceptional && isVowel) {
+                coloredWord += `<span class="vowel-blue">${letter}</span>`;
+            } else if (letter === 'e' && i === word.length - 1) {
                 coloredWord += `<span class="silent-e">${letter}</span>`;
-            } else if (isVowel && (nextLetter === 'e' && nextNextLetter === '' || isLongVowelPair(letter, nextLetter))) {
+            } else if (isVowel && (nextLetter === 'e' || isLongVowelPair(letter, nextLetter))) {
                 coloredWord += `<span class="vowel-blue">${letter}</span>`;
             } else if (isVowel) {
                 coloredWord += `<span class="vowel-short">${letter}</span>`;
