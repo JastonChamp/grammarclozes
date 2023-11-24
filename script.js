@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'rathe', 'shave', 'tripe', 'vane', 'adore', 'blaze', 'crude', 'drone', 'froze', 
         'guile', 'hose', 'knave', 'lease', 'more', 'niece', 'prune'
         // ... any additional words can be added here
-    ];
+];
 
     longVowelWords.forEach(word => {
         const slot = document.createElement('div');
@@ -29,10 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < word.length; i++) {
             let letter = word[i];
-            if ('aeiou'.includes(letter) && i !== word.length - 1) {
-                coloredWord += `<span class="vowel-blue">${letter}</span>`;
-            } else if (i === word.length - 1 && letter === 'e') {
+            let nextLetter = word[i + 1] || '';
+            let isVowel = 'aeiou'.includes(letter);
+            let isNextVowel = 'aeiou'.includes(nextLetter);
+
+            // Check for silent 'e'
+            if (letter === 'e' && i === word.length - 1) {
                 coloredWord += `<span class="silent-e">${letter}</span>`;
+            } else if (isVowel && (nextLetter === 'e' || (isNextVowel && nextLetter !== ''))) {
+                // Long vowels
+                coloredWord += `<span class="vowel-blue">${letter}</span>`;
+            } else if (isVowel) {
+                // Short vowels
+                coloredWord += `<span class="vowel-short">${letter}</span>`;
             } else {
                 coloredWord += letter;
             }
