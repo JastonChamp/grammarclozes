@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Long Vowel Word Spinner</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Quest - Prepositions Level 1</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wheel"></div>
-  <button id="spinButton">Spin</button>
-  <script src="script.js"></script>
+    <div class="game-container">
+        <h1>Grammar Quest</h1>
+        <h2>World: Prepositions - Treasure Hunt</h2>
+        <p>Help Grammar Guru restore their powers by filling in the blanks!</p>
+
+        <!-- Cloze Passage -->
+        <div class="passage">
+            Sally placed her bag <span class="blank" id="blank1" data-answer="on"></span> the table. 
+            She looked <span class="blank" id="blank2" data-answer="through"></span> the window 
+            and saw a bird perched <span class="blank" id="blank3" data-answer="by"></span> 
+            the fence. Her cat was hiding <span class="blank" id="blank4" data-answer="under"></span> 
+            a chair, watching quietly. Sally tiptoed <span class="blank" id="blank5" data-answer="towards"></span> 
+            the door so she wouldn’t scare the bird away.
+        </div>
+
+        <!-- Word Box -->
+        <div class="word-box">
+            <h3>Word Box</h3>
+            <div class="words">
+                <span class="word" draggable="true">in</span>
+                <span class="word" draggable="true">on</span>
+                <span class="word" draggable="true">under</span>
+                <span class="word" draggable="true">by</span>
+                <span class="word" draggable="true">through</span>
+                <span class="word" draggable="true">around</span>
+                <span class="word" draggable="true">towards</span>
+            </div>
+        </div>
+
+        <!-- Controls and Feedback -->
+        <button id="submit-btn">Submit</button>
+        <div id="feedback"></div>
+        <div id="points">Points: 0</div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
