@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
@@ -15,7 +12,7 @@
   <header>
     <h1>Grammar Cloze Adventure</h1>
     <p class="instructions" role="note">
-      Drag words from the word bank to fill in the blanks.
+      Drag or tap words from the word bank to fill in the blanks.
     </p>
   </header>
   <main>
@@ -31,32 +28,32 @@
       </select>
     </div>
 
-    <!-- Game container wraps passage and word bank -->
     <div class="game-container">
       <div id="passage-text" aria-live="polite"></div>
       <div id="word-box" role="region" aria-label="Word Bank"></div>
     </div>
 
-    <!-- Button Group -->
     <div class="button-group">
-      <button id="highlight-clues-btn" aria-label="Highlight clue words">Highlight Clues</button>
+      <button id="highlight-clues-btn" aria-label="Highlight Clue Words">Highlight Clues</button>
       <button id="hint-btn" aria-label="General Hint">Hint</button>
-      <button id="clear-btn" aria-label="Clear the puzzle">Clear</button>
+      <button id="clear-btn" aria-label="Clear Puzzle">Clear</button>
     </div>
+    
     <div class="navigation">
       <button id="prev-btn" aria-label="Previous Passage">Previous</button>
       <button id="next-btn" aria-label="Next Passage">Next</button>
     </div>
 
-    <!-- Status Bar -->
     <div class="status-bar">
-      <div id="progress" role="status">Progress: 1/—</div>
-      <div id="score" role="status">Score: 0</div>
-      <div id="lives" role="status">Lives: 3</div>
+      <div id="progress">📖 Progress: 1 / 10</div>
+      <div id="score">⭐ Score: 0</div>
+      <div id="lives">❤️ Lives: 0</div>
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
     </div>
 
-    <!-- Feedback and Hint Messages -->
-    <div id="hint" role="alert"></div>
+    <!-- Feedback will be shown here -->
     <div id="feedback" role="alert"></div>
   </main>
   <script src="script.js"></script>
