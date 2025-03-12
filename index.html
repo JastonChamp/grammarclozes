@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
-    <p class="instructions">Drag words from the box to fill in the blanks. Use the buttons for help!</p>
+    <p class="instructions">
+      Drag words from the box to fill in the blanks. Use the buttons for help!
+    </p>
   </header>
   <main>
     <div class="controls">
@@ -33,6 +38,11 @@
       <button id="next-btn">Next</button>
     </div>
     <div id="progress">Passage 1 of 2</div>
+    <!-- Optional displays for score, lives, hint, and feedback -->
+    <div id="score"></div>
+    <div id="lives"></div>
+    <div id="hint"></div>
+    <div id="feedback"></div>
   </main>
   <script src="script.js"></script>
 </body>
