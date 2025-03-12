@@ -364,7 +364,46 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // Game state
+  const grammarSelect = document.getElementById('grammar-type');
+  const passageText = document.getElementById('passage-text');
+  const wordBox = document.getElementById('word-box');
+
+  // Create elements if they are missing
+  let scoreDisplay = document.getElementById('score');
+  if (!scoreDisplay) {
+    scoreDisplay = document.createElement('div');
+    scoreDisplay.id = 'score';
+    document.body.appendChild(scoreDisplay);
+  }
+
+  let livesDisplay = document.getElementById('lives');
+  if (!livesDisplay) {
+    livesDisplay = document.createElement('div');
+    livesDisplay.id = 'lives';
+    document.body.appendChild(livesDisplay);
+  }
+
+  const hintButton = document.getElementById('hint-btn');
+
+  let hintDisplay = document.getElementById('hint');
+  if (!hintDisplay) {
+    hintDisplay = document.createElement('div');
+    hintDisplay.id = 'hint';
+    document.body.appendChild(hintDisplay);
+  }
+
+  let feedbackDisplay = document.getElementById('feedback');
+  if (!feedbackDisplay) {
+    feedbackDisplay = document.createElement('div');
+    feedbackDisplay.id = 'feedback';
+    document.body.appendChild(feedbackDisplay);
+  }
+
+  const nextPassageButton = document.getElementById('next-btn');
+
+  // -------------------------
+  // Game state variables
+  // -------------------------
   let currentPassage = null;
   let currentGrammarType = null;
   let currentPassageIndex = 0;
@@ -372,18 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let lives = 3;
   let hintsUsed = 0;
 
-  // DOM elements
-  const grammarSelect = document.getElementById('grammar-select');
-  const passageText = document.getElementById('passage-text');
-  const wordBox = document.getElementById('word-box');
-  const scoreDisplay = document.getElementById('score');
-  const livesDisplay = document.getElementById('lives');
-  const hintButton = document.getElementById('hint-button');
-  const hintDisplay = document.getElementById('hint');
-  const feedbackDisplay = document.getElementById('feedback');
-  const nextPassageButton = document.getElementById('next-passage');
-
-  // Initialize the game
+  // -------------------------
+  // Game functions
+  // -------------------------
   function initGame() {
     score = 0;
     lives = 3;
@@ -405,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
       endGame();
       return;
     }
-
     currentPassage = passages[currentGrammarType][currentPassageIndex];
     displayPassage();
     displayWordBox();
@@ -420,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     passageText.innerHTML = passageWithInputs;
 
-    // Add event listeners to inputs
+    // Add event listeners to each blank input
     document.querySelectorAll('.blank').forEach(input => {
       input.addEventListener('input', checkAnswer);
       input.addEventListener('dragover', dragOver);
@@ -428,15 +457,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Display the word box and make each word draggable
+  // Display the word box and make words draggable
   function displayWordBox() {
-    wordBox.innerHTML = currentPassage.wordBox.map(word => `<span class="word" draggable="true">${word}</span>`).join(' | ');
+    wordBox.innerHTML = currentPassage.wordBox
+      .map(word => `<span class="word" draggable="true">${word}</span>`)
+      .join(' | ');
     document.querySelectorAll('.word').forEach(word => {
       word.addEventListener('dragstart', dragStart);
     });
   }
 
-  // Check the user's answers
+  // Check the user's answer in a blank
   function checkAnswer(event) {
     const blankId = event.target.dataset.blank;
     const userAnswer = event.target.value.trim().toLowerCase();
@@ -449,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
       feedbackDisplay.textContent = "Correct! Well done!";
       feedbackDisplay.style.color = "green";
 
-      // Check if all blanks are filled correctly
+      // Check if all blanks are correctly filled
       const allCorrect = Array.from(document.querySelectorAll('.blank')).every(input => {
         return input.classList.contains('correct');
       });
@@ -467,7 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
         endGame();
       }
     }
-
     updateScoreAndLives();
   }
 
@@ -490,11 +520,11 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     const droppedWord = event.dataTransfer.getData("text/plain");
     event.target.value = droppedWord;
-    // Manually trigger the input event to check answer
+    // Trigger input event manually to check answer
     event.target.dispatchEvent(new Event('input'));
   }
 
-  // Show hint
+  // Show hint if available (max 3 hints)
   function showHint() {
     if (hintsUsed < 3) {
       hintDisplay.textContent = currentPassage.hint;
@@ -503,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Clear feedback
+  // Clear feedback and hide the next button
   function clearFeedback() {
     feedbackDisplay.textContent = '';
     nextPassageButton.style.display = 'none';
@@ -525,7 +555,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hintButton.disabled = true;
   }
 
+  // -------------------------
   // Event listeners
+  // -------------------------
   grammarSelect.addEventListener('change', loadGrammarType);
   hintButton.addEventListener('click', showHint);
   nextPassageButton.addEventListener('click', nextPassage);
