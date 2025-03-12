@@ -363,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ]
   };
-
   // DOM Elements
   const grammarSelect = document.getElementById('grammar-type');
   const passageText = document.getElementById('passage-text');
@@ -433,11 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
       blank.addEventListener('dragover', dragOver);
       blank.addEventListener('drop', dropWord);
     });
-
-    // Highlight clues on button click
-    highlightCluesButton.addEventListener('click', () => {
-      highlightClues();
-    });
   }
 
   // Display Word Box with Draggable Words
@@ -469,7 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
       blank.classList.add('filled');
       blank.classList.remove('dragging');
       checkAnswer(blank);
-      // Remove word from availableWords and update wordBox
       availableWords = availableWords.filter(word => word !== droppedWord);
       displayWordBox();
     }
