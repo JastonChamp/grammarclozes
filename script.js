@@ -364,102 +364,85 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  // DOM Elements
   const grammarSelect = document.getElementById('grammar-type');
   const passageText = document.getElementById('passage-text');
   const wordBox = document.getElementById('word-box');
-
-  // Create elements if they are missing
-  let scoreDisplay = document.getElementById('score');
-  if (!scoreDisplay) {
-    scoreDisplay = document.createElement('div');
-    scoreDisplay.id = 'score';
-    document.body.appendChild(scoreDisplay);
-  }
-
-  let livesDisplay = document.getElementById('lives');
-  if (!livesDisplay) {
-    livesDisplay = document.createElement('div');
-    livesDisplay.id = 'lives';
-    document.body.appendChild(livesDisplay);
-  }
-
+  const scoreDisplay = document.getElementById('score');
+  const livesDisplay = document.getElementById('lives');
   const hintButton = document.getElementById('hint-btn');
-
-  let hintDisplay = document.getElementById('hint');
-  if (!hintDisplay) {
-    hintDisplay = document.createElement('div');
-    hintDisplay.id = 'hint';
-    document.body.appendChild(hintDisplay);
-  }
-
-  let feedbackDisplay = document.getElementById('feedback');
-  if (!feedbackDisplay) {
-    feedbackDisplay = document.createElement('div');
-    feedbackDisplay.id = 'feedback';
-    document.body.appendChild(feedbackDisplay);
-  }
-
+  const hintDisplay = document.getElementById('hint');
+  const feedbackDisplay = document.getElementById('feedback');
   const nextPassageButton = document.getElementById('next-btn');
+  const prevPassageButton = document.getElementById('prev-btn');
+  const highlightCluesButton = document.getElementById('highlight-clues-btn');
+  const progressDisplay = document.getElementById('progress');
 
-  // -------------------------
-  // Game state variables
-  // -------------------------
+  // Game State
   let currentPassage = null;
   let currentGrammarType = null;
   let currentPassageIndex = 0;
   let score = 0;
   let lives = 3;
   let hintsUsed = 0;
+  let availableWords = [];
 
-  // -------------------------
-  // Game functions
-  // -------------------------
+  // Initialize Game
   function initGame() {
     score = 0;
     lives = 3;
     hintsUsed = 0;
+    currentPassageIndex = 0;
     updateScoreAndLives();
     loadGrammarType();
   }
 
-  // Load grammar type when selected
+  // Load Grammar Type
   function loadGrammarType() {
     currentGrammarType = grammarSelect.value;
     currentPassageIndex = 0;
     loadPassage();
   }
 
-  // Load a passage based on grammar type and index
+  // Load Passage
   function loadPassage() {
-    if (!currentGrammarType || currentPassageIndex >= passages[currentGrammarType].length) {
+    if (!passages[currentGrammarType] || currentPassageIndex >= passages[currentGrammarType].length) {
       endGame();
       return;
     }
     currentPassage = passages[currentGrammarType][currentPassageIndex];
+    availableWords = [...currentPassage.wordBox]; // Reset available words
     displayPassage();
     displayWordBox();
     clearFeedback();
     hintDisplay.textContent = '';
+    updateProgress();
+    nextPassageButton.style.display = currentPassageIndex === passages[currentGrammarType].length - 1 ? 'none' : 'inline-block';
+    prevPassageButton.disabled = currentPassageIndex === 0;
   }
 
-  // Display the passage with blanks and add dragover/drop event listeners
+  // Display Passage with Draggable Blanks
   function displayPassage() {
     let passageWithInputs = currentPassage.text.replace(/___(\d+)___/g, (match, num) => {
-      return `<input type="text" class="blank" id="blank-${num}" data-blank="${num}" placeholder="___(${num})___">`;
+      return `<span class="blank" data-blank="${num}" draggable="true">___(${num})___</span>`;
     });
     passageText.innerHTML = passageWithInputs;
 
-    // Add event listeners to each blank input
-    document.querySelectorAll('.blank').forEach(input => {
-      input.addEventListener('input', checkAnswer);
-      input.addEventListener('dragover', dragOver);
-      input.addEventListener('drop', dropWord);
+    document.querySelectorAll('.blank').forEach(blank => {
+      blank.addEventListener('dragstart', dragStart);
+      blank.addEventListener('dragover', dragOver);
+      blank.addEventListener('drop', dropWord);
+    });
+
+    // Highlight clues on button click
+    highlightCluesButton.addEventListener('click', () => {
+      highlightClues();
     });
   }
 
-  // Display the word box and make words draggable
+  // Display Word Box with Draggable Words
   function displayWordBox() {
-    wordBox.innerHTML = currentPassage.wordBox
+    wordBox.innerHTML = availableWords
       .map(word => `<span class="word" draggable="true">${word}</span>`)
       .join(' | ');
     document.querySelectorAll('.word').forEach(word => {
@@ -467,49 +450,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Check the user's answer in a blank
-  function checkAnswer(event) {
-    const blankId = event.target.dataset.blank;
-    const userAnswer = event.target.value.trim().toLowerCase();
-    const correctAnswer = currentPassage.answers[parseInt(blankId) - 1].toLowerCase();
-
-    if (userAnswer === correctAnswer) {
-      event.target.classList.add('correct');
-      event.target.disabled = true;
-      score += 10;
-      feedbackDisplay.textContent = "Correct! Well done!";
-      feedbackDisplay.style.color = "green";
-
-      // Check if all blanks are correctly filled
-      const allCorrect = Array.from(document.querySelectorAll('.blank')).every(input => {
-        return input.classList.contains('correct');
-      });
-
-      if (allCorrect) {
-        nextPassageButton.style.display = 'block';
-      }
-    } else {
-      event.target.classList.add('incorrect');
-      lives--;
-      feedbackDisplay.textContent = "Incorrect! Try again.";
-      feedbackDisplay.style.color = "red";
-
-      if (lives <= 0) {
-        endGame();
-      }
-    }
-    updateScoreAndLives();
-  }
-
-  // Update score and lives display
-  function updateScoreAndLives() {
-    scoreDisplay.textContent = `Score: ${score}`;
-    livesDisplay.textContent = `Lives: ${lives}`;
-  }
-
-  // Drag and Drop functions
+  // Drag and Drop Functions
   function dragStart(event) {
-    event.dataTransfer.setData("text/plain", event.target.textContent);
+    event.dataTransfer.setData('text/plain', event.target.textContent);
+    event.target.classList.add('dragging');
   }
 
   function dragOver(event) {
@@ -518,50 +462,115 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function dropWord(event) {
     event.preventDefault();
-    const droppedWord = event.dataTransfer.getData("text/plain");
-    event.target.value = droppedWord;
-    // Trigger input event manually to check answer
-    event.target.dispatchEvent(new Event('input'));
+    const droppedWord = event.dataTransfer.getData('text/plain');
+    const blank = event.target;
+    if (blank.classList.contains('blank') && !blank.classList.contains('filled')) {
+      blank.textContent = droppedWord;
+      blank.classList.add('filled');
+      blank.classList.remove('dragging');
+      checkAnswer(blank);
+      // Remove word from availableWords and update wordBox
+      availableWords = availableWords.filter(word => word !== droppedWord);
+      displayWordBox();
+    }
   }
 
-  // Show hint if available (max 3 hints)
+  // Check Answer
+  function checkAnswer(blank) {
+    const blankId = blank.dataset.blank;
+    const userAnswer = blank.textContent.trim().toLowerCase();
+    const correctAnswer = currentPassage.answers[parseInt(blankId) - 1].toLowerCase();
+
+    if (userAnswer === correctAnswer) {
+      blank.classList.add('correct');
+      score += 10;
+      feedbackDisplay.textContent = "Correct! Well done!";
+      feedbackDisplay.style.color = "green";
+    } else {
+      blank.classList.add('incorrect');
+      lives--;
+      feedbackDisplay.textContent = "Incorrect! Try again.";
+      feedbackDisplay.style.color = "red";
+    }
+
+    const allCorrect = Array.from(document.querySelectorAll('.blank')).every(b => b.classList.contains('correct'));
+    if (allCorrect) nextPassageButton.style.display = 'inline-block';
+
+    if (lives <= 0) endGame();
+    updateScoreAndLives();
+  }
+
+  // Highlight Clues
+  function highlightClues() {
+    let passageHtml = passageText.innerHTML;
+    currentPassage.clueWords.forEach(word => {
+      const regex = new RegExp(`\\b(${word})\\b`, 'gi');
+      passageHtml = passageHtml.replace(regex, `<span class="clue-highlight">$1</span>`);
+    });
+    passageText.innerHTML = passageHtml;
+  }
+
+  // Update Score and Lives
+  function updateScoreAndLives() {
+    scoreDisplay.textContent = `Score: ${score}`;
+    livesDisplay.textContent = `Lives: ${lives}`;
+    if (lives <= 0) endGame();
+  }
+
+  // Update Progress
+  function updateProgress() {
+    progressDisplay.textContent = `Passage ${currentPassageIndex + 1} of ${passages[currentGrammarType].length}`;
+  }
+
+  // Show Hint
   function showHint() {
     if (hintsUsed < 3) {
       hintDisplay.textContent = currentPassage.hint;
       hintsUsed++;
       hintButton.disabled = hintsUsed >= 3;
+      hintDisplay.style.color = "#ff9800";
     }
   }
 
-  // Clear feedback and hide the next button
+  // Clear Feedback
   function clearFeedback() {
     feedbackDisplay.textContent = '';
     nextPassageButton.style.display = 'none';
   }
 
-  // Load next passage
+  // Next Passage
   function nextPassage() {
     currentPassageIndex++;
     loadPassage();
   }
 
-  // End the game
+  // Previous Passage
+  function prevPassage() {
+    if (currentPassageIndex > 0) {
+      currentPassageIndex--;
+      loadPassage();
+    }
+  }
+
+  // End Game
   function endGame() {
-    passageText.innerHTML = `<h2>Game Over!</h2><p>Your final score is ${score}.</p>`;
+    passageText.innerHTML = `<h2>Game Over!</h2><p>Your final score is ${score}. <button id="restart-btn">Restart</button></p>`;
     wordBox.innerHTML = '';
     hintDisplay.textContent = '';
     feedbackDisplay.textContent = '';
     nextPassageButton.style.display = 'none';
+    prevPassageButton.disabled = true;
     hintButton.disabled = true;
+    document.getElementById('restart-btn').addEventListener('click', initGame);
   }
 
-  // -------------------------
-  // Event listeners
-  // -------------------------
+  // Event Listeners
   grammarSelect.addEventListener('change', loadGrammarType);
   hintButton.addEventListener('click', showHint);
   nextPassageButton.addEventListener('click', nextPassage);
+  prevPassageButton.addEventListener('click', prevPassage);
+  highlightCluesButton.addEventListener('click', highlightClues);
 
-  // Start the game
+  // Initialize
   initGame();
 });
