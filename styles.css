@@ -1,21 +1,14 @@
 :root {
-  --primary-color: #ff6f61;
+  --primary-color: #ff9999;
   --secondary-color: #ff9f1c;
-  --accent-color: #ffcc00;
-  --background-color: #87ceeb;
-  --text-color: #333333;
+  --accent-color: #ffeb3b;
+  --background-color: #f0f8ff;
+  --text-color: #333;
   --correct-bg: #98fb98;
-  --correct-border: #32cd32;
   --incorrect-bg: #ff9999;
-  --incorrect-border: #ff4040;
-  --word-bg: #ffeb3b;
-  --word-border: #ffd700;
-  --dropzone-active-bg: #b0e0e6;
+  --word-bg: #fff9c4;
   --status-bg: #f9f9f9;
-  --status-border: #ddd;
-  --hint-subject-bg: #98fb98;
-  --hint-verb-bg: #ff9f1c;
-  --hint-object-bg: #40c4ff;
+  --hint-tooltip-bg: #fff3e0;
 }
 
 /* Reset */
@@ -27,9 +20,8 @@
 
 /* Global Styles */
 body {
-  font-family: "Comic Neue", cursive;
-  background: linear-gradient(135deg, var(--background-color), #add8e6),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='2' fill='rgba(255,255,255,0.3)'/></svg>") repeat;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--background-color), #add8e6);
   color: var(--text-color);
   display: flex;
   flex-direction: column;
@@ -41,32 +33,25 @@ body {
 /* Header */
 header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 h1 {
-  font-size: 3.5em;
-  font-weight: 700;
+  font-size: 3em;
   color: var(--primary-color);
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-  animation: bounceIn 1s ease;
 }
 
 .instructions {
-  font-size: 1.5em;
-  padding: 15px;
-  font-weight: 700;
-  background-color: rgba(255,255,255,0.8);
-  border: 3px solid var(--accent-color);
-  border-radius: 15px;
-  margin: 0 auto 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  line-height: 1.5;
+  font-size: 1.2em;
+  padding: 10px;
+  background: #ffffffcc;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 /* Controls */
 .controls {
-  margin-top: 15px;
+  margin-bottom: 15px;
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -77,27 +62,22 @@ h1 {
 }
 
 .controls label,
-.controls select,
-.controls input {
+.controls select {
   font-size: 1.2em;
-  margin-right: 10px;
 }
 
 select {
-  font-family: 'Comic Neue', cursive;
-  font-size: 1.2em;
   padding: 10px;
   border: 3px solid var(--primary-color);
   border-radius: 15px;
-  background-color: #fff;
+  background: #fff;
   color: var(--text-color);
-  cursor: pointer;
-  transition: background-color 0.3s;
   width: 250px;
+  transition: background 0.3s;
 }
 
 select:hover {
-  background-color: #e0f7fa;
+  background: #e0f7fa;
 }
 
 /* Game Container */
@@ -112,62 +92,184 @@ select:hover {
   margin-bottom: 25px;
 }
 
-/* Passage Text & Drop Zones */
+/* Passage Text & Blanks */
 #passage-text {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin-bottom: 15px;
+  background: #f5f5f5;
   padding: 15px;
-  background: #fffacd;
-  border-radius: 15px;
-  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  font-size: 1.2em;
+  margin-bottom: 15px;
 }
 
 .blank {
   display: inline-block;
-  min-width: 80px;
-  min-height: 30px;
+  min-width: 100px;
+  padding: 8px;
   border: 2px dashed var(--primary-color);
-  background-color: #f0f8ff;
+  background: #f0f8ff;
   margin: 0 5px;
-  padding: 5px;
   text-align: center;
-  vertical-align: middle;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: background 0.3s, border-color 0.3s;
   position: relative;
 }
 
-/* When a blank is being dragged over */
 .blank.drag-over {
-  background-color: var(--dropzone-active-bg);
-  border: 2px solid var(--primary-color);
+  background: var(--accent-color);
+  border-color: var(--primary-color);
 }
 
-/* Filled state for correctness */
 .blank.filled.correct {
-  background-color: var(--correct-bg);
+  background: var(--correct-bg);
+  border-color: #32cd32;
   color: #fff;
-  border: 2px solid var(--correct-border);
+  pointer-events: none;
 }
 
 .blank.filled.incorrect {
-  background-color: var(--incorrect-bg);
+  background: var(--incorrect-bg);
+  border-color: #ff4040;
   color: #fff;
-  border: 2px solid var(--incorrect-border);
 }
 
-/* Hint button inside blank */
-.hint-for-blank {
+/* Hint Button inside Blank */
+.blank .hint-for-blank {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1em;
   margin-left: 5px;
 }
 
-/* Hint tooltip styling */
+/* Hint Tooltip */
 .hint-tooltip {
   position: absolute;
-  background: #fff3e0;
-  color: #ff
+  background: var(--hint-tooltip-bg);
+  color: var(--secondary-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+  max-width: 300px;
+  font-size: 1em;
+  top: 110%;
+  left: 0;
+}
+
+/* Word Bank */
+#word-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.word {
+  padding: 25px;
+  background: var(--word-bg);
+  border: 2px solid var(--word-border);
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  font-size: 1.6em;
+  text-align: center;
+  transition: transform 0.2s, opacity 0.3s;
+}
+
+.word.selected {
+  outline: 3px solid var(--secondary-color);
+  transform: scale(1.1);
+}
+
+/* Button Groups */
+.button-group,
+.navigation {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 1em;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+button:focus {
+  outline: 3px solid var(--accent-color);
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  background: var(--status-bg);
+  padding: 10px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  margin-bottom: 15px;
+}
+
+#progress, #score, #lives {
+  font-size: 1.2em;
+  color: var(--primary-color);
+}
+
+/* Progress Bar (inside status bar) */
+#progress-bar-container {
+  flex-grow: 1;
+  background: #ddd;
+  border-radius: 5px;
+  height: 20px;
+  margin-left: 10px;
+  overflow: hidden;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--progress-bar-bg);
+  transition: width 0.5s;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .game-container {
+    width: 95%;
+  }
+  .blank {
+    min-width: 80px;
+    padding: 6px;
+  }
+  .word {
+    padding: 20px;
+    font-size: 1.4em;
+  }
+  button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+  select {
+    width: 200px;
+  }
+}
