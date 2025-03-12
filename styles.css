@@ -94,11 +94,6 @@ select:hover {
   border: 2px solid #d32f2f;
 }
 
-.blank.selected {
-  border: 2px solid #0288d1;
-  background-color: #e0f7fa;
-}
-
 .word-box {
   display: flex;
   flex-wrap: wrap;
@@ -119,11 +114,6 @@ select:hover {
 .word.dragging {
   opacity: 0.5;
   transform: scale(1.1);
-}
-
-.word.selected {
-  border: 2px solid #0288d1;
-  background-color: #e0f7fa;
 }
 
 .clue-highlight {
