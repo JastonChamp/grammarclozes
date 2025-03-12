@@ -30,22 +30,30 @@
         <option value="tenses">Tenses</option>
       </select>
     </div>
-    <!-- Game container wraps passage and word bank -->
+
+    <!-- Game Container -->
     <div class="game-container">
       <div id="passage-text" aria-live="polite"></div>
       <div id="word-box" role="region" aria-label="Word Bank"></div>
     </div>
+
+    <!-- Button Group -->
     <div class="button-group">
       <button id="highlight-clues-btn">Highlight Clues</button>
       <button id="hint-btn">Hint</button>
+      <button id="clear-btn">Clear</button>
     </div>
     <div class="navigation">
       <button id="prev-btn">Previous</button>
       <button id="next-btn">Next</button>
     </div>
-    <div id="progress" role="status"></div>
-    <div id="score" role="status"></div>
-    <div id="lives" role="status"></div>
+
+    <!-- Status Display -->
+    <div class="status-bar">
+      <div id="progress" role="status"></div>
+      <div id="score" role="status"></div>
+      <div id="lives" role="status"></div>
+    </div>
     <div id="hint" role="alert"></div>
     <div id="feedback" role="alert"></div>
   </main>
