@@ -1,5 +1,9 @@
+"use strict";
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Full passage data with all grammar types
+  // -------------------------
+  // Full Passage Data for All Grammar Types
+  // -------------------------
   const passages = {
     prepositions: [
       {
@@ -106,41 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         answers: ["through", "in", "through", "under", "near"],
         clueWords: ["clouds", "cockpit"],
         hint: "Consider positions or movements related to flying."
-      },
-      {
-        text: "The ant crawled ___(1)___ the leaf. The leaf was ___(2)___ the ground. A worm moved ___(3)___ the soil. The boy looked ___(4)___ the ant closely. The tree stood ___(5)___ the garden.",
-        wordBox: ["on", "in", "under", "by", "around", "near", "above"],
-        answers: ["on", "on", "under", "at", "in"],
-        clueWords: ["leaf", "ground"],
-        hint: "Think about small creatures and their positions."
-      },
-      {
-        text: "The shoes are ___(1)___ the mat. The mat is ___(2)___ the door. The boy walked ___(3)___ the house. His socks are ___(4)___ his feet. He sat ___(5)___ a chair.",
-        wordBox: ["on", "in", "under", "by", "around", "near", "at"],
-        answers: ["on", "by", "into", "on", "on"],
-        clueWords: ["mat", "door"],
-        hint: "Focus on where things are placed or how people move."
-      },
-      {
-        text: "The stars shone ___(1)___ the sky. The moon was ___(2)___ the clouds. The boy looked ___(3)___ a telescope. His sister sat ___(4)___ him. They stayed ___(5)___ the balcony.",
-        wordBox: ["in", "on", "under", "by", "around", "near", "above"],
-        answers: ["in", "above", "through", "by", "on"],
-        clueWords: ["sky", "clouds"],
-        hint: "Think about positions at night or with stargazing."
-      },
-      {
-        text: "The hawker cooked ___(1)___ the stall. The food was ___(2)___ the plates. People sat ___(3)___ the tables. A fan spun ___(4)___ the ceiling. The queue was ___(5)___ the counter.",
-        wordBox: ["in", "on", "under", "by", "around", "near", "at"],
-        answers: ["in", "on", "at", "under", "near"],
-        clueWords: ["stall", "plates"],
-        hint: "Consider a hawker centre and where things are placed."
-      },
-      {
-        text: "The MRT runs ___(1)___ the tracks. People stand ___(2)___ the platform. The train stops ___(3)___ the station. A sign hangs ___(4)___ the entrance. We walked ___(5)___ the gate.",
-        wordBox: ["on", "in", "under", "by", "around", "near", "to"],
-        answers: ["on", "on", "at", "above", "to"],
-        clueWords: ["tracks", "platform"],
-        hint: "Think about positions or movements on public transport."
       }
     ],
     conjunctions: [
@@ -241,48 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         answers: ["or", "because", "so", "while", "although"],
         clueWords: ["book", "quiet"],
         hint: "Think about choices, reasons, or timing."
-      },
-      {
-        text: "The kite flew high ___(1)___ the string broke. I ran to get it ___(2)___ it fell. My friend helped ___(3)___ we caught it. We fixed it ___(4)___ flew it again. We were happy ___(5)___ we saved it.",
-        wordBox: ["but", "and", "or", "because", "so", "after", "although"],
-        answers: ["but", "when", "and", "and", "because"],
-        clueWords: ["kite", "string"],
-        hint: "Look for contrast, timing, or adding ideas."
-      },
-      {
-        text: "The baby cried ___(1)___ she was hungry. Mom fed her ___(2)___ she stopped crying. I watched TV ___(3)___ Mom was busy. The baby slept ___(4)___ her meal. We rested ___(5)___ the house was quiet.",
-        wordBox: ["because", "and", "but", "so", "or", "after", "although"],
-        answers: ["because", "so", "while", "after", "when"],
-        clueWords: ["baby", "hungry"],
-        hint: "Think about reasons, results, or timing."
-      },
-      {
-        text: "I like soccer ___(1)___ basketball. I play soccer ___(2)___ it’s outdoors. Basketball is fun ___(3)___ I’m not tall. I practice both ___(4)___ I want to improve. My friends join me ___(5)___ we have time.",
-        wordBox: ["or", "and", "but", "because", "so", "if", "although"],
-        answers: ["and", "because", "but", "because", "when"],
-        clueWords: ["soccer", "basketball"],
-        hint: "Look for adding ideas, reasons, or contrast."
-      },
-      {
-        text: "The lights were off ___(1)___ it was dark. I used a torch ___(2)___ I could see. The power came back ___(3)___ we cheered. We watched TV ___(4)___ it was late. We slept ___(5)___ the show ended.",
-        wordBox: ["but", "and", "or", "because", "so", "after", "although"],
-        answers: ["so", "so", "and", "although", "after"],
-        clueWords: ["lights", "dark"],
-        hint: "Think about results, reasons, or timing."
-      },
-      {
-        text: "I wanted juice ___(1)___ milk. I picked juice ___(2)___ it was cold. My sister took milk ___(3)___ she likes it. We drank together ___(4)___ we ate snacks. It was fun ___(5)___ we shared.",
-        wordBox: ["or", "and", "but", "because", "so", "while", "although"],
-        answers: ["or", "because", "because", "while", "because"],
-        clueWords: ["juice", "milk"],
-        hint: "Look for choices, reasons, or timing."
-      },
-      {
-        text: "The park was crowded ___(1)___ noisy. I played there ___(2)___ I had fun. It rained ___(3)___ we went home. We were wet ___(4)___ happy. We dried off ___(5)___ we got inside.",
-        wordBox: ["and", "but", "or", "because", "so", "after", "although"],
-        answers: ["and", "and", "so", "but", "after"],
-        clueWords: ["park", "rained"],
-        hint: "Think about adding ideas, results, or sequence."
       }
     ],
     subjectVerbAgreement: [
@@ -809,7 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressDisplay = document.getElementById('progress');
 
   // -------------------------
-  // Game State
+  // Game State Variables
   // -------------------------
   let currentPassage = null;
   let currentGrammarType = null;
@@ -818,6 +745,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let lives = 3;
   let hintsUsed = 0;
   let availableWords = [];
+
+  // -------------------------
+  // Drag-and-Drop Handler Variables
+  // -------------------------
+  let draggedItem = null;
+  let currentDropZone = null; // set when displaying a puzzle
+
+  // -------------------------
+  // Utility: Shuffle Array
+  // -------------------------
+  const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
   // -------------------------
   // Initialize Game
@@ -851,6 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     currentPassage = passages[currentGrammarType][currentPassageIndex];
+    // Copy wordBox array for drag-and-drop
     availableWords = [...currentPassage.wordBox];
     displayPassage();
     displayWordBox();
@@ -862,23 +801,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Display Passage with Input Blanks
+  // Display Passage with Blanks
   // -------------------------
   function displayPassage() {
     if (!currentPassage || !currentPassage.text) {
       passageText.innerHTML = '<p>Error: Passage text not available.</p>';
       return;
     }
-    // Create input blanks without readonly to allow drop events
+    // Create blanks as inputs (without readonly so they accept dropped words)
     let passageWithInputs = currentPassage.text.replace(/___(\d+)___/g, (match, num) => {
       return `<input type="text" class="blank" data-blank="${num}" placeholder="___(${num})___">`;
     });
     passageText.innerHTML = passageWithInputs;
 
-    // Attach dragover and drop event listeners to each blank
+    // Set currentDropZone to each blank container (if needed, here each blank is individual)
     document.querySelectorAll('.blank').forEach(blank => {
-      blank.addEventListener('dragover', dragOver);
-      blank.addEventListener('drop', dropWord);
+      blank.addEventListener('dragover', handleDragOver);
+      blank.addEventListener('dragleave', handleDragLeave);
+      blank.addEventListener('drop', handleDrop);
     });
   }
 
@@ -889,40 +829,49 @@ document.addEventListener('DOMContentLoaded', () => {
     wordBox.innerHTML = availableWords
       .map(word => `<span class="word" draggable="true" tabindex="0">${word}</span>`)
       .join(' | ');
-    
-    // Attach dragstart and dragend event listeners to words
     document.querySelectorAll('.word').forEach(word => {
-      word.addEventListener('dragstart', dragStart);
-      word.addEventListener('dragend', dragEnd);
+      word.addEventListener('dragstart', handleDragStart);
+      word.addEventListener('dragend', handleDragEnd);
+      // (Optional) Add tooltip events if desired
+      word.addEventListener('mouseover', showTooltip);
+      word.addEventListener('mouseout', hideTooltip);
+      word.addEventListener('touchstart', showTouchTooltip, { passive: true });
     });
   }
 
   // -------------------------
-  // Drag-and-Drop Functions
+  // Improved Drag-and-Drop Handlers
   // -------------------------
-  function dragStart(event) {
-    event.dataTransfer.setData('text/plain', event.target.textContent);
-    event.target.classList.add('dragging');
+  function handleDragStart(e) {
+    draggedItem = e.target;
+    e.dataTransfer.setData('text/plain', e.target.textContent);
+    e.target.classList.add('dragging');
   }
 
-  function dragEnd(event) {
-    event.target.classList.remove('dragging');
+  function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+    draggedItem = null;
   }
 
-  function dragOver(event) {
-    event.preventDefault();
-    event.target.classList.add('drag-over');
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
   }
 
-  function dropWord(event) {
-    event.preventDefault();
-    const droppedWord = event.dataTransfer.getData('text/plain');
-    const blank = event.target;
-    blank.classList.remove('drag-over');
-    if (blank.classList.contains('blank') && !blank.classList.contains('filled')) {
-      blank.value = droppedWord;
-      blank.classList.add('filled');
-      checkAnswer(blank);
+  function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    const droppedWord = e.dataTransfer.getData('text/plain');
+    // If the drop target is a blank and not yet filled
+    if (e.currentTarget.classList.contains('blank') && !e.currentTarget.classList.contains('filled')) {
+      e.currentTarget.value = droppedWord;
+      e.currentTarget.classList.add('filled');
+      checkAnswer(e.currentTarget);
+      // Remove the dropped word from availableWords and update the word box
       availableWords = availableWords.filter(word => word !== droppedWord);
       displayWordBox();
     }
@@ -947,24 +896,43 @@ document.addEventListener('DOMContentLoaded', () => {
       feedbackDisplay.textContent = "Incorrect! Try again.";
       feedbackDisplay.style.color = "red";
     }
-
+    // If all blanks are correctly filled, show the Next button
     const allCorrect = Array.from(document.querySelectorAll('.blank')).every(b => b.classList.contains('correct'));
     if (allCorrect) nextPassageButton.style.display = 'inline-block';
-
     if (lives <= 0) endGame();
     updateScoreAndLives();
   }
 
   // -------------------------
-  // Highlight Clues Function
+  // Tooltip Functions (Optional)
   // -------------------------
-  function highlightClues() {
-    let passageHtml = passageText.innerHTML;
-    currentPassage.clueWords.forEach(word => {
-      const regex = new RegExp(`\\b(${word})\\b`, 'gi');
-      passageHtml = passageHtml.replace(regex, `<span class="clue-highlight">$1</span>`);
-    });
-    passageText.innerHTML = passageHtml;
+  function showTooltip(e) {
+    const word = e.target.textContent;
+    // (Optional: you can define word roles here if needed)
+    const tooltip = document.createElement("div");
+    tooltip.textContent = "Drag me!";
+    tooltip.className = "word-tooltip";
+    tooltip.style.position = "absolute";
+    tooltip.style.background = "rgba(0,0,0,0.8)";
+    tooltip.style.color = "white";
+    tooltip.style.padding = "5px 10px";
+    tooltip.style.borderRadius = "5px";
+    tooltip.style.zIndex = "10";
+    const rect = e.target.getBoundingClientRect();
+    tooltip.style.top = rect.bottom + window.scrollY + "px";
+    tooltip.style.left = rect.left + "px";
+    document.body.appendChild(tooltip);
+    e.target.addEventListener("mouseout", () => tooltip.remove(), { once: true });
+  }
+
+  function hideTooltip(e) {
+    const tooltip = document.querySelector(".word-tooltip");
+    if (tooltip) tooltip.remove();
+  }
+
+  function showTouchTooltip(e) {
+    // For touch devices (simplified version)
+    showTooltip(e);
   }
 
   // -------------------------
@@ -973,31 +941,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateScoreAndLives() {
     scoreDisplay.textContent = `Score: ${score}`;
     livesDisplay.textContent = `Lives: ${lives}`;
-    if (lives <= 0) endGame();
   }
 
   function updateProgress() {
     progressDisplay.textContent = `Passage ${currentPassageIndex + 1} of ${passages[currentGrammarType].length}`;
-  }
-
-  // -------------------------
-  // Show Hint
-  // -------------------------
-  function showHint() {
-    if (hintsUsed < 3) {
-      hintDisplay.textContent = currentPassage.hint;
-      hintsUsed++;
-      hintButton.disabled = hintsUsed >= 3;
-      hintDisplay.style.color = "#ff9800";
-    }
-  }
-
-  // -------------------------
-  // Clear Feedback
-  // -------------------------
-  function clearFeedback() {
-    feedbackDisplay.textContent = '';
-    nextPassageButton.style.display = 'none';
   }
 
   // -------------------------
@@ -1016,27 +963,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // End Game and Restart
+  // Clear Feedback
+  // -------------------------
+  function clearFeedback() {
+    feedbackDisplay.textContent = '';
+    nextPassageButton.style.display = 'none';
+  }
+
+  // -------------------------
+  // End Game
   // -------------------------
   function endGame() {
-    passageText.innerHTML = `<h2>Game Over!</h2><p>Your final score is ${score}. <button id="restart-btn">Restart</button></p>`;
+    passageText.innerHTML = `<h2>Game Over!</h2><p>Your final score is ${score}.</p>`;
     wordBox.innerHTML = '';
     hintDisplay.textContent = '';
     feedbackDisplay.textContent = '';
     nextPassageButton.style.display = 'none';
     prevPassageButton.disabled = true;
     hintButton.disabled = true;
-    document.getElementById('restart-btn').addEventListener('click', initGame);
   }
 
   // -------------------------
   // Event Listeners
   // -------------------------
   grammarSelect.addEventListener('change', loadGrammarType);
-  hintButton.addEventListener('click', showHint);
+  hintButton.addEventListener('click', () => {
+    // Show the hint from the current passage
+    if (hintsUsed < 3) {
+      hintDisplay.textContent = currentPassage.hint;
+      hintsUsed++;
+    } else {
+      hintDisplay.textContent = "No more hints!";
+    }
+  });
   nextPassageButton.addEventListener('click', nextPassage);
   prevPassageButton.addEventListener('click', prevPassage);
-  highlightCluesButton.addEventListener('click', highlightClues);
+  highlightCluesButton.addEventListener('click', () => {
+    let passageHtml = passageText.innerHTML;
+    currentPassage.clueWords.forEach(word => {
+      const regex = new RegExp(`\\b(${word})\\b`, 'gi');
+      passageHtml = passageHtml.replace(regex, `<span class="clue-highlight">$1</span>`);
+    });
+    passageText.innerHTML = passageHtml;
+  });
 
   // -------------------------
   // Start the Game
