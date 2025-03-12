@@ -11,6 +11,8 @@
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
+    <button id="menu-btn" aria-label="Open Menu">☰</button>
+    <button id="fullscreen-btn" aria-label="Toggle Full Screen">⤢</button>
     <p class="instructions" role="note">
       Drag or tap words from the word bank to fill in the blanks.
     </p>
@@ -23,7 +25,7 @@
         <option value="conjunctions">Conjunctions</option>
         <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
         <option value="pronouns">Pronouns</option>
-        <option value="adjectivesAdverbs">Adjectives &amp; Adverbs</option>
+        <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
         <option value="tenses">Tenses</option>
       </select>
     </div>
@@ -33,19 +35,16 @@
       <div id="word-box" role="region" aria-label="Word Bank"></div>
     </div>
 
-    <div class="button-group">
-      <button id="highlight-clues-btn" aria-label="Highlight Clue Words">Highlight Clues</button>
-      <button id="hint-btn" aria-label="General Hint">Hint</button>
-      <button id="clear-btn" aria-label="Clear Puzzle">Clear</button>
-    </div>
-    
-    <div class="navigation">
-      <button id="prev-btn" aria-label="Previous Passage">Previous</button>
-      <button id="next-btn" aria-label="Next Passage">Next</button>
+    <div id="menu" class="menu hidden">
+      <button id="highlight-clues-btn" aria-label="Highlight Clue Words">🔍</button>
+      <button id="hint-btn" aria-label="General Hint">💡</button>
+      <button id="clear-btn" aria-label="Clear Puzzle">🗑️</button>
+      <button id="prev-btn" aria-label="Previous Passage">◄</button>
+      <button id="next-btn" aria-label="Next Passage">►</button>
     </div>
 
     <div class="status-bar">
-      <div id="progress">📖 Progress: 1 / 1</div>
+      <div id="progress">📖 Progress: 1 / 10</div>
       <div id="score">⭐ Score: 0</div>
       <div id="lives">❤️ Lives: 0</div>
       <div id="progress-bar-container">
@@ -53,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Feedback will be shown here -->
     <div id="feedback" role="alert"></div>
   </main>
   <script src="script.js"></script>
