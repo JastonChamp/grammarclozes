@@ -718,8 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ]
 };
-
-  // Global game state
+// Global game state
   let currentGrammarType = "prepositions";
   let currentPassageIndex = 0;
   let score = 0;
@@ -741,21 +740,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const livesDisplay = document.getElementById("lives");
   const progressBar = document.getElementById("progress-bar");
   const highlightCluesButton = document.getElementById("highlight-clues-btn");
+  const menuBtn = document.getElementById("menu-btn");
+  const menu = document.getElementById("menu");
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
 
-  // Onboarding: Show a welcome alert on first load.
+  // Onboarding
   if (!localStorage.getItem("hasSeenTutorial")) {
-    alert(
-      "Welcome to Grammar Cloze Adventure! Drag or tap a word from the bank to fill in each blank. Use the hint buttons if you need help. Good luck!"
-    );
+    alert("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank. Use the menu for hints and controls!");
     localStorage.setItem("hasSeenTutorial", "true");
   }
 
-  // Utility: Shuffle an array
+  // Utility Functions
   function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
   }
 
-  // Update score and progress bar
   function updateStatus() {
     scoreDisplay.textContent = `⭐ Score: ${score}`;
     livesDisplay.textContent = `❤️ Lives: ${lives}`;
@@ -763,40 +762,29 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBar.style.width = `${((currentPassageIndex + 1) / passages[currentGrammarType].length) * 100}%`;
   }
 
-  // Display passage and word bank
   function displayPassage() {
-    console.log("Loading passage for:", currentGrammarType, "Index:", currentPassageIndex);
-
     const passage = passages[currentGrammarType]?.[currentPassageIndex];
-
     if (!passage) {
-      console.error("Error: Passage not found!");
       passageText.innerHTML = "<p>Error loading passage.</p>";
       return;
     }
-
-    console.log("Passage loaded:", passage);
-
-    if (!passage.text) {
-      console.error("Error: Passage text is missing!");
-      passageText.innerHTML = "<p>Error: No passage text available.</p>";
-      return;
+    let passageHTML = passage.text;
+    if (passage.clueWords) {
+      passage.clueWords.forEach((words, index) => {
+        const blankNum = index + 1;
+        words.forEach(word => {
+          const regex = new RegExp(`\\b${word}\\b`, 'gi');
+          passageHTML = passageHTML.replace(regex, `<span class="keyword keyword-${blankNum}">${word}</span>`);
+        });
+      });
     }
-
-    let passageHTML = passage.text.replace(/___\((\d+)\)___/g, (_, num) => {
+    passageHTML = passageHTML.replace(/___\((\d+)\)___/g, (_, num) => {
       return `<span class="blank" data-blank="${num}">
                 _
                 <button class="hint-for-blank" aria-label="Hint for blank ${num}">💡</button>
               </span>`;
     });
-
     passageText.innerHTML = passageHTML;
-
-    if (!Array.isArray(passage.wordBox) || passage.wordBox.length === 0) {
-      console.error("Error: Word box is empty!");
-      wordBox.innerHTML = "<p>No words available.</p>";
-      return;
-    }
 
     wordBox.innerHTML = shuffle(passage.wordBox)
       .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
@@ -811,14 +799,28 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll(".word").forEach(word => {
       word.addEventListener("dragstart", handleDragStart);
       word.addEventListener("dragend", handleDragEnd);
-      word.addEventListener("click", function () {
+      word.addEventListener("click", function() {
         selectedWord = word;
         document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
         word.classList.add("selected");
       });
     });
 
-    console.log("DisplayPassage function executed successfully.");
+    document.querySelectorAll(".hint-for-blank").forEach(button => {
+      button.addEventListener("click", function() {
+        const blankNum = this.parentElement.getAttribute("data-blank");
+        const hintIndex = parseInt(blankNum) - 1;
+        if (passage.hints && passage.hints[hintIndex]) {
+          feedbackDisplay.textContent = passage.hints[hintIndex];
+          feedbackDisplay.style.color = "blue";
+          document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
+          document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
+          setTimeout(() => {
+            document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
+          }, 5000);
+        }
+      });
+    });
   }
 
   // Drag-and-Drop Handlers
@@ -826,7 +828,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleDragStart(e) {
     draggedItem = e.target;
     e.dataTransfer.setData("text/plain", e.target.textContent);
-    e.dataTransfer.effectAllowed = "move";
     e.target.classList.add("dragging");
   }
   function handleDragEnd(e) {
@@ -855,14 +856,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Place word into a blank
   function placeWord(blank, word) {
     blank.textContent = word;
     blank.classList.add("filled");
     checkAnswer(blank);
   }
 
-  // Check answer
   function checkAnswer(blank) {
     const blankId = parseInt(blank.getAttribute("data-blank"));
     const userAnswer = blank.textContent.trim().toLowerCase();
@@ -881,45 +880,68 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStatus();
   }
 
-  // Clear puzzle
-  function clearPuzzle() {
-    hintUsage = {};
-    selectedWord = null;
-    displayPassage();
-  }
+  // Menu and Fullscreen Controls
+  menuBtn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
 
-  // Navigation
-  function nextPassage() {
-    currentPassageIndex++;
-    if (currentPassageIndex >= passages[currentGrammarType].length) {
-      feedbackDisplay.textContent = "Game Over! Final Score: " + score;
-      return;
+  fullscreenBtn.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      document.body.classList.add("fullscreen");
+      fullscreenBtn.textContent = "↙";
+    } else {
+      document.exitFullscreen();
+      document.body.classList.remove("fullscreen");
+      fullscreenBtn.textContent = "⤢";
     }
-    hintUsage = {};
-    displayPassage();
-    updateStatus();
-  }
-  function prevPassage() {
-    if (currentPassageIndex > 0) {
-      currentPassageIndex--;
-      hintUsage = {};
-      displayPassage();
-      updateStatus();
-    }
-  }
+  });
 
-  // Event Listeners
-  grammarSelect.addEventListener("change", function () {
+  // Game Controls
+  grammarSelect.addEventListener("change", function() {
     currentGrammarType = grammarSelect.value;
     currentPassageIndex = 0;
     displayPassage();
     updateStatus();
   });
-  nextPassageButton.addEventListener("click", nextPassage);
-  prevPassageButton.addEventListener("click", prevPassage);
-  clearButton.addEventListener("click", clearPuzzle);
 
-  // Initialize game
+  nextPassageButton.addEventListener("click", () => {
+    currentPassageIndex++;
+    if (currentPassageIndex >= passages[currentGrammarType].length) {
+      feedbackDisplay.textContent = "Game Over! Final Score: " + score;
+      return;
+    }
+    displayPassage();
+    updateStatus();
+    menu.classList.add("hidden");
+  });
+
+  prevPassageButton.addEventListener("click", () => {
+    if (currentPassageIndex > 0) {
+      currentPassageIndex--;
+      displayPassage();
+      updateStatus();
+    }
+    menu.classList.add("hidden");
+  });
+
+  clearButton.addEventListener("click", () => {
+    hintUsage = {};
+    selectedWord = null;
+    displayPassage();
+    menu.classList.add("hidden");
+  });
+
+  hintButton.addEventListener("click", () => {
+    const passage = passages[currentGrammarType][currentPassageIndex];
+    if (passage.hint) {
+      feedbackDisplay.textContent = passage.hint;
+      feedbackDisplay.style.color = "blue";
+    }
+    menu.classList.add("hidden");
+  });
+
+  // Initialize Game
   displayPassage();
   updateStatus();
 });
