@@ -363,7 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ]
   };
-   // DOM Elements
+ 
+  // DOM Elements
   const grammarSelect = document.getElementById('grammar-type');
   const passageText = document.getElementById('passage-text');
   const wordBox = document.getElementById('word-box');
@@ -428,27 +429,21 @@ document.addEventListener('DOMContentLoaded', () => {
     prevPassageButton.disabled = currentPassageIndex === 0;
   }
 
-  // Display Passage with Drop Boxes
+  // Display Passage with Input Blanks
   function displayPassage() {
     if (!currentPassage || !currentPassage.text) {
       passageText.innerHTML = '<p>Error: Passage text not available.</p>';
       return;
     }
     let passageWithInputs = currentPassage.text.replace(/___(\d+)___/g, (match, num) => {
-      return `<div class="blank" data-blank="${num}" tabindex="0">___(${num})___</div>`;
+      return `<input type="text" class="blank" data-blank="${num}" placeholder="___(${num})___" readonly>`;
     });
     passageText.innerHTML = passageWithInputs;
 
     // Attach drag-and-drop event listeners to blanks
     document.querySelectorAll('.blank').forEach(blank => {
       blank.addEventListener('dragover', dragOver);
-      blank.addEventListener('dragleave', dragLeave);
       blank.addEventListener('drop', dropWord);
-      // Allow clicking to select a blank for accessibility
-      blank.addEventListener('click', () => selectBlank(blank));
-      blank.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') selectBlank(blank);
-      });
     });
   }
 
@@ -461,12 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attach drag-and-drop event listeners to words
     document.querySelectorAll('.word').forEach(word => {
       word.addEventListener('dragstart', dragStart);
-      word.addEventListener('dragend', dragEnd);
-      // Allow clicking to select a word for accessibility
-      word.addEventListener('click', () => selectWord(word));
-      word.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') selectWord(word);
-      });
     });
   }
 
@@ -477,17 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Dragging word:', event.target.textContent);
   }
 
-  function dragEnd(event) {
-    event.target.classList.remove('dragging');
-  }
-
   function dragOver(event) {
     event.preventDefault(); // Required to allow dropping
     event.target.classList.add('drag-over');
-  }
-
-  function dragLeave(event) {
-    event.target.classList.remove('drag-over');
   }
 
   function dropWord(event) {
@@ -496,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const blank = event.target;
     blank.classList.remove('drag-over');
     if (blank.classList.contains('blank') && !blank.classList.contains('filled')) {
-      blank.textContent = droppedWord;
+      blank.value = droppedWord;
       blank.classList.add('filled');
       checkAnswer(blank);
       availableWords = availableWords.filter(word => word !== droppedWord);
@@ -504,54 +485,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Accessibility: Click-based selection
-  let selectedBlank = null;
-  let selectedWord = null;
-
-  function selectBlank(blank) {
-    if (blank.classList.contains('filled')) return;
-    if (selectedBlank) selectedBlank.classList.remove('selected');
-    selectedBlank = blank;
-    selectedBlank.classList.add('selected');
-    if (selectedWord) {
-      blank.textContent = selectedWord.textContent;
-      blank.classList.add('filled');
-      checkAnswer(blank);
-      availableWords = availableWords.filter(word => word !== selectedWord.textContent);
-      displayWordBox();
-      selectedWord.classList.remove('selected');
-      selectedBlank.classList.remove('selected');
-      selectedWord = null;
-      selectedBlank = null;
-    }
-  }
-
-  function selectWord(word) {
-    if (selectedWord) selectedWord.classList.remove('selected');
-    selectedWord = word;
-    selectedWord.classList.add('selected');
-    if (selectedBlank && !selectedBlank.classList.contains('filled')) {
-      selectedBlank.textContent = word.textContent;
-      selectedBlank.classList.add('filled');
-      checkAnswer(selectedBlank);
-      availableWords = availableWords.filter(w => w !== word.textContent);
-      displayWordBox();
-      selectedBlank.classList.remove('selected');
-      selectedWord.classList.remove('selected');
-      selectedWord = null;
-      selectedBlank = null;
-    }
-  }
-
   // Check Answer
   function checkAnswer(blank) {
     const blankId = blank.dataset.blank;
-    const userAnswer = blank.textContent.trim().toLowerCase();
+    const userAnswer = blank.value.trim().toLowerCase();
     const correctAnswer = currentPassage.answers[parseInt(blankId) - 1].toLowerCase();
     console.log('Checking answer:', userAnswer, 'Correct:', correctAnswer);
 
     if (userAnswer === correctAnswer) {
       blank.classList.add('correct');
+      blank.disabled = true;
       score += 10;
       feedbackDisplay.textContent = "Correct! Well done!";
       feedbackDisplay.style.color = "green";
