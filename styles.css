@@ -79,19 +79,19 @@ select:hover {
 
 .blank.drag-over {
   background-color: #e0f7fa;
-  border-color: #0288d1;
+  border: 2px solid #0288d1;
 }
 
 .blank.filled.correct {
   background-color: #4caf50;
   color: #fff;
-  border-color: #388e3c;
+  border: 2px solid #388e3c;
 }
 
 .blank.filled.incorrect {
   background-color: #f44336;
   color: #fff;
-  border-color: #d32f2f;
+  border: 2px solid #d32f2f;
 }
 
 .blank.selected {
