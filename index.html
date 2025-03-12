@@ -31,7 +31,7 @@
       </select>
     </div>
 
-    <!-- Game Container -->
+    <!-- Game container wraps passage and word bank -->
     <div class="game-container">
       <div id="passage-text" aria-live="polite"></div>
       <div id="word-box" role="region" aria-label="Word Bank"></div>
@@ -39,21 +39,23 @@
 
     <!-- Button Group -->
     <div class="button-group">
-      <button id="highlight-clues-btn">Highlight Clues</button>
-      <button id="hint-btn">Hint</button>
-      <button id="clear-btn">Clear</button>
+      <button id="highlight-clues-btn" aria-label="Highlight clue words">Highlight Clues</button>
+      <button id="hint-btn" aria-label="General Hint">Hint</button>
+      <button id="clear-btn" aria-label="Clear the puzzle">Clear</button>
     </div>
     <div class="navigation">
-      <button id="prev-btn">Previous</button>
-      <button id="next-btn">Next</button>
+      <button id="prev-btn" aria-label="Previous Passage">Previous</button>
+      <button id="next-btn" aria-label="Next Passage">Next</button>
     </div>
 
-    <!-- Status Display -->
+    <!-- Status Bar -->
     <div class="status-bar">
-      <div id="progress" role="status"></div>
-      <div id="score" role="status"></div>
-      <div id="lives" role="status"></div>
+      <div id="progress" role="status">Progress: 1/—</div>
+      <div id="score" role="status">Score: 0</div>
+      <div id="lives" role="status">Lives: 3</div>
     </div>
+
+    <!-- Feedback and Hint Messages -->
     <div id="hint" role="alert"></div>
     <div id="feedback" role="alert"></div>
   </main>
