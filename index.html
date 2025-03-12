@@ -3,42 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Cloze Practice</title>
+  <title>Grammar Cloze Adventure</title>
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Grammar Cloze Practice</h1>
-    <p class="instructions">Drag the words below to fill in the blanks in the passage!</p>
+    <h1>Grammar Cloze Adventure</h1>
+    <p class="instructions">Drag words from the box to fill in the blanks. Use the buttons for help!</p>
+  </header>
+  <main>
     <div class="controls">
-      <label for="grammar-type-select">Pick Your Grammar Type:</label>
-      <select id="grammar-type-select">
+      <label for="grammar-type">Choose Grammar Type:</label>
+      <select id="grammar-type">
         <option value="prepositions">Prepositions</option>
-        <option value="conjunctions">Conjunctions</option>
-        <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
-        <option value="pronouns">Pronouns</option>
-        <option value="adjectivesAdverbs">Adjectives/Adverbs</option>
+        <option value="tenses">Tenses</option>
       </select>
+    </div>
+    <div class="passage-container">
+      <div id="passage-text"></div>
+      <div class="word-box" id="word-box"></div>
+    </div>
+    <div class="button-group">
+      <button id="highlight-clues-btn">Highlight Clues</button>
       <button id="hint-btn">Hint</button>
     </div>
-  </header>
-  <main class="game-container">
-    <section class="passage-container">
-      <h3 id="passage-title">Passage 1: Prepositions</h3>
-      <div class="passage" id="passage-text">
-        <!-- Passage text with blanks will be inserted here -->
-      </div>
-      <div class="word-box">
-        <h4>Word Box</h4>
-        <div class="words" id="word-box">
-          <!-- Words will be inserted here -->
-        </div>
-      </div>
-    </section>
-    <button id="submit-btn" disabled>Submit</button>
-    <div id="feedback"></div>
-    <div id="progress-tracker">Progress: 0/20 passages completed</div>
+    <div class="navigation">
+      <button id="prev-btn" disabled>Previous</button>
+      <button id="next-btn">Next</button>
+    </div>
+    <div id="progress">Passage 1 of 2</div>
   </main>
   <script src="script.js"></script>
 </body>
