@@ -9,6 +9,7 @@
   --word-bg: #fff9c4;
   --status-bg: #f9f9f9;
   --hint-tooltip-bg: #fff3e0;
+  --menu-bg: #ffffff;
 }
 
 /* Reset */
@@ -28,37 +29,111 @@ body {
   align-items: center;
   padding: 20px;
   min-height: 100vh;
+  transition: padding 0.3s;
+}
+
+body.fullscreen {
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Header */
 header {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
+  width: 100%;
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2.5em;
   color: var(--primary-color);
 }
 
 .instructions {
-  font-size: 1.2em;
-  padding: 10px;
+  font-size: 1.1em;
+  padding: 8px;
   background: #ffffffcc;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
+}
+
+/* Menu Button and Fullscreen Button */
+#menu-btn, #fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  padding: 10px;
+  font-size: 1.5em;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+#menu-btn {
+  right: 60px;
+}
+
+#fullscreen-btn {
+  right: 10px;
+}
+
+#menu-btn:hover, #fullscreen-btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+/* Menu */
+.menu {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  background: var(--menu-bg);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.menu.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.menu button {
+  padding: 10px;
+  font-size: 1.2em;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.menu button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
 }
 
 /* Controls */
 .controls {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   display: flex;
-  flex-wrap: wrap;
   gap: 15px;
   align-items: center;
-  background: rgba(255,255,255,0.5);
-  padding: 10px;
-  border-radius: 20px;
+  background: rgba(255,255,255,0.7);
+  padding: 10px 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .controls label,
@@ -68,11 +143,11 @@ h1 {
 
 select {
   padding: 10px;
-  border: 3px solid var(--primary-color);
-  border-radius: 15px;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
   background: #fff;
   color: var(--text-color);
-  width: 250px;
+  width: 220px;
   transition: background 0.3s;
 }
 
@@ -83,18 +158,26 @@ select:hover {
 /* Game Container */
 .game-container {
   width: 90%;
-  max-width: 700px;
+  max-width: 800px;
   background: #fff;
-  padding: 20px;
-  border: 2px solid var(--primary-color);
+  padding: 25px;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  transition: width 0.3s, max-width 0.3s;
+}
+
+body.fullscreen .game-container {
+  width: 100%;
+  max-width: none;
+  height: calc(100vh - 200px);
+  margin: 0;
+  border-radius: 0;
 }
 
 /* Passage Text & Blanks */
 #passage-text {
-  background: #f5f5f5;
+  background: #f9f9f9;
   padding: 15px;
   border-radius: 10px;
   font-size: 1.2em;
@@ -111,7 +194,6 @@ select:hover {
   text-align: center;
   cursor: pointer;
   transition: background 0.3s, border-color 0.3s;
-  position: relative;
 }
 
 .blank.drag-over {
@@ -132,8 +214,7 @@ select:hover {
   color: #fff;
 }
 
-/* Hint Button inside Blank */
-.blank .hint-for-blank {
+.hint-for-blank {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -146,9 +227,6 @@ select:hover {
   background-color: yellow;
   font-weight: bold;
 }
-.keyword {
-  cursor: help;
-}
 
 /* Word Bank */
 #word-box {
@@ -157,57 +235,9 @@ select:hover {
   gap: 10px;
   background: #fff;
   padding: 15px;
-  border-radius: 15px;
-  border: 2px solid var(--accent-color);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
-
-.word {
-  padding: 25px;
-  background: var(--word-bg);
-  border: 2px solid var(--word-border);
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 700;
-  font-size: 1.6em;
-  text-align: center;
-  transition: transform 0.2s, opacity 0.3s;
-}
-
-.word.selected {
-  outline: 3px solid var(--secondary-color);
-  transform: scale(1.1);
-}
-
-/* Button Groups */
-.button-group,
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-button {
-  padding: 12px 24px;
-  font-size: 1em;
-  border: none;
   border-radius: 10px;
-  background: var(--primary-color);
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-button:hover:not(:disabled) {
-  background: var(--secondary-color);
-  transform: scale(1.05);
-}
-
-button:focus {
-  outline: 3px solid var(--accent-color);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 /* Status Bar */
@@ -215,13 +245,13 @@ button:focus {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   background: var(--status-bg);
   padding: 10px;
   border-radius: 10px;
   width: 90%;
-  max-width: 700px;
-  margin-bottom: 15px;
+  max-width: 800px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #progress, #score, #lives {
@@ -229,25 +259,40 @@ button:focus {
   color: var(--primary-color);
 }
 
-/* Progress Bar (inside status bar) */
 #progress-bar-container {
   flex-grow: 1;
   background: #ddd;
   border-radius: 5px;
-  height: 20px;
-  margin-left: 10px;
+  height: 15px;
   overflow: hidden;
 }
 
 #progress-bar {
   height: 100%;
   width: 0%;
-  background: var(--progress-bar-bg);
+  background: var(--accent-color);
   transition: width 0.5s;
+}
+
+/* Feedback */
+#feedback {
+  font-size: 1.1em;
+  padding: 10px;
+  text-align: center;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+  }
+  .controls {
+    flex-direction: column;
+    padding: 10px;
+  }
+  select {
+    width: 100%;
+  }
   .game-container {
     width: 95%;
   }
@@ -256,14 +301,10 @@ button:focus {
     padding: 6px;
   }
   .word {
-    padding: 20px;
-    font-size: 1.4em;
+    padding: 15px;
+    font-size: 1.2em;
   }
-  button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
-  select {
-    width: 200px;
+  .menu {
+    padding: 10px;
   }
 }
