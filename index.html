@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar Quest - Prepositions Level 1</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Cloze Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>Grammar Quest</h1>
-        <h2>World: Prepositions - Treasure Hunt</h2>
-        <p>Help Grammar Guru restore their powers by filling in the blanks!</p>
-
-        <!-- Cloze Passage -->
-        <div class="passage">
-            Sally placed her bag <span class="blank" id="blank1" data-answer="on"></span> the table. 
-            She looked <span class="blank" id="blank2" data-answer="through"></span> the window 
-            and saw a bird perched <span class="blank" id="blank3" data-answer="by"></span> 
-            the fence. Her cat was hiding <span class="blank" id="blank4" data-answer="under"></span> 
-            a chair, watching quietly. Sally tiptoed <span class="blank" id="blank5" data-answer="towards"></span> 
-            the door so she wouldn’t scare the bird away.
-        </div>
-
-        <!-- Word Box -->
-        <div class="word-box">
-            <h3>Word Box</h3>
-            <div class="words">
-                <span class="word" draggable="true">in</span>
-                <span class="word" draggable="true">on</span>
-                <span class="word" draggable="true">under</span>
-                <span class="word" draggable="true">by</span>
-                <span class="word" draggable="true">through</span>
-                <span class="word" draggable="true">around</span>
-                <span class="word" draggable="true">towards</span>
-            </div>
-        </div>
-
-        <!-- Controls and Feedback -->
-        <button id="submit-btn">Submit</button>
-        <div id="feedback"></div>
-        <div id="points">Points: 0</div>
+  <header>
+    <h1>Grammar Cloze Practice</h1>
+    <p class="instructions">Drag the words below to fill in the blanks in the passage!</p>
+    <div class="controls">
+      <label for="level-select">Pick Your Passage:</label>
+      <select id="level-select">
+        <option value="1" selected>Passage 1: Prepositions</option>
+        <!-- Add more passages later -->
+      </select>
     </div>
-
-    <script src="script.js"></script>
+  </header>
+  <main class="game-container">
+    <section class="passage-container">
+      <h3>Passage 1 of 1</h3>
+      <div class="passage">
+        Sally placed her bag <span class="blank" data-answer="on"></span> the table. 
+        She looked <span class="blank" data-answer="through"></span> the window 
+        and saw a bird perched <span class="blank" data-answer="by"></span> 
+        the fence. Her cat was hiding <span class="blank" data-answer="under"></span> 
+        a chair, watching quietly. Sally tiptoed <span class="blank" data-answer="towards"></span> 
+        the door so she wouldn’t scare the bird away.
+      </div>
+      <div class="word-box">
+        <h4>Word Box</h4>
+        <div class="words">
+          <span class="word" draggable="true">in</span>
+          <span class="word" draggable="true">on</span>
+          <span class="word" draggable="true">under</span>
+          <span class="word" draggable="true">by</span>
+          <span class="word" draggable="true">through</span>
+          <span class="word" draggable="true">around</span>
+          <span class="word" draggable="true">towards</span>
+        </div>
+      </div>
+    </section>
+    <button id="submit-btn" disabled>Submit</button>
+    <div id="feedback"></div>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
