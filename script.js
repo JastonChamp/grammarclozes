@@ -745,12 +745,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let lives = 3;
   let hintsUsed = 0;
   let availableWords = [];
-
-  // -------------------------
-  // Drag-and-Drop Handler Variables
-  // -------------------------
   let draggedItem = null;
-  let currentDropZone = null; // set when displaying a puzzle
+  let currentDropZone = null; // for future use if needed
 
   // -------------------------
   // Utility: Shuffle Array
@@ -789,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     currentPassage = passages[currentGrammarType][currentPassageIndex];
-    // Copy wordBox array for drag-and-drop
+    // Copy the wordBox array for drag-and-drop
     availableWords = [...currentPassage.wordBox];
     displayPassage();
     displayWordBox();
@@ -801,20 +797,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Display Passage with Blanks
+  // Display Passage with Blank Drop Zones
   // -------------------------
   function displayPassage() {
     if (!currentPassage || !currentPassage.text) {
       passageText.innerHTML = '<p>Error: Passage text not available.</p>';
       return;
     }
-    // Create blanks as inputs (without readonly so they accept dropped words)
-    let passageWithInputs = currentPassage.text.replace(/___(\d+)___/g, (match, num) => {
-      return `<input type="text" class="blank" data-blank="${num}" placeholder="___(${num})___">`;
+    // Replace each blank marker with a div drop zone.
+    let passageWithDropZones = currentPassage.text.replace(/___\((\d+)\)___/g, (match, num) => {
+      return `<div class="blank" data-blank="${num}">___(${num})___</div>`;
     });
-    passageText.innerHTML = passageWithInputs;
+    passageText.innerHTML = passageWithDropZones;
 
-    // Set currentDropZone to each blank container (if needed, here each blank is individual)
+    // Attach dragover, dragleave, and drop event handlers to each blank drop zone.
     document.querySelectorAll('.blank').forEach(blank => {
       blank.addEventListener('dragover', handleDragOver);
       blank.addEventListener('dragleave', handleDragLeave);
@@ -823,16 +819,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Display Word Box with Draggable Words
+  // Display Word Bank with Draggable Words
   // -------------------------
   function displayWordBox() {
     wordBox.innerHTML = availableWords
-      .map(word => `<span class="word" draggable="true" tabindex="0">${word}</span>`)
+      .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
       .join(' | ');
     document.querySelectorAll('.word').forEach(word => {
       word.addEventListener('dragstart', handleDragStart);
       word.addEventListener('dragend', handleDragEnd);
-      // (Optional) Add tooltip events if desired
       word.addEventListener('mouseover', showTooltip);
       word.addEventListener('mouseout', hideTooltip);
       word.addEventListener('touchstart', showTouchTooltip, { passive: true });
@@ -845,6 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleDragStart(e) {
     draggedItem = e.target;
     e.dataTransfer.setData('text/plain', e.target.textContent);
+    e.dataTransfer.effectAllowed = "move";
     e.target.classList.add('dragging');
   }
 
@@ -866,27 +862,26 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     e.currentTarget.classList.remove('drag-over');
     const droppedWord = e.dataTransfer.getData('text/plain');
-    // If the drop target is a blank and not yet filled
+    // If drop target is a blank drop zone and not filled (i.e. still shows placeholder)
     if (e.currentTarget.classList.contains('blank') && !e.currentTarget.classList.contains('filled')) {
-      e.currentTarget.value = droppedWord;
+      e.currentTarget.textContent = droppedWord;
       e.currentTarget.classList.add('filled');
       checkAnswer(e.currentTarget);
-      // Remove the dropped word from availableWords and update the word box
       availableWords = availableWords.filter(word => word !== droppedWord);
       displayWordBox();
     }
   }
 
   // -------------------------
-  // Check Answer for a Blank
+  // Check Answer for a Blank Drop Zone
   // -------------------------
   function checkAnswer(blank) {
     const blankId = blank.dataset.blank;
-    const userAnswer = blank.value.trim().toLowerCase();
+    const userAnswer = blank.textContent.trim().toLowerCase();
     const correctAnswer = currentPassage.answers[parseInt(blankId) - 1].toLowerCase();
     if (userAnswer === correctAnswer) {
       blank.classList.add('correct');
-      blank.disabled = true;
+      blank.style.pointerEvents = "none";
       score += 10;
       feedbackDisplay.textContent = "Correct! Well done!";
       feedbackDisplay.style.color = "green";
@@ -896,7 +891,7 @@ document.addEventListener('DOMContentLoaded', () => {
       feedbackDisplay.textContent = "Incorrect! Try again.";
       feedbackDisplay.style.color = "red";
     }
-    // If all blanks are correctly filled, show the Next button
+    // Check if all blanks are correctly filled
     const allCorrect = Array.from(document.querySelectorAll('.blank')).every(b => b.classList.contains('correct'));
     if (allCorrect) nextPassageButton.style.display = 'inline-block';
     if (lives <= 0) endGame();
@@ -907,8 +902,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tooltip Functions (Optional)
   // -------------------------
   function showTooltip(e) {
-    const word = e.target.textContent;
-    // (Optional: you can define word roles here if needed)
     const tooltip = document.createElement("div");
     tooltip.textContent = "Drag me!";
     tooltip.className = "word-tooltip";
@@ -931,7 +924,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showTouchTooltip(e) {
-    // For touch devices (simplified version)
     showTooltip(e);
   }
 
@@ -988,7 +980,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // -------------------------
   grammarSelect.addEventListener('change', loadGrammarType);
   hintButton.addEventListener('click', () => {
-    // Show the hint from the current passage
     if (hintsUsed < 3) {
       hintDisplay.textContent = currentPassage.hint;
       hintsUsed++;
