@@ -141,19 +141,13 @@ select:hover {
   margin-left: 5px;
 }
 
-/* Hint Tooltip */
-.hint-tooltip {
-  position: absolute;
-  background: var(--hint-tooltip-bg);
-  color: var(--secondary-color);
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  z-index: 10;
-  max-width: 300px;
-  font-size: 1em;
-  top: 110%;
-  left: 0;
+/* Keyword Highlighting */
+.keyword.highlighted {
+  background-color: yellow;
+  font-weight: bold;
+}
+.keyword {
+  cursor: help;
 }
 
 /* Word Bank */
