@@ -1,111 +1,144 @@
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    margin: 0;
+:root {
+  --primary-color: #ff6f61;
+  --secondary-color: #ff9f1c;
+  --accent-color: #ffcc00;
+  --background-color: #87ceeb;
+  --correct-bg: #98fb98;
+  --correct-border: #32cd32;
+  --incorrect-bg: #ff9999;
+  --incorrect-border: #ff4040;
+  --word-bg: #3498db; /* Adjusted for simplicity; can use role-based colors later */
 }
 
-.game-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 600px;
+body {
+  font-family: "Comic Neue", cursive;
+  background: linear-gradient(135deg, var(--background-color), #add8e6),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='2' fill='rgba(255,255,255,0.3)'/></svg>") repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 h1 {
-    color: #2c3e50;
+  font-size: 3.5em;
+  color: var(--primary-color);
 }
 
-h2 {
-    color: #e74c3c;
+.instructions {
+  font-size: 1.5em;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 3px solid var(--accent-color);
+  border-radius: 15px;
+}
+
+.controls {
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.game-container {
+  max-width: 900px;
+  width: 100%;
+  background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.passage-container {
+  padding: 20px;
+  border: 4px solid var(--primary-color);
+  border-radius: 20px;
+  background: #fffacd;
 }
 
 .passage {
-    margin: 20px 0;
-    font-size: 18px;
-    line-height: 1.5;
+  font-size: 1.2em;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
 .blank {
-    display: inline-block;
-    width: 80px;
-    height: 25px;
-    border: 2px dashed #3498db;
-    background-color: #ecf0f1;
-    margin: 0 5px;
-    cursor: pointer;
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  border: 4px dashed var(--accent-color);
+  background-color: #f5f5f5;
+  margin: 0 5px;
+  vertical-align: middle;
+  transition: background-color 0.3s;
+}
+
+.blank.active {
+  background-color: var(--dropzone-active-bg, #b0e0e6);
+}
+
+.blank.correct {
+  border-color: var(--correct-border);
+  background-color: var(--correct-bg);
+}
+
+.blank.incorrect {
+  border-color: var(--incorrect-border);
+  background-color: var(--incorrect-bg);
 }
 
 .word-box {
-    margin: 20px 0;
+  padding: 15px;
+  border: 4px dashed var(--accent-color);
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin: 10px 0;
 }
 
 .words {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .word {
-    padding: 5px 10px;
-    background-color: #3498db;
-    color: white;
-    border-radius: 5px;
-    cursor: move;
-    user-select: none;
+  padding: 5px 10px;
+  background-color: var(--word-bg);
+  color: white;
+  border-radius: 8px;
+  cursor: move;
+  font-weight: 700;
+  transition: opacity 0.3s;
 }
 
-.word.used {
-    opacity: 0.5;
-    pointer-events: none;
+.word.dragging {
+  opacity: 0.5;
 }
 
 #submit-btn {
-    padding: 10px 20px;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 12px 25px;
+  font-size: 1.3em;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
 }
 
-#submit-btn:hover {
-    background-color: #27ae60;
+#submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 #feedback {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#points {
-    margin-top: 10px;
-    font-size: 16px;
-}
-
-.correct {
-    border-color: #2ecc71;
-    background-color: #e8f5e9;
-}
-
-.incorrect {
-    border-color: #e74c3c;
-    background-color: #ffebee;
-}
-
-.confetti {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1000;
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: 700;
 }
