@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ]
   };
-    // DOM Elements
+   // DOM Elements
   const grammarSelect = document.getElementById('grammar-type');
   const passageText = document.getElementById('passage-text');
   const wordBox = document.getElementById('word-box');
@@ -428,25 +428,26 @@ document.addEventListener('DOMContentLoaded', () => {
     prevPassageButton.disabled = currentPassageIndex === 0;
   }
 
-  // Display Passage with Draggable Blanks
+  // Display Passage with Drop Boxes
   function displayPassage() {
     if (!currentPassage || !currentPassage.text) {
       passageText.innerHTML = '<p>Error: Passage text not available.</p>';
       return;
     }
     let passageWithInputs = currentPassage.text.replace(/___(\d+)___/g, (match, num) => {
-      return `<span class="blank" data-blank="${num}" tabindex="0">___(${num})___</span>`;
+      return `<div class="blank" data-blank="${num}" tabindex="0">___(${num})___</div>`;
     });
     passageText.innerHTML = passageWithInputs;
 
     // Attach drag-and-drop event listeners to blanks
     document.querySelectorAll('.blank').forEach(blank => {
       blank.addEventListener('dragover', dragOver);
+      blank.addEventListener('dragleave', dragLeave);
       blank.addEventListener('drop', dropWord);
       // Allow clicking to select a blank for accessibility
       blank.addEventListener('click', () => selectBlank(blank));
       blank.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') selectBlank(blank);
+        if (e.key === 'Enter' || e.key === ' ') selectBlank(blank);
       });
     });
   }
@@ -460,10 +461,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attach drag-and-drop event listeners to words
     document.querySelectorAll('.word').forEach(word => {
       word.addEventListener('dragstart', dragStart);
+      word.addEventListener('dragend', dragEnd);
       // Allow clicking to select a word for accessibility
       word.addEventListener('click', () => selectWord(word));
       word.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') selectWord(word);
+        if (e.key === 'Enter' || e.key === ' ') selectWord(word);
       });
     });
   }
@@ -475,9 +477,17 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Dragging word:', event.target.textContent);
   }
 
+  function dragEnd(event) {
+    event.target.classList.remove('dragging');
+  }
+
   function dragOver(event) {
-    event.preventDefault();
+    event.preventDefault(); // Required to allow dropping
     event.target.classList.add('drag-over');
+  }
+
+  function dragLeave(event) {
+    event.target.classList.remove('drag-over');
   }
 
   function dropWord(event) {
@@ -509,6 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
       checkAnswer(blank);
       availableWords = availableWords.filter(word => word !== selectedWord.textContent);
       displayWordBox();
+      selectedWord.classList.remove('selected');
+      selectedBlank.classList.remove('selected');
       selectedWord = null;
       selectedBlank = null;
     }
@@ -524,6 +536,8 @@ document.addEventListener('DOMContentLoaded', () => {
       checkAnswer(selectedBlank);
       availableWords = availableWords.filter(w => w !== word.textContent);
       displayWordBox();
+      selectedBlank.classList.remove('selected');
+      selectedWord.classList.remove('selected');
       selectedWord = null;
       selectedBlank = null;
     }
