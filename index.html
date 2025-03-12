@@ -4,15 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- Suppress favicon error -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
     <p class="instructions" role="note">
-      Drag words from the box to fill in the blanks. Use the buttons for help!
+      Drag words from the word bank to fill in the blanks.
     </p>
   </header>
   <main>
@@ -20,30 +23,26 @@
       <label for="grammar-type">Choose Grammar Type:</label>
       <select id="grammar-type" aria-label="Select grammar type">
         <option value="prepositions">Prepositions</option>
-        <option value="tenses">Tenses</option>
         <option value="conjunctions">Conjunctions</option>
         <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
         <option value="pronouns">Pronouns</option>
-        <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+        <option value="adjectivesAdverbs">Adjectives &amp; Adverbs</option>
+        <option value="tenses">Tenses</option>
       </select>
     </div>
-    <div class="game-container">
-      <div id="passage-text" aria-live="polite"></div>
-      <div class="word-box" id="word-box" role="region" aria-label="Word selection box"></div>
-    </div>
+    <div id="passage-text" aria-live="polite"></div>
+    <div id="word-box" role="region" aria-label="Word Bank"></div>
     <div class="button-group">
-      <button id="highlight-clues-btn" aria-label="Highlight clue words">Highlight Clues</button>
-      <button id="hint-btn" aria-label="Show hint">Hint</button>
+      <button id="highlight-clues-btn">Highlight Clues</button>
+      <button id="hint-btn">Hint</button>
     </div>
     <div class="navigation">
-      <button id="prev-btn" aria-label="Previous passage">Previous</button>
-      <button id="next-btn" aria-label="Next passage">Next</button>
+      <button id="prev-btn">Previous</button>
+      <button id="next-btn">Next</button>
     </div>
-    <div class="status-bar">
-      <div id="progress" role="status"></div>
-      <div id="score" role="status"></div>
-      <div id="lives" role="status"></div>
-    </div>
+    <div id="progress" role="status"></div>
+    <div id="score" role="status"></div>
+    <div id="lives" role="status"></div>
     <div id="hint" role="alert"></div>
     <div id="feedback" role="alert"></div>
   </main>
