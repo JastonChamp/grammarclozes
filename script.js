@@ -734,6 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevPassageButton = document.getElementById('prev-btn');
   const highlightCluesButton = document.getElementById('highlight-clues-btn');
   const progressDisplay = document.getElementById('progress');
+  const clearButton = document.getElementById('clear-btn');
 
   // -------------------------
   // Game State Variables
@@ -746,7 +747,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let hintsUsed = 0;
   let availableWords = [];
   let draggedItem = null;
-  let currentDropZone = null; // for future use if needed
 
   // -------------------------
   // Utility: Shuffle Array
@@ -785,14 +785,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     currentPassage = passages[currentGrammarType][currentPassageIndex];
-    // Copy the wordBox array for drag-and-drop
+    // Reset availableWords from the original wordBox array
     availableWords = [...currentPassage.wordBox];
     displayPassage();
     displayWordBox();
     clearFeedback();
     hintDisplay.textContent = '';
     updateProgress();
-    nextPassageButton.style.display = currentPassageIndex === passages[currentGrammarType].length - 1 ? 'none' : 'inline-block';
+    nextPassageButton.style.display =
+      currentPassageIndex === passages[currentGrammarType].length - 1 ? 'none' : 'inline-block';
     prevPassageButton.disabled = currentPassageIndex === 0;
   }
 
@@ -804,13 +805,13 @@ document.addEventListener('DOMContentLoaded', () => {
       passageText.innerHTML = '<p>Error: Passage text not available.</p>';
       return;
     }
-    // Replace each blank marker with a div drop zone.
+    // Replace blank markers with div drop zones
     let passageWithDropZones = currentPassage.text.replace(/___\((\d+)\)___/g, (match, num) => {
       return `<div class="blank" data-blank="${num}">___(${num})___</div>`;
     });
     passageText.innerHTML = passageWithDropZones;
 
-    // Attach dragover, dragleave, and drop event handlers to each blank drop zone.
+    // Attach drag events to each blank drop zone
     document.querySelectorAll('.blank').forEach(blank => {
       blank.addEventListener('dragover', handleDragOver);
       blank.addEventListener('dragleave', handleDragLeave);
@@ -819,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Display Word Bank with Draggable Words
+  // Display Word Bank
   // -------------------------
   function displayWordBox() {
     wordBox.innerHTML = availableWords
@@ -835,7 +836,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Improved Drag-and-Drop Handlers
+  // Drag-and-Drop Handlers
   // -------------------------
   function handleDragStart(e) {
     draggedItem = e.target;
@@ -862,18 +863,19 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     e.currentTarget.classList.remove('drag-over');
     const droppedWord = e.dataTransfer.getData('text/plain');
-    // If drop target is a blank drop zone and not filled (i.e. still shows placeholder)
+    // Only fill the blank if it hasn't been filled already
     if (e.currentTarget.classList.contains('blank') && !e.currentTarget.classList.contains('filled')) {
       e.currentTarget.textContent = droppedWord;
       e.currentTarget.classList.add('filled');
       checkAnswer(e.currentTarget);
+      // Remove dropped word from availableWords and update word bank
       availableWords = availableWords.filter(word => word !== droppedWord);
       displayWordBox();
     }
   }
 
   // -------------------------
-  // Check Answer for a Blank Drop Zone
+  // Check Answer for a Blank
   // -------------------------
   function checkAnswer(blank) {
     const blankId = blank.dataset.blank;
@@ -891,11 +893,23 @@ document.addEventListener('DOMContentLoaded', () => {
       feedbackDisplay.textContent = "Incorrect! Try again.";
       feedbackDisplay.style.color = "red";
     }
-    // Check if all blanks are correctly filled
+    // Check if all blanks are correct
     const allCorrect = Array.from(document.querySelectorAll('.blank')).every(b => b.classList.contains('correct'));
     if (allCorrect) nextPassageButton.style.display = 'inline-block';
     if (lives <= 0) endGame();
     updateScoreAndLives();
+  }
+
+  // -------------------------
+  // Clear Current Puzzle (Undo all drops)
+  // -------------------------
+  function clearPuzzle() {
+    // Reset availableWords and re-display the passage and word bank
+    availableWords = [...currentPassage.wordBox];
+    displayPassage();
+    displayWordBox();
+    clearFeedback();
+    hintDisplay.textContent = "";
   }
 
   // -------------------------
@@ -905,12 +919,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tooltip = document.createElement("div");
     tooltip.textContent = "Drag me!";
     tooltip.className = "word-tooltip";
-    tooltip.style.position = "absolute";
-    tooltip.style.background = "rgba(0,0,0,0.8)";
-    tooltip.style.color = "white";
-    tooltip.style.padding = "5px 10px";
-    tooltip.style.borderRadius = "5px";
-    tooltip.style.zIndex = "10";
     const rect = e.target.getBoundingClientRect();
     tooltip.style.top = rect.bottom + window.scrollY + "px";
     tooltip.style.left = rect.left + "px";
@@ -940,7 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Navigation: Next and Previous Passage
+  // Navigation Functions
   // -------------------------
   function nextPassage() {
     currentPassageIndex++;
@@ -955,7 +963,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------
-  // Clear Feedback
+  // Clear Feedback Message
   // -------------------------
   function clearFeedback() {
     feedbackDisplay.textContent = '';
@@ -989,6 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   nextPassageButton.addEventListener('click', nextPassage);
   prevPassageButton.addEventListener('click', prevPassage);
+  clearButton.addEventListener('click', clearPuzzle);
   highlightCluesButton.addEventListener('click', () => {
     let passageHtml = passageText.innerHTML;
     currentPassage.clueWords.forEach(word => {
