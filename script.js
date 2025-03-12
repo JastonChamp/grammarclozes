@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Sally placed her bag ___(1)___ the table. She looked ___(2)___ the window and saw a bird. The bird was perched ___(3)___ the fence. Her cat hid ___(4)___ a chair. Sally walked ___(5)___ the door quietly.",
         wordBox: ["in", "on", "under", "by", "through", "around", "towards"],
         answers: ["on", "through", "by", "under", "towards"],
-        // One clue per blank:
+        // One clue word per blank:
         clueWords: ["bag", "window", "fence", "chair", "door"],
         hint: "Remember to use the objects around you as clues."
       },
@@ -703,11 +703,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.getElementById("menu-btn");
   const menu = document.getElementById("menu");
   const fullscreenBtn = document.getElementById("fullscreen-btn");
+  const speakPassageBtn = document.getElementById("speak-passage-btn");
+
+  // Speech Synthesis Setup
+  const synth = window.speechSynthesis;
+  let voices = [];
+  let ukFemaleVoice = null;
+
+  function loadVoices() {
+    voices = synth.getVoices();
+    ukFemaleVoice = voices.find(voice => 
+      voice.lang === "en-GB" && 
+      (voice.name.includes("Female") || voice.name.includes("Google UK English Female") || voice.name === "Samantha" || voice.name === "Kate")
+    ) || voices.find(voice => voice.lang === "en-GB"); // Fallback to any en-GB voice
+  }
+  loadVoices();
+  synth.onvoiceschanged = loadVoices;
+
+  function speak(text) {
+    if (synth.speaking) {
+      synth.cancel();
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-GB";
+    if (ukFemaleVoice) {
+      utterance.voice = ukFemaleVoice;
+    }
+    utterance.rate = 0.9;
+    utterance.pitch = 1.1;
+    synth.speak(utterance);
+  }
 
   // Onboarding
   if (!localStorage.getItem("hasSeenTutorial")) {
     alert("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank. Use the menu for hints and controls!");
     localStorage.setItem("hasSeenTutorial", "true");
+    speak("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank.");
   }
 
   // Utility Functions
@@ -729,12 +760,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     let passageHTML = passage.text;
-
-    // Process clueWords – now expect one clue per blank
+    // Process clueWords – assume one clue per blank
     if (passage.clueWords) {
       passage.clueWords.forEach((clue, index) => {
         const blankNum = index + 1;
-        // Wrap each clue word in a span with a class indicating the blank number
         const regex = new RegExp(`\\b${clue}\\b`, 'gi');
         passageHTML = passageHTML.replace(regex, `<span class="keyword keyword-${blankNum}">${clue}</span>`);
       });
@@ -767,15 +796,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // When the light bulb (hint-for-blank) is clicked, simply highlight the keyword for that blank.
+    // When the hint-for-blank (light bulb) is clicked, highlight the corresponding keyword for that blank.
     document.querySelectorAll(".hint-for-blank").forEach(button => {
       button.addEventListener("click", function() {
         const blankNum = this.parentElement.getAttribute("data-blank");
         // Remove any previous highlighting
         document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
-        // Highlight keywords associated with this blank
+        // Highlight keywords for this blank
         document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
-        // Remove highlight after 3 seconds
         setTimeout(() => {
           document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
         }, 3000);
@@ -832,10 +860,12 @@ document.addEventListener("DOMContentLoaded", () => {
       lives++;
       feedbackDisplay.textContent = "Correct! Great job!";
       feedbackDisplay.style.color = "green";
+      speak("Correct! Great job!");
     } else {
       blank.classList.add("incorrect");
       feedbackDisplay.textContent = "Incorrect! Try again.";
       feedbackDisplay.style.color = "red";
+      speak("Incorrect! Try again.");
     }
     updateStatus();
   }
@@ -869,6 +899,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentPassageIndex++;
     if (currentPassageIndex >= passages[currentGrammarType].length) {
       feedbackDisplay.textContent = "Game Over! Final Score: " + score;
+      speak("Game Over! Your final score is " + score);
       return;
     }
     displayPassage();
@@ -893,11 +924,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   hintButton.addEventListener("click", () => {
-    // General hint now just triggers highlighting for all keywords
-    document.querySelectorAll(".keyword").forEach(el => el.classList.add("highlighted"));
-    setTimeout(() => {
-      document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
-    }, 3000);
+    const passage = passages[currentGrammarType][currentPassageIndex];
+    if (passage.hint) {
+      feedbackDisplay.textContent = passage.hint;
+      feedbackDisplay.style.color = "blue";
+      speak(passage.hint);
+    }
+    menu.classList.add("hidden");
+  });
+
+  speakPassageBtn.addEventListener("click", () => {
+    const passage = passages[currentGrammarType][currentPassageIndex];
+    if (passage.text) {
+      const textToSpeak = passage.text.replace(/___\(\d+\)___/g, "blank");
+      speak(textToSpeak);
+    }
     menu.classList.add("hidden");
   });
 
