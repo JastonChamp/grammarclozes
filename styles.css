@@ -1,3 +1,4 @@
+/* Base Styles */
 body {
   font-family: 'Comic Neue', cursive;
   background: linear-gradient(135deg, #87CEEB, #ADD8E6);
@@ -26,6 +27,7 @@ h1 {
   margin: 5px 0;
 }
 
+/* Controls and Puzzle Container */
 .controls {
   margin-bottom: 20px;
 }
@@ -47,33 +49,30 @@ select:hover {
   background-color: #e0f7fa;
 }
 
-.game-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  width: 90%;
-  max-width: 800px;
-}
-
 #passage-text {
   font-size: 1.2em;
   line-height: 1.6;
   margin-bottom: 15px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 800px;
 }
 
+/* Drop Zone for Blanks */
 .blank {
   display: inline-block;
-  width: 80px;
-  height: 30px;
+  min-width: 80px;
+  min-height: 30px;
   border: 2px dashed #2e7d32;
   background-color: #f0f8ff;
   margin: 0 5px;
+  padding: 5px;
+  text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  text-align: center;
-  line-height: 30px;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -94,11 +93,18 @@ select:hover {
   border: 2px solid #d32f2f;
 }
 
-.word-box {
+/* Word Bank Styles */
+#word-box {
+  background: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 800px;
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .word {
@@ -116,12 +122,18 @@ select:hover {
   transform: scale(1.1);
 }
 
-.clue-highlight {
-  background-color: #ffeb3b;
-  padding: 2px;
-  border-radius: 3px;
+/* Tooltip Styles */
+.word-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1em;
+  z-index: 10;
 }
 
+/* Button Groups and Navigation */
 .button-group,
 .navigation {
   display: flex;
@@ -150,19 +162,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 800px;
-  margin-bottom: 10px;
-}
-
+/* Status Displays */
 #progress,
 #score,
 #lives {
   font-size: 1.2em;
   color: #2e7d32;
+  margin: 5px;
 }
 
 #hint,
@@ -183,20 +189,4 @@ button:disabled {
 #feedback {
   background-color: #e8f5e9;
   color: #2e7d32;
-}
-
-@media (max-width: 600px) {
-  .game-container {
-    width: 95%;
-  }
-  .blank {
-    width: 60px;
-  }
-  button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
-  select {
-    width: 200px;
-  }
 }
