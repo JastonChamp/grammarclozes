@@ -909,7 +909,6 @@ document.addEventListener("DOMContentLoaded", () => {
         hint: "Remember to use the objects around you as clues."
       }
     ],
-const passages = {
   adjectivesAdverbs: [
     {
       text: "The ___(1)___ cat ran ___(2)___ across the yard. It jumped ___(3)___ onto the fence. The boy watched ___(4)___ as it moved ___(5)___ toward the tree.",
