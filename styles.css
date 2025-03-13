@@ -189,7 +189,7 @@ body.fullscreen .game-container {
   min-width: 100px;
   padding: 8px;
   border: 2px dashed var(--primary-color);
-  background: #f0f8ff;
+  background: var(--background-color);
   margin: 0 5px;
   text-align: center;
   cursor: pointer;
@@ -214,17 +214,28 @@ body.fullscreen .game-container {
   color: #fff;
 }
 
+/* Hint Button Styling */
 .hint-for-blank {
   background: transparent;
   border: none;
   cursor: pointer;
   font-size: 1em;
   margin-left: 5px;
+  color: var(--secondary-color);
+  transition: color 0.3s;
+}
+
+.hint-for-blank:hover {
+  color: var(--primary-color);
 }
 
 /* Keyword Highlighting */
+.keyword {
+  transition: background-color 0.3s;
+}
+
 .keyword.highlighted {
-  background-color: yellow;
+  background-color: var(--accent-color);
   font-weight: bold;
 }
 
@@ -238,6 +249,25 @@ body.fullscreen .game-container {
   border-radius: 10px;
   border: 2px solid var(--accent-color);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.word {
+  padding: 10px;
+  background: var(--word-bg);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  cursor: move;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.word:hover, .word.selected {
+  transform: scale(1.1);
+  background: var(--accent-color);
+}
+
+.word.dragging {
+  opacity: 0.5;
 }
 
 /* Status Bar */
@@ -274,11 +304,65 @@ body.fullscreen .game-container {
   transition: width 0.5s;
 }
 
+/* Timer Styling */
+#timer-container {
+  width: 100px;
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#timer-bar {
+  height: 100%;
+  width: 100%; /* Controlled by JS */
+  background: var(--correct-bg); /* Green default, adjusted by JS */
+  transition: width 1s linear, background-color 0.3s;
+}
+
 /* Feedback */
 #feedback {
   font-size: 1.1em;
   padding: 10px;
   text-align: center;
+  transition: opacity 0.5s;
+}
+
+/* Bonus Animation */
+.bonus {
+  display: inline-block;
+  animation: pop 1s ease-in-out;
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+/* Accessibility */
+:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Menu Toggle Button */
+#toggle-challenge {
+  padding: 10px;
+  font-size: 1.2em;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+#toggle-challenge:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
 }
 
 /* Responsive Adjustments */
@@ -306,5 +390,12 @@ body.fullscreen .game-container {
   }
   .menu {
     padding: 10px;
+  }
+  .status-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  #timer-container {
+    width: 80%;
   }
 }
