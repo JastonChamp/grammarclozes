@@ -1369,12 +1369,7 @@ tenses: [
   const menu = document.getElementById("menu");
   const fullscreenBtn = document.getElementById("fullscreen-btn");
   const speakPassageBtn = document.getElementById("speak-passage-btn");
-
-  // Timer Display with Progress Bar
-  const timerContainer = document.createElement("div");
-  timerContainer.id = "timer-container";
-  timerContainer.innerHTML = `<div id="timer-bar" style="width: 100%;"></div>`;
-  document.querySelector(".status-bar").appendChild(timerContainer);
+  const timerContainer = document.getElementById("timer-container");
   const timerBar = document.getElementById("timer-bar");
 
   // Speech Synthesis Setup
@@ -1423,7 +1418,7 @@ tenses: [
     starsDisplay.textContent = `⭐ Stars: ${stars}`;
     progressDisplay.textContent = `📖 Progress: ${currentPassageIndex + 1} / ${passages[currentGrammarType].length}`;
     progressBar.style.width = `${((currentPassageIndex + 1) / passages[currentGrammarType].length) * 100}%`;
-    if (challengeMode) {
+    if (challengeMode && timerContainer) {
       timerBar.style.width = `${(timeLeft / 60) * 100}%`;
       timerBar.style.backgroundColor = timeLeft > 30 ? "green" : timeLeft > 10 ? "orange" : "red";
     } else {
@@ -1450,20 +1445,21 @@ tenses: [
   function displayPassage() {
     clearInterval(timerInterval);
     hintUsage = {};
+    selectedWord = null;
     const passage = passages[currentGrammarType]?.[currentPassageIndex];
     if (!passage) {
       passageText.innerHTML = "<p>Error: Passage not found.</p>";
       feedbackDisplay.textContent = "Error: Passage not found.";
       return;
     }
-    if (!passage.text || !Array.isArray(passage.wordBox) || !Array.isArray(passage.answers)) {
+    if (!passage.text || !Array.isArray(passage.wordBox) || !Array.isArray(passage.answers) || !Array.isArray(passage.clueWords) || !Array.isArray(passage.hints)) {
       passageText.innerHTML = "<p>Error: Invalid passage data.</p>";
-      feedbackDisplay.textContent = "Error: Missing passage text, word bank, or answers.";
+      feedbackDisplay.textContent = "Error: Missing required passage data.";
       return;
     }
     const blanks = passage.text.match(/___\(\d+\)___/g) || [];
-    if (passage.answers.length !== blanks.length) {
-      feedbackDisplay.textContent = "Warning: Number of answers doesn’t match number of blanks.";
+    if (passage.answers.length !== blanks.length || passage.clueWords.length !== blanks.length || passage.hints.length !== blanks.length) {
+      feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
     }
     let passageHTML = passage.text;
     if (passage.clueWords) {
@@ -1480,7 +1476,7 @@ tenses: [
     });
     passageText.innerHTML = passageHTML;
 
-    wordBox.innerHTML = shuffle(passage.wordBox)
+    wordBox.innerHTML = shuffle([...passage.wordBox]) // Use spread to avoid mutating original
       .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
       .join("");
 
@@ -1496,6 +1492,14 @@ tenses: [
           updateStatus();
         }
       });
+      blank.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && selectedWord && !blank.classList.contains("filled")) {
+          placeWord(blank, selectedWord.textContent);
+          selectedWord.remove();
+          selectedWord = null;
+          updateStatus();
+        }
+      });
     });
 
     document.querySelectorAll(".word").forEach(word => {
@@ -1505,6 +1509,13 @@ tenses: [
         selectedWord = word;
         document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
         word.classList.add("selected");
+      });
+      word.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          selectedWord = word;
+          document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
+          word.classList.add("selected");
+        }
       });
     });
 
@@ -1560,7 +1571,7 @@ tenses: [
     if (e.currentTarget.classList.contains("blank") && !e.currentTarget.classList.contains("filled")) {
       placeWord(e.currentTarget, droppedWord);
       document.querySelectorAll(".word").forEach(word => {
-        if (word.textContent === droppedWord) word.remove();
+        if (word.textContent === droppedWord && word === draggedItem) word.remove();
       });
       updateStatus();
     }
@@ -1600,7 +1611,7 @@ tenses: [
 
   fullscreenBtn.addEventListener("click", () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      document.documentElement.requestFullscreen().catch(err => console.error(err));
       document.body.classList.add("fullscreen");
       fullscreenBtn.textContent = "↙";
     } else {
@@ -1610,8 +1621,7 @@ tenses: [
     }
   });
 
-  // Add Challenge Mode Toggle to Menu
-  menu.innerHTML += '<button id="toggle-challenge" tabindex="0" aria-label="Toggle Challenge Mode">Toggle Challenge</button>';
+  // Add Challenge Mode Toggle to Menu (already present in your code)
   document.getElementById("toggle-challenge").addEventListener("click", () => {
     challengeMode = !challengeMode;
     if (challengeMode) {
@@ -1623,12 +1633,27 @@ tenses: [
       feedbackDisplay.textContent = "Challenge Mode OFF";
     }
     speak(`Challenge Mode ${challengeMode ? "ON" : "OFF"}`);
+    menu.classList.add("hidden");
+  });
+
+  // Highlight Clues Button
+  highlightCluesButton.addEventListener("click", () => {
+    const passage = passages[currentGrammarType][currentPassageIndex];
+    if (passage.clueWords) {
+      document.querySelectorAll(".keyword").forEach(el => el.classList.add("highlighted"));
+      speak("Highlighting clue words!");
+      setTimeout(() => {
+        document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
+      }, 5000); // Highlight for 5 seconds
+    }
+    menu.classList.add("hidden");
   });
 
   // Game Controls
   grammarSelect.addEventListener("change", () => {
     currentGrammarType = grammarSelect.value;
     currentPassageIndex = 0;
+    timeLeft = 60; // Reset timer
     displayPassage();
     updateStatus();
   });
@@ -1667,6 +1692,7 @@ tenses: [
       speak("Game Over! Your final score is " + score);
       return;
     }
+    timeLeft = 60; // Reset timer
     displayPassage();
     updateStatus();
     menu.classList.add("hidden");
@@ -1675,6 +1701,7 @@ tenses: [
   prevPassageButton.addEventListener("click", () => {
     if (currentPassageIndex > 0) {
       currentPassageIndex--;
+      timeLeft = 60; // Reset timer
       clearInterval(timerInterval);
       displayPassage();
       updateStatus();
@@ -1685,6 +1712,7 @@ tenses: [
   clearButton.addEventListener("click", () => {
     hintUsage = {};
     selectedWord = null;
+    timeLeft = 60; // Reset timer
     clearInterval(timerInterval);
     displayPassage();
     menu.classList.add("hidden");
@@ -1713,3 +1741,5 @@ tenses: [
   displayPassage();
   updateStatus();
 });
+
+
