@@ -1334,7 +1334,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ]
 };
-// Global game state
+
+  // Global game state
   let currentGrammarType = "prepositions";
   let currentPassageIndex = 0;
   let score = 0;
@@ -1343,7 +1344,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedWord = null;
   let timeLeft = 60;
   let timerInterval = null;
-  let challengeMode = true;  // DOM Elements
+  let challengeMode = true;
+
+  // DOM Elements
   let grammarSelect = document.getElementById("grammar-type");
   let passageText = document.getElementById("passage-text");
   let wordBox = document.getElementById("word-box");
@@ -1362,19 +1365,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const fullscreenBtn = document.getElementById("fullscreen-btn");
   const speakPassageBtn = document.getElementById("speak-passage-btn");
   const timerContainer = document.getElementById("timer-container");
-  const timerBar = document.getElementById("timer-bar");  // Speech Synthesis Setup
+  const timerBar = document.getElementById("timer-bar");
+
+  // Speech Synthesis Setup
   const synth = window.speechSynthesis;
   let voices = [];
-  let ukFemaleVoice = null;  function loadVoices() {
+  let ukFemaleVoice = null;
+  function loadVoices() {
     voices = synth.getVoices();
     ukFemaleVoice = voices.find(voice =>
-      voice.lang === "en-GB" && 
+      voice.lang === "en-GB" &&
       (voice.name.includes("Female") || voice.name.includes("Google UK English Female") || voice.name === "Samantha" || voice.name === "Kate")
     ) || voices.find(voice => voice.lang === "en-GB");
-    console.log("Voices loaded:", voices.length); // Debug
+    console.log("Voices loaded:", voices.length);
   }
   loadVoices();
-  synth.onvoiceschanged = loadVoices;  function speak(text) {
+  synth.onvoiceschanged = loadVoices;
+  function speak(text) {
     if (!window.speechSynthesis) {
       feedbackDisplay.textContent = "Speech synthesis not supported in this browser.";
       console.error("SpeechSynthesis not supported");
@@ -1393,27 +1400,35 @@ document.addEventListener("DOMContentLoaded", () => {
     utterance.rate = 0.9;
     utterance.pitch = 1.1;
     synth.speak(utterance);
-    console.log("Speaking text:", text); // Debug
-  }  // Onboarding
+    console.log("Speaking text:", text);
+  }
+
+  // Onboarding
   if (!localStorage.getItem("hasSeenTutorial")) {
     alert("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank. Use the menu for hints and controls!");
     localStorage.setItem("hasSeenTutorial", "true");
     speak("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank.");
-  }  // Utility Functions
+  }
+
+  // Utility Functions
   function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
-  }  function updateStatus() {
-    scoreDisplay.textContent =  Score: ${score};
-    starsDisplay.textContent =  Stars: ${stars};
-    progressDisplay.textContent =  Progress: ${currentPassageIndex + 1} / ${passages[currentGrammarType].length};
-    progressBar.style.width = ${((currentPassageIndex + 1) / passages[currentGrammarType].length) * 100}%;
+  }
+
+  function updateStatus() {
+    scoreDisplay.textContent = `Score: ${score}`;
+    starsDisplay.textContent = `Stars: ${stars}`;
+    progressDisplay.textContent = `Progress: ${currentPassageIndex + 1} / ${passages[currentGrammarType].length}`;
+    progressBar.style.width = `${((currentPassageIndex + 1) / passages[currentGrammarType].length) * 100}%`;
     if (challengeMode && timerContainer) {
-      timerBar.style.width = ${(timeLeft / 60) * 100}%;
+      timerBar.style.width = `${(timeLeft / 60) * 100}%`;
       timerBar.style.backgroundColor = timeLeft > 30 ? "green" : timeLeft > 10 ? "orange" : "red";
     } else {
       timerBar.style.width = "0%";
     }
-  }  function startTimer() {
+  }
+
+  function startTimer() {
     if (!challengeMode) return;
     clearInterval(timerInterval);
     timeLeft = 60;
@@ -1427,7 +1442,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => nextPassageButton.click(), 1000);
       }
     }, 1000);
-  }  function displayPassage() {
+  }
+
+  function displayPassage() {
     clearInterval(timerInterval);
     hintUsage = {};
     selectedWord = null;
@@ -1447,102 +1464,103 @@ document.addEventListener("DOMContentLoaded", () => {
       feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
     }
 
-// Generate passage HTML
-let passageHTML = passage.text;
-if (passage.clueWords) {
-  passage.clueWords.forEach((clues, index) => {
-    const blankNum = index + 1;
-    clues.forEach(clue => {
-      const regex = new RegExp(`\\b${clue}\\b`, "gi");
-      passageHTML = passageHTML.replace(regex, `<span class="keyword keyword-${blankNum}" title="Clue for blank ${blankNum}">${clue}</span>`);
+    // Generate passage HTML
+    let passageHTML = passage.text;
+    if (passage.clueWords) {
+      passage.clueWords.forEach((clues, index) => {
+        const blankNum = index + 1;
+        clues.forEach(clue => {
+          const regex = new RegExp(`\\b${clue}\\b`, "gi");
+          passageHTML = passageHTML.replace(regex, `<span class="keyword keyword-${blankNum}" title="Clue for blank ${blankNum}">${clue}</span>`);
+        });
+      });
+    }
+    passageHTML = passageHTML.replace(/___\((\d+)\)___/g, (_, num) => {
+      return `<span class="blank" data-blank="${num}" tabindex="0">_<button class="hint-for-blank" aria-label="Hint for blank ${num}" title="Hint">💡</button></span>`;
     });
-  });
-}
-passageHTML = passageHTML.replace(/___\((\d+)\)___/g, (_, num) => {
-  return `<span class="blank" data-blank="${num}" tabindex="0">_<button class="hint-for-blank" aria-label="Hint for blank ${num}" title="Hint">💡</button></span>`;
-});
 
-// Clear existing content and listeners by cloning and replacing
-const newPassageText = passageText.cloneNode(false);
-const newWordBox = wordBox.cloneNode(false);
-passageText.parentNode.replaceChild(newPassageText, passageText);
-wordBox.parentNode.replaceChild(newWordBox, wordBox);
-passageText = newPassageText;
-wordBox = newWordBox;
+    // Clear existing content and listeners by cloning and replacing
+    const newPassageText = passageText.cloneNode(false);
+    const newWordBox = wordBox.cloneNode(false);
+    passageText.parentNode.replaceChild(newPassageText, passageText);
+    wordBox.parentNode.replaceChild(newWordBox, wordBox);
+    passageText = newPassageText;
+    wordBox = newWordBox;
 
-// Insert new content
-passageText.innerHTML = passageHTML;
-wordBox.innerHTML = shuffle([...passage.wordBox])
-  .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
-  .join("");
+    // Insert new content
+    passageText.innerHTML = passageHTML;
+    wordBox.innerHTML = shuffle([...passage.wordBox])
+      .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
+      .join("");
 
-// Attach event listeners to new elements
-document.querySelectorAll(".blank").forEach(blank => {
-  blank.addEventListener("dragover", handleDragOver);
-  blank.addEventListener("dragleave", handleDragLeave);
-  blank.addEventListener("drop", handleDrop);
-  blank.addEventListener("click", () => {
-    if (selectedWord && !blank.classList.contains("filled")) {
-      placeWord(blank, selectedWord.textContent);
-      selectedWord.remove();
-      selectedWord = null;
-      updateStatus();
-    }
-  });
-  blank.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && selectedWord && !blank.classList.contains("filled")) {
-      placeWord(blank, selectedWord.textContent);
-      selectedWord.remove();
-      selectedWord = null;
-      updateStatus();
-    }
-  });
-});
+    // Attach event listeners to new elements
+    document.querySelectorAll(".blank").forEach(blank => {
+      blank.addEventListener("dragover", handleDragOver);
+      blank.addEventListener("dragleave", handleDragLeave);
+      blank.addEventListener("drop", handleDrop);
+      blank.addEventListener("click", () => {
+        if (selectedWord && !blank.classList.contains("filled")) {
+          placeWord(blank, selectedWord.textContent);
+          selectedWord.remove();
+          selectedWord = null;
+          updateStatus();
+        }
+      });
+      blank.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && selectedWord && !blank.classList.contains("filled")) {
+          placeWord(blank, selectedWord.textContent);
+          selectedWord.remove();
+          selectedWord = null;
+          updateStatus();
+        }
+      });
+    });
 
-document.querySelectorAll(".word").forEach(word => {
-  word.addEventListener("dragstart", handleDragStart);
-  word.addEventListener("dragend", handleDragEnd);
-  word.addEventListener("click", () => {
-    selectedWord = word;
-    document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
-    word.classList.add("selected");
-  });
-  word.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      selectedWord = word;
-      document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
-      word.classList.add("selected");
-    }
-  });
-});
+    document.querySelectorAll(".word").forEach(word => {
+      word.addEventListener("dragstart", handleDragStart);
+      word.addEventListener("dragend", handleDragEnd);
+      word.addEventListener("click", () => {
+        selectedWord = word;
+        document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
+        word.classList.add("selected");
+      });
+      word.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          selectedWord = word;
+          document.querySelectorAll(".word").forEach(w => w.classList.remove("selected"));
+          word.classList.add("selected");
+        }
+      });
+    });
 
-document.querySelectorAll(".hint-for-blank").forEach(button => {
-  button.addEventListener("click", function () {
-    const blankNum = this.parentElement.getAttribute("data-blank");
-    const hintIndex = parseInt(blankNum) - 1;
-    if (passage.hints && passage.hints[hintIndex]) {
-      feedbackDisplay.textContent = passage.hints[hintIndex];
-      feedbackDisplay.style.color = "blue";
-      speak(passage.hints[hintIndex]);
-      if (!hintUsage[blankNum] && challengeMode) {
-        hintUsage[blankNum] = true;
-        score = Math.max(0, score - 5);
-        feedbackDisplay.textContent += " (-5 points for hint)";
-        updateStatus();
-      }
-    }
-    document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
-    document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
-    setTimeout(() => {
-      document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
-    }, 3000);
-  });
-});
+    document.querySelectorAll(".hint-for-blank").forEach(button => {
+      button.addEventListener("click", function () {
+        const blankNum = this.parentElement.getAttribute("data-blank");
+        const hintIndex = parseInt(blankNum) - 1;
+        if (passage.hints && passage.hints[hintIndex]) {
+          feedbackDisplay.textContent = passage.hints[hintIndex];
+          feedbackDisplay.style.color = "blue";
+          speak(passage.hints[hintIndex]);
+          if (!hintUsage[blankNum] && challengeMode) {
+            hintUsage[blankNum] = true;
+            score = Math.max(0, score - 5);
+            feedbackDisplay.textContent += " (-5 points for hint)";
+            updateStatus();
+          }
+        }
+        document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
+        document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
+        setTimeout(() => {
+          document.querySelectorAll(".keyword").forEach(el => el.classList.remove("highlighted"));
+        }, 3000);
+      });
+    });
 
-if (challengeMode) startTimer();
-updateStatus();
+    if (challengeMode) startTimer();
+    updateStatus();
+  }
 
-  }  // Drag-and-Drop Handlers
+  // Drag-and-Drop Handlers
   let draggedItem = null;
   function handleDragStart(e) {
     draggedItem = e.target;
@@ -1571,11 +1589,15 @@ updateStatus();
       }
       updateStatus();
     }
-  }  function placeWord(blank, word) {
+  }
+
+  function placeWord(blank, word) {
     blank.textContent = word;
     blank.classList.add("filled");
     checkAnswer(blank);
-  }  function checkAnswer(blank) {
+  }
+
+  function checkAnswer(blank) {
     const blankId = parseInt(blank.getAttribute("data-blank"));
     const userAnswer = blank.textContent.trim().toLowerCase();
     const correctAnswer = passages[currentGrammarType][currentPassageIndex].answers[blankId - 1].toLowerCase();
@@ -1593,11 +1615,14 @@ updateStatus();
       speak("Incorrect! Try again.");
     }
     updateStatus();
-  }  // Menu and Fullscreen Controls
+  }
+
+  // Menu and Fullscreen Controls
   menuBtn.addEventListener("click", () => {
     const isHidden = menu.classList.toggle("hidden");
     menu.setAttribute("aria-hidden", isHidden);
-  });  fullscreenBtn.addEventListener("click", () => {
+  });
+  fullscreenBtn.addEventListener("click", () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(err => console.error(err));
       document.body.classList.add("fullscreen");
@@ -1607,7 +1632,8 @@ updateStatus();
       document.body.classList.remove("fullscreen");
       fullscreenBtn.textContent = "⤢";
     }
-  });  // Add Challenge Mode Toggle to Menu
+  });
+  // Add Challenge Mode Toggle to Menu
   document.getElementById("toggle-challenge").addEventListener("click", () => {
     challengeMode = !challengeMode;
     if (challengeMode) {
@@ -1618,9 +1644,10 @@ updateStatus();
       timerBar.style.width = "0%";
       feedbackDisplay.textContent = "Challenge Mode OFF";
     }
-    speak(Challenge Mode ${challengeMode ? "ON" : "OFF"});
+    speak(`Challenge Mode ${challengeMode ? "ON" : "OFF"}`);
     menu.classList.add("hidden");
-  });  // Highlight Clues Button
+  });
+  // Highlight Clues Button
   highlightCluesButton.addEventListener("click", () => {
     const passage = passages[currentGrammarType][currentPassageIndex];
     if (passage.clueWords) {
@@ -1631,14 +1658,16 @@ updateStatus();
       }, 5000); // Highlight for 5 seconds
     }
     menu.classList.add("hidden");
-  });  // Game Controls
+  });
+  // Game Controls
   grammarSelect.addEventListener("change", () => {
     currentGrammarType = grammarSelect.value;
     currentPassageIndex = 0;
     timeLeft = 60; // Reset timer
     displayPassage();
     updateStatus();
-  });  nextPassageButton.addEventListener("click", () => {
+  });
+  nextPassageButton.addEventListener("click", () => {
     const blanks = document.querySelectorAll(".blank");
     let allFilled = true;
     blanks.forEach(blank => {
@@ -1648,7 +1677,7 @@ updateStatus();
       const passage = passages[currentGrammarType][currentPassageIndex];
       let reviewText = "Review:\n";
       passage.answers.forEach((ans, i) => {
-        reviewText += Blank ${i + 1}: "${ans}" - ${passage.hints[i]}\n;
+        reviewText += `Blank ${i + 1}: "${ans}" - ${passage.hints[i]}\n`;
       });
       alert(reviewText);
       speak("Here’s your review!");
@@ -1676,7 +1705,8 @@ updateStatus();
     displayPassage();
     updateStatus();
     menu.classList.add("hidden");
-  });  prevPassageButton.addEventListener("click", () => {
+  });
+  prevPassageButton.addEventListener("click", () => {
     if (currentPassageIndex > 0) {
       currentPassageIndex--;
       timeLeft = 60; // Reset timer
@@ -1685,14 +1715,16 @@ updateStatus();
       updateStatus();
     }
     menu.classList.add("hidden");
-  });  clearButton.addEventListener("click", () => {
+  });
+  clearButton.addEventListener("click", () => {
     hintUsage = {};
     selectedWord = null;
     timeLeft = 60; // Reset timer
     clearInterval(timerInterval);
     displayPassage();
     menu.classList.add("hidden");
-  });  hintButton.addEventListener("click", () => {
+  });
+  hintButton.addEventListener("click", () => {
     const passage = passages[currentGrammarType][currentPassageIndex];
     if (passage.hint) {
       feedbackDisplay.textContent = passage.hint;
@@ -1700,11 +1732,12 @@ updateStatus();
       speak(passage.hint);
     }
     menu.classList.add("hidden");
-  });  if (!speakPassageBtn) {
+  });
+  if (!speakPassageBtn) {
     console.error("Speak button not found in DOM!");
   } else {
     speakPassageBtn.addEventListener("click", () => {
-      console.log("Speak button clicked!"); // Debug
+      console.log("Speak button clicked!");
       const passage = passages[currentGrammarType][currentPassageIndex];
       if (!passage || !passage.text) {
         console.error("No passage or text found:", passage);
@@ -1715,8 +1748,8 @@ updateStatus();
       speak(textToSpeak);
       menu.classList.add("hidden");
     });
-  }  // Initialize Game
+  }
+  // Initialize Game
   displayPassage();
   updateStatus();
-});"
-
+});
