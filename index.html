@@ -1,57 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Cloze Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Cloze Adventure with Consistent UK Female Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include ResponsiveVoice.JS with your API key -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
 </head>
 <body>
-  <header>
-    <h1>Grammar Cloze Adventure</h1>
-    <p class="instructions">Drag or tap a word to fill in the blanks. Use the menu for hints and controls!</p>
-  </header>
+    <header>
+        <h1>Grammar Cloze Adventure</h1>
+        <p class="instructions">Drag or tap a word to fill in the blanks. Use the menu for hints and controls!</p>
+    </header>
 
-  <div class="controls">
-    <label for="grammar-type">Choose Grammar Type:</label>
-    <select id="grammar-type">
-      <option value="prepositions">Prepositions</option>
-      <option value="conjunctions">Conjunctions</option>
-      <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
-      <option value="pronouns">Pronouns</option>
-      <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
-      <option value="tenses">Tenses</option>
-    </select>
-  </div>
+    <div class="controls">
+        <label for="grammar-type">Choose Grammar Type:</label>
+        <select id="grammar-type">
+            <option value="prepositions">Prepositions</option>
+            <option value="conjunctions">Conjunctions</option>
+            <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
+            <option value="pronouns">Pronouns</option>
+            <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+            <option value="tenses">Tenses</option>
+        </select>
+    </div>
 
-  <div class="game-container">
-    <div id="passage-text"></div>
-    <div id="word-box"></div>
-  </div>
+    <div class="game-container">
+        <div id="passage-text"></div>
+        <div id="word-box"></div>
+    </div>
 
-  <div id="feedback"></div>
+    <div id="feedback"></div>
 
-  <div class="status-bar">
-    <span id="progress">📖 Progress: 1 / 15</span>
-    <span id="score">⭐ Score: 0</span>
-    <span id="lives">⭐ Stars: 0</span>
-    <div id="progress-bar-container"><div id="progress-bar"></div></div>
-    <div id="timer-container"><div id="timer-bar"></div></div>
-    <button id="prev-btn">⬅️</button>
-    <button id="next-btn">➡️</button>
-  </div>
+    <div class="status-bar">
+        <span id="progress">📖 Progress: 1 / 15</span>
+        <span id="score">⭐ Score: 0</span>
+        <span id="lives">⭐ Stars: 0</span>
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
+        <div id="timer-container"><div id="timer-bar"></div></div>
+        <button id="prev-btn">⬅️</button>
+        <button id="next-btn">➡️</button>
+    </div>
 
-  <button id="menu-btn">☰</button>
-  <div id="menu" class="menu hidden" aria-hidden="true">
-    <button id="speak-passage-btn">🔊</button>
-    <button id="hint-btn">💡</button>
-    <button id="clear-btn">🗑️</button>
-    <button id="highlight-clues-btn">🔍</button>
-    <button id="toggle-challenge">⏱️</button>
-  </div>
-  <button id="fullscreen-btn">⤢</button>
+    <button id="menu-btn">☰</button>
+    <div id="menu" class="menu hidden" aria-hidden="true">
+        <button id="speak-passage-btn">🔊</button>
+        <button id="hint-btn">💡</button>
+        <button id="clear-btn">🗑️</button>
+        <button id="highlight-clues-btn">🔍</button>
+        <button id="toggle-challenge">⏱️</button>
+    </div>
+    <button id="fullscreen-btn">⤢</button>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
