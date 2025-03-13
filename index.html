@@ -25,8 +25,9 @@
         <option value="conjunctions">Conjunctions</option>
         <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
         <option value="pronouns">Pronouns</option>
-        <option value="adjectivesAdverbs">Adjectives &amp; Adverbs</option>
-        <option value="tenses">Tenses</option>
+        <!-- Uncomment these when you add the passage data -->
+        <!-- <option value="adjectivesAdverbs">Adjectives & Adverbs</option> -->
+        <!-- <option value="tenses">Tenses</option> -->
       </select>
     </div>
 
@@ -42,14 +43,18 @@
       <button id="clear-btn" aria-label="Clear Puzzle">🗑️</button>
       <button id="prev-btn" aria-label="Previous Passage">◄</button>
       <button id="next-btn" aria-label="Next Passage">►</button>
+      <button id="toggle-challenge" aria-label="Toggle Challenge Mode">⏱️</button>
     </div>
 
     <div class="status-bar">
       <div id="progress">📖 Progress: 1 / 10</div>
       <div id="score">⭐ Score: 0</div>
-      <div id="lives">❤️ Lives: 0</div>
+      <div id="lives">⭐ Stars: 0</div>
       <div id="progress-bar-container">
         <div id="progress-bar"></div>
+      </div>
+      <div id="timer-container">
+        <div id="timer-bar"></div>
       </div>
     </div>
 
