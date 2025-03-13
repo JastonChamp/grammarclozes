@@ -7,7 +7,7 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #e0f7fa; /* Light teal background similar to Fox Stars */
+  background-color: #e0f7fa; /* Light teal background */
   color: #2c3e50; /* Dark blue for text */
   line-height: 1.6;
   padding: 20px;
@@ -19,7 +19,7 @@ body {
 header {
   text-align: center;
   margin-bottom: 20px;
-  background-color: #fff3e0; /* Soft orange from Word Order Adventure */
+  background-color: #fff3e0; /* Soft orange */
   padding: 15px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -27,7 +27,7 @@ header {
 
 h1 {
   font-size: 2.5em;
-  color: #ff6f61; /* Coral pink from Word Spinner */
+  color: #ff6f61; /* Coral pink */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -115,7 +115,7 @@ label {
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-size: 1.2em;
-  border: 2px solid #4ecdc4; /* Teal border from Fox Stars */
+  border: 2px solid #4ecdc4; /* Teal border */
 }
 
 #word-box {
@@ -128,11 +128,11 @@ label {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  border: 2px solid #45b7d1; /* Light blue border */
+  border: 2px solid #4ecdc4; /* Teal border */
 }
 
 .word {
-  background: #45b7d1; /* Light blue from Word Order Adventure */
+  background: #ff6f61; /* Coral pink */
   color: white;
   padding: 10px 20px;
   border-radius: 10px;
@@ -145,7 +145,7 @@ label {
 
 .word:hover {
   transform: scale(1.1);
-  background-color: #3498db; /* Brighter blue on hover */
+  background-color: #e65b50; /* Darker pink on hover */
 }
 
 .word.dragging {
@@ -166,7 +166,7 @@ label {
   display: inline-block;
   width: 80px;
   text-align: center;
-  border-bottom: 3px dashed #45b7d1;
+  border-bottom: 3px dashed #4ecdc4; /* Teal dashed underline */
   margin: 0 5px;
   position: relative;
   cursor: pointer;
@@ -205,7 +205,7 @@ label {
   top: -25px;
   right: -15px;
   font-size: 1em;
-  background: #f1c40f; /* Yellow from Word Spinner */
+  background: #f1c40f; /* Yellow */
   border: none;
   border-radius: 50%;
   width: 25px;
@@ -319,16 +319,6 @@ label {
 
 #timer-bar {
   background: #27ae60; /* Green for time */
-}
-
-#timer-bar {
-  background: #27ae60;
-  transition: width 0.3s ease, background-color 0.3s ease;
-}
-
-#timer-bar {
-  background: green;
-  transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 #feedback {
