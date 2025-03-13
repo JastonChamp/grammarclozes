@@ -1333,7 +1333,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hint: "Remember to use the objects around you as clues."
     }
   ]
-};
+
 // Global game state
 let currentGrammarType = "prepositions";
 let currentPassageIndex = 0;
