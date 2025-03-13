@@ -14,7 +14,7 @@
     <button id="menu-btn" aria-label="Open Menu">☰</button>
     <button id="fullscreen-btn" aria-label="Toggle Full Screen">⤢</button>
     <p class="instructions" role="note">
-      Drag or tap words from the word bank to fill in the blanks.
+      Drag or tap words from the word bank to fill in the blanks. Use Enter key for keyboard control.
     </p>
   </header>
   <main>
@@ -25,9 +25,8 @@
         <option value="conjunctions">Conjunctions</option>
         <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
         <option value="pronouns">Pronouns</option>
-        <!-- Uncomment these when you add the passage data -->
-        <!-- <option value="adjectivesAdverbs">Adjectives & Adverbs</option> -->
-        <!-- <option value="tenses">Tenses</option> -->
+        <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+        <option value="tenses">Tenses</option>
       </select>
     </div>
 
@@ -36,7 +35,7 @@
       <div id="word-box" role="region" aria-label="Word Bank"></div>
     </div>
 
-    <div id="menu" class="menu hidden">
+    <div id="menu" class="menu hidden" aria-hidden="true">
       <button id="speak-passage-btn" aria-label="Read Passage Aloud">🔊</button>
       <button id="highlight-clues-btn" aria-label="Highlight Clue Words">🔍</button>
       <button id="hint-btn" aria-label="General Hint">💡</button>
