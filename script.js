@@ -1351,9 +1351,9 @@ tenses: [
   let challengeMode = true;
 
   // DOM Elements
-  const grammarSelect = document.getElementById("grammar-type");
-  const passageText = document.getElementById("passage-text");
-  const wordBox = document.getElementById("word-box");
+  let grammarSelect = document.getElementById("grammar-type");
+  let passageText = document.getElementById("passage-text");
+  let wordBox = document.getElementById("word-box");
   const feedbackDisplay = document.getElementById("feedback");
   const nextPassageButton = document.getElementById("next-btn");
   const prevPassageButton = document.getElementById("prev-btn");
@@ -1469,6 +1469,8 @@ tenses: [
     if (passage.answers.length !== blanks.length || passage.clueWords.length !== blanks.length || passage.hints.length !== blanks.length) {
       feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
     }
+
+    // Generate passage HTML
     let passageHTML = passage.text;
     if (passage.clueWords) {
       passage.clueWords.forEach((clues, index) => {
@@ -1482,12 +1484,22 @@ tenses: [
     passageHTML = passageHTML.replace(/___\((\d+)\)___/g, (_, num) => {
       return `<span class="blank" data-blank="${num}" tabindex="0">_<button class="hint-for-blank" aria-label="Hint for blank ${num}" title="Hint">💡</button></span>`;
     });
-    passageText.innerHTML = passageHTML;
 
-    wordBox.innerHTML = shuffle([...passage.wordBox]) // Use spread to avoid mutating original
+    // Clear existing content and listeners by cloning and replacing
+    const newPassageText = passageText.cloneNode(false);
+    const newWordBox = wordBox.cloneNode(false);
+    passageText.parentNode.replaceChild(newPassageText, passageText);
+    wordBox.parentNode.replaceChild(newWordBox, wordBox);
+    passageText = newPassageText;
+    wordBox = newWordBox;
+
+    // Insert new content
+    passageText.innerHTML = passageHTML;
+    wordBox.innerHTML = shuffle([...passage.wordBox])
       .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
       .join("");
 
+    // Attach event listeners to new elements
     document.querySelectorAll(".blank").forEach(blank => {
       blank.addEventListener("dragover", handleDragOver);
       blank.addEventListener("dragleave", handleDragLeave);
@@ -1578,9 +1590,9 @@ tenses: [
     const droppedWord = e.dataTransfer.getData("text/plain");
     if (e.currentTarget.classList.contains("blank") && !e.currentTarget.classList.contains("filled")) {
       placeWord(e.currentTarget, droppedWord);
-      document.querySelectorAll(".word").forEach(word => {
-        if (word.textContent === droppedWord && word === draggedItem) word.remove();
-      });
+      if (draggedItem) {
+        draggedItem.remove();
+      }
       updateStatus();
     }
   }
