@@ -1,64 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grammar Cloze Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
-    <button id="menu-btn" aria-label="Open Menu" aria-expanded="false">☰</button>
-    <button id="fullscreen-btn" aria-label="Toggle Full Screen" aria-pressed="false">⤢</button>
-    <p class="instructions" role="note">
-      Drag or tap words from the word bank to fill in the blanks. Use Enter key for keyboard control.
-    </p>
+    <p class="instructions">Drag or tap a word to fill in the blanks. Use the menu for hints and controls!</p>
   </header>
-  <main>
-    <div class="controls">
-      <label for="grammar-type">Choose Grammar Type:</label>
-      <select id="grammar-type" aria-label="Select grammar type">
-        <option value="prepositions">Prepositions</option>
-        <option value="conjunctions">Conjunctions</option>
-        <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
-        <option value="pronouns">Pronouns</option>
-        <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
-        <option value="tenses">Tenses</option>
-      </select>
-    </div>
 
-    <div class="game-container">
-      <div id="passage-text" aria-live="polite"></div>
-      <div id="word-box" role="region" aria-label="Word Bank"></div>
-    </div>
+  <div class="controls">
+    <label for="grammar-type">Choose Grammar Type:</label>
+    <select id="grammar-type">
+      <option value="prepositions">Prepositions</option>
+      <option value="conjunctions">Conjunctions</option>
+      <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
+      <option value="pronouns">Pronouns</option>
+      <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+      <option value="tenses">Tenses</option>
+    </select>
+  </div>
 
-    <div id="menu" class="menu hidden" aria-hidden="true">
-      <button id="speak-passage-btn" aria-label="Read Passage Aloud">🔊</button>
-      <button id="highlight-clues-btn" aria-label="Highlight Clue Words">🔍</button>
-      <button id="hint-btn" aria-label="General Hint">💡</button>
-      <button id="clear-btn" aria-label="Clear Puzzle">🗑️</button>
-      <button id="prev-btn" aria-label="Previous Passage">◄</button>
-      <button id="next-btn" aria-label="Next Passage">►</button>
-      <button id="toggle-challenge" aria-label="Toggle Challenge Mode">⏱️</button>
-    </div>
+  <div class="game-container">
+    <div id="passage-text"></div>
+    <div id="word-box"></div>
+  </div>
 
-    <div class="status-bar">
-      <div id="progress">📖 Progress: </div>
-      <div id="score">⭐ Score: 0</div>
-      <div id="lives">⭐ Stars: 0</div>
-      <div id="progress-bar-container">
-        <div id="progress-bar"></div>
-      </div>
-      <div id="timer-container">
-        <div id="timer-bar"></div>
-      </div>
-    </div>
+  <div id="feedback"></div>
 
-    <div id="feedback" role="alert"></div>
-  </main>
+  <div class="status-bar">
+    <span id="progress">📖 Progress: 1 / 15</span>
+    <span id="score">⭐ Score: 0</span>
+    <span id="lives">⭐ Stars: 0</span>
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="timer-container"><div id="timer-bar"></div></div>
+    <button id="prev-btn">⬅️</button>
+    <button id="next-btn">➡️</button>
+  </div>
+
+  <button id="menu-btn">☰</button>
+  <div id="menu" class="menu hidden" aria-hidden="true">
+    <button id="speak-passage-btn">🔊</button>
+    <button id="hint-btn">💡</button>
+    <button id="clear-btn">🗑️</button>
+    <button id="highlight-clues-btn">🔍</button>
+    <button id="toggle-challenge">⏱️</button>
+  </div>
+  <button id="fullscreen-btn">⤢</button>
+
   <script src="script.js"></script>
 </body>
 </html>
