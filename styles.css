@@ -1,3 +1,4 @@
+/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,22 +7,28 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
+  background-color: #e0f7fa; /* Light teal background similar to Fox Stars */
+  color: #2c3e50; /* Dark blue for text */
   line-height: 1.6;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Header Styles */
 header {
   text-align: center;
   margin-bottom: 20px;
+  background-color: #fff3e0; /* Soft orange from Word Order Adventure */
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   font-size: 2.5em;
-  color: #2c3e50;
+  color: #ff6f61; /* Coral pink from Word Spinner */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .instructions {
@@ -30,15 +37,19 @@ h1 {
   margin-top: 10px;
 }
 
+/* Menu and Fullscreen Buttons */
 #menu-btn,
 #fullscreen-btn {
   position: absolute;
   top: 20px;
   font-size: 1.5em;
-  background: none;
+  background: #ff6f61; /* Coral pink button */
   border: none;
+  border-radius: 10px;
+  padding: 8px 15px;
+  color: white;
   cursor: pointer;
-  padding: 5px 10px;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 #menu-btn {
@@ -49,11 +60,18 @@ h1 {
   right: 20px;
 }
 
+#menu-btn:hover,
+#fullscreen-btn:hover {
+  transform: scale(1.1);
+  background-color: #e65b50; /* Darker shade on hover */
+}
+
 body.fullscreen #menu-btn,
 body.fullscreen #fullscreen-btn {
   top: 10px;
 }
 
+/* Controls and Dropdown */
 .controls {
   margin-bottom: 20px;
   text-align: center;
@@ -62,15 +80,25 @@ body.fullscreen #fullscreen-btn {
 label {
   font-size: 1.2em;
   margin-right: 10px;
+  color: #2c3e50;
 }
 
 #grammar-type {
-  padding: 8px;
+  padding: 10px;
   font-size: 1em;
-  border-radius: 5px;
-  border: 1px solid #bdc3c7;
+  border-radius: 10px;
+  border: 2px solid #ff6f61;
+  background-color: #fff;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: border-color 0.2s;
 }
 
+#grammar-type:hover {
+  border-color: #e65b50;
+}
+
+/* Game Container */
 .game-container {
   display: flex;
   flex-wrap: wrap;
@@ -84,63 +112,71 @@ label {
   min-width: 300px;
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-size: 1.2em;
+  border: 2px solid #4ecdc4; /* Teal border from Fox Stars */
 }
 
 #word-box {
   flex: 1;
   min-width: 300px;
-  background: #ecf0f1;
+  background: #fff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
+  border: 2px solid #45b7d1; /* Light blue border */
 }
 
 .word {
-  background: #3498db;
+  background: #45b7d1; /* Light blue from Word Order Adventure */
   color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 10px;
   cursor: move;
   user-select: none;
   transition: transform 0.2s, background-color 0.2s;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .word:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
+  background-color: #3498db; /* Brighter blue on hover */
 }
 
 .word.dragging {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .word.selected {
-  background-color: #e74c3c;
+  background-color: #ff6f61; /* Coral pink when selected */
   outline: 2px solid #fff;
 }
 
 .word:focus {
-  outline: 2px solid #2980b9;
-  background-color: #2980b9;
+  outline: 2px solid #3498db;
+  background-color: #3498db;
 }
 
 .blank {
   display: inline-block;
   width: 80px;
   text-align: center;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 3px dashed #45b7d1;
   margin: 0 5px;
   position: relative;
   cursor: pointer;
+  font-size: 1.1em;
+  color: #2c3e50;
 }
 
 .blank.drag-over {
-  border-color: #e74c3c;
+  border-color: #ff6f61;
+  background-color: #ffebee; /* Light red background on drag */
 }
 
 .blank.filled {
@@ -150,31 +186,41 @@ label {
 
 .blank.correct {
   color: #27ae60;
-  border-bottom: 2px solid #27ae60;
+  border-bottom: 3px dashed #27ae60;
+  background-color: #e8f5e9; /* Light green background */
 }
 
 .blank.incorrect {
   color: #c0392b;
-  border-bottom: 2px solid #c0392b;
+  border-bottom: 3px dashed #c0392b;
+  background-color: #ffebee; /* Light red background */
 }
 
 .blank:focus {
-  outline: 2px solid #2980b9;
+  outline: 2px solid #3498db;
 }
 
 .hint-for-blank {
   position: absolute;
-  top: -20px;
-  right: -10px;
-  font-size: 0.8em;
-  background: none;
+  top: -25px;
+  right: -15px;
+  font-size: 1em;
+  background: #f1c40f; /* Yellow from Word Spinner */
   border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
-  color: #f1c40f;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .hint-for-blank:hover {
-  color: #e67e22;
+  transform: scale(1.2);
+  background-color: #f39c12; /* Darker yellow on hover */
 }
 
 .keyword {
@@ -186,18 +232,20 @@ label {
 .keyword.highlighted {
   background-color: #f1c40f;
   color: #fff;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 2px 6px;
+  border-radius: 10px;
 }
 
+/* Menu Styles */
 .menu {
   position: fixed;
   top: 60px;
   right: 20px;
-  background: #2c3e50;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid #4ecdc4;
 }
 
 .menu.hidden {
@@ -207,31 +255,39 @@ label {
 .menu button {
   display: block;
   width: 100%;
-  padding: 8px;
-  margin: 5px 0;
-  background: #3498db;
+  padding: 10px;
+  margin: 8px 0;
+  background: #4ecdc4; /* Teal button */
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1em;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .menu button:hover {
-  background: #2980b9;
+  transform: scale(1.05);
+  background-color: #3baead; /* Darker teal on hover */
 }
 
 .menu button:focus {
   outline: 2px solid #fff;
 }
 
+/* Status Bar */
 .status-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 15px;
+  border: 2px solid #ff6f61;
 }
 
 #progress,
@@ -262,14 +318,27 @@ label {
 }
 
 #timer-bar {
+  background: #27ae60; /* Green for time */
+}
+
+#timer-bar {
+  background: #27ae60;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+#timer-bar {
   background: green;
+  transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 #feedback {
   text-align: center;
   font-size: 1.2em;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 2px solid #4ecdc4;
+  margin-top: 10px;
 }
 
 .bonus {
@@ -277,6 +346,7 @@ label {
   font-weight: bold;
 }
 
+/* Responsive Design */
 @media (max-width: 600px) {
   body {
     padding: 10px;
@@ -294,5 +364,10 @@ label {
   .menu {
     top: 50px;
     right: 10px;
+  }
+
+  .status-bar {
+    flex-direction: column;
+    text-align: center;
   }
 }
