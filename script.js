@@ -1339,8 +1339,7 @@ tenses: [
  }
 ]    
   };
-
-  // Global game state
+// Global game state
   let currentGrammarType = "prepositions";
   let currentPassageIndex = 0;
   let score = 0;
@@ -1383,14 +1382,22 @@ tenses: [
       voice.lang === "en-GB" && 
       (voice.name.includes("Female") || voice.name.includes("Google UK English Female") || voice.name === "Samantha" || voice.name === "Kate")
     ) || voices.find(voice => voice.lang === "en-GB");
+    console.log("Voices loaded:", voices.length); // Debug
   }
   loadVoices();
   synth.onvoiceschanged = loadVoices;
 
   function speak(text) {
+    if (!window.speechSynthesis) {
+      feedbackDisplay.textContent = "Speech synthesis not supported in this browser.";
+      console.error("SpeechSynthesis not supported");
+      return;
+    }
     if (synth.speaking) synth.cancel();
+    loadVoices(); // Ensure voices are loaded
     if (!voices.length) {
-      feedbackDisplay.textContent = "Speech unavailable.";
+      feedbackDisplay.textContent = "Speech unavailable. Voices not loaded.";
+      console.log("No voices available");
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
@@ -1399,6 +1406,7 @@ tenses: [
     utterance.rate = 0.9;
     utterance.pitch = 1.1;
     synth.speak(utterance);
+    console.log("Speaking text:", text); // Debug
   }
 
   // Onboarding
@@ -1621,7 +1629,7 @@ tenses: [
     }
   });
 
-  // Add Challenge Mode Toggle to Menu (already present in your code)
+  // Add Challenge Mode Toggle to Menu
   document.getElementById("toggle-challenge").addEventListener("click", () => {
     challengeMode = !challengeMode;
     if (challengeMode) {
@@ -1728,18 +1736,24 @@ tenses: [
     menu.classList.add("hidden");
   });
 
-  speakPassageBtn.addEventListener("click", () => {
-    const passage = passages[currentGrammarType][currentPassageIndex];
-    if (passage.text) {
+  if (!speakPassageBtn) {
+    console.error("Speak button not found in DOM!");
+  } else {
+    speakPassageBtn.addEventListener("click", () => {
+      console.log("Speak button clicked!"); // Debug
+      const passage = passages[currentGrammarType][currentPassageIndex];
+      if (!passage || !passage.text) {
+        console.error("No passage or text found:", passage);
+        feedbackDisplay.textContent = "Error: No passage to read.";
+        return;
+      }
       const textToSpeak = passage.text.replace(/___\(\d+\)___/g, "blank");
       speak(textToSpeak);
-    }
-    menu.classList.add("hidden");
-  });
+      menu.classList.add("hidden");
+    });
+  }
 
   // Initialize Game
   displayPassage();
   updateStatus();
 });
-
-
