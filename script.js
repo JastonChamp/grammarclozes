@@ -1,10 +1,9 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-  // -------------------------
-  // Full Passage Data for All Grammar Types
-  // -------------------------
-  const passages = {
+// =======================
+// Full Passages Data
+// =======================
+window.passages = {
     prepositions: [
       {
         text: "Sally placed her bag ___(1)___ the table. She looked ___(2)___ the window and saw a bird. The bird was perched ___(3)___ the fence. Her cat hid ___(4)___ a chair. Sally walked ___(5)___ the door quietly.",
