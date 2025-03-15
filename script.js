@@ -1373,19 +1373,32 @@ const wizardAdviceDisplay = document.getElementById("wizard-advice");
 const readPassageButton = document.getElementById("read-passage-btn");
 
 // ----------------------------------------------------------------
-// Speech Synthesis Setup
+// Speech Synthesis Setup with UK Female Voice Preference
 // ----------------------------------------------------------------
 const synth = window.speechSynthesis;
 let voices = [];
 let ukFemaleVoice = null;
 function loadVoices() {
   voices = synth.getVoices();
-  // Force selection of a UK female voice if available:
+  // First, try to get a UK female voice from en-GB voices.
   ukFemaleVoice = voices.find(voice =>
     voice.lang === "en-GB" &&
-    (voice.name.includes("Female") || voice.name.includes("Google UK English Female") ||
+    (voice.name.toLowerCase().includes("female") ||
      voice.name === "Samantha" || voice.name === "Kate")
-  ) || voices.find(voice => voice.lang === "en-GB");
+  );
+  if (!ukFemaleVoice) {
+    // Fallback: search all English voices for one with a preferred female name.
+    const preferredFemaleNames = ["samantha", "kate", "alice", "emily", "olivia", "julia", "sue", "susan"];
+    ukFemaleVoice = voices.find(voice =>
+       voice.lang.startsWith("en") &&
+       preferredFemaleNames.includes(voice.name.toLowerCase())
+    );
+  }
+  if (!ukFemaleVoice) {
+    // Final fallback: pick any en-GB voice (even if male).
+    ukFemaleVoice = voices.find(voice => voice.lang === "en-GB");
+  }
+  console.log("Selected voice:", ukFemaleVoice);
   console.log("Voices loaded:", voices.length);
 }
 loadVoices();
@@ -1404,7 +1417,7 @@ function speak(text) {
     return;
   }
   const utterance = new SpeechSynthesisUtterance(text);
-  // Force UK female voice and set language to en-GB
+  // Use the UK female voice if available.
   utterance.lang = "en-GB";
   if (ukFemaleVoice) {
     utterance.voice = ukFemaleVoice;
@@ -1415,10 +1428,9 @@ function speak(text) {
   console.log("Speaking text:", text);
 }
 
-// New function: Read the passage aloud
+// New: Function to read the passage aloud
 function readPassage() {
-  // Extract text content from the passage container.
-  // Remove any interactive elements by using textContent.
+  // Extract plain text from the passage area (ignore buttons)
   const textToRead = passageText.textContent.replace(/\d+/g, "blank");
   speak(textToRead);
 }
