@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
-  <!-- Primary and secondary fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Comic+Neue&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Load fonts: Poppins for body, Lora for titles, and OpenDyslexic for dyslexia-friendly toggle -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lora:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- OpenDyslexic (via CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-dyslexic/1.0.0/OpenDyslexic-Regular.min.css" integrity="sha512-0LJHTx5mCJlI6+KNeYchpPsptJo6WHyc+dcYf3ABdyIkn4bNyVLw6OfTEap79+34HKSfd1x2ElcCFstVaW0Kkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
   <!-- ResponsiveVoice (replace YOUR_API_KEY with your actual key) -->
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
-    <p class="instructions">Drag or tap a word to fill in the blanks. Use the sidebar for hints and controls!</p>
+    <p class="instructions">
+      Drag or tap a word to fill in the blanks. Use the sidebar for hints and controls!
+    </p>
+    <!-- Theme Toggle Button -->
+    <button id="toggle-theme" class="theme-toggle" aria-label="Toggle dark/light mode">Switch to Light Mode</button>
   </header>
 
   <!-- Wizard Advice Area -->
   <div id="wizard-advice" class="wizard-advice" aria-live="polite">
+    <img src="wizard-icon.png" alt="Wizard" class="wizard-mascot" />
     Greetings, young wizard! Ready to save the kingdom of grammar?
   </div>
 
@@ -38,11 +45,44 @@
             <option value="tenses">Tenses</option>
           </select>
         </li>
-        <li><button id="toggle-challenge" class="sidebar-btn" aria-label="Toggle challenge mode">⏱️ Challenge</button></li>
-        <li><button id="hint-btn" class="sidebar-btn" aria-label="Get a hint">💡 Hint</button></li>
-        <li><button id="clear-btn" class="sidebar-btn" aria-label="Reset passage">🔄 Reset</button></li>
-        <li><button id="share-btn" class="sidebar-btn" aria-label="Share score">📤 Share</button></li>
-        <li><button id="read-passage-btn" class="sidebar-btn" aria-label="Read passage">🔊 Read Passage</button></li>
+        <li>
+          <label for="timer-setting">Timer:</label>
+          <select id="timer-setting" aria-label="Select timer duration">
+            <option value="60" selected>60 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="off">Off</option>
+          </select>
+        </li>
+        <li>
+          <button id="toggle-challenge" class="sidebar-btn" aria-label="Toggle challenge mode">
+            ⏱️ Challenge
+          </button>
+        </li>
+        <li>
+          <button id="hint-btn" class="sidebar-btn" aria-label="Get a hint">
+            🪄 Hint
+          </button>
+        </li>
+        <li>
+          <button id="clear-btn" class="sidebar-btn" aria-label="Reset passage">
+            🔄 Reset
+          </button>
+        </li>
+        <li>
+          <button id="share-btn" class="sidebar-btn" aria-label="Share score">
+            📤 Share
+          </button>
+        </li>
+        <li>
+          <button id="read-passage-btn" class="sidebar-btn" aria-label="Listen to passage">
+            🔊 Listen to Passage
+          </button>
+        </li>
+        <li>
+          <button id="toggle-dyslexia" class="sidebar-btn" aria-label="Toggle dyslexia-friendly font">
+            Toggle Dyslexia Font
+          </button>
+        </li>
       </ul>
     </nav>
     <div class="level-info">
@@ -50,23 +90,22 @@
     </div>
   </aside>
 
-  <!-- Main Content -->
+  <!-- Main Content Area -->
   <main>
     <div class="game-container">
       <div id="passage-text" aria-label="Grammar passage"></div>
       <div id="word-box" aria-label="Available words"></div>
     </div>
-    <!-- Feedback -->
+    <!-- Feedback area -->
     <div id="feedback" aria-live="assertive"></div>
     <!-- Status Bar -->
     <div class="status-bar">
-      <span id="progress">Progress: 1 / 15</span>
-      <span id="score">Score: 0</span>
-      <span id="stars">Stars: 0</span>
-      <span id="timer">Time: 60s</span>
+      <span id="progress"><i class="icon progress-icon"></i> Progress: 1 / 15</span>
+      <span id="score"><i class="icon score-icon"></i> Score: 0</span>
+      <span id="stars"><i class="icon stars-icon"></i> Stars: 0</span>
+      <span id="timer"><i class="icon timer-icon"></i> Time: 60s</span>
       <div id="progress-bar-container"><div id="progress-bar"></div></div>
       <div id="timer-container"><div id="timer-bar"></div></div>
-      <!-- Progress Stepper -->
       <div id="progress-stepper" class="progress-stepper" aria-label="Progress stepper"></div>
       <div class="navigation-buttons">
         <button id="prev-btn" aria-label="Previous passage">⬅️ Prev</button>
