@@ -4,55 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grammar Cloze Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Primary and secondary fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Comic+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <!-- Include ResponsiveVoice.JS with your API key -->
+  <!-- ResponsiveVoice (replace YOUR_API_KEY with your actual key) -->
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <header>
     <h1>Grammar Cloze Adventure</h1>
-    <p class="instructions">Drag or tap a word to fill in the blanks. Use the menu for hints and controls!</p>
+    <p class="instructions">Drag or tap a word to fill in the blanks. Use the sidebar for hints and controls!</p>
   </header>
 
-  <div class="controls">
-    <label for="grammar-type">Choose Grammar Type:</label>
-    <select id="grammar-type">
-      <option value="prepositions">Prepositions</option>
-      <option value="conjunctions">Conjunctions</option>
-      <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
-      <option value="pronouns">Pronouns</option>
-      <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
-      <option value="tenses">Tenses</option>
-    </select>
+  <!-- Wizard Advice Area -->
+  <div id="wizard-advice" class="wizard-advice" aria-live="polite">
+    Greetings, young wizard! Ready to save the kingdom of grammar?
   </div>
 
-  <div class="game-container">
-    <div id="passage-text"></div>
-    <div id="word-box"></div>
-  </div>
+  <!-- Sidebar for Controls -->
+  <aside class="sidebar">
+    <nav>
+      <ul>
+        <li>
+          <label for="grammar-type">Grammar Type:</label>
+          <select id="grammar-type" aria-label="Select grammar type">
+            <option value="prepositions">Prepositions</option>
+            <option value="conjunctions">Conjunctions</option>
+            <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
+            <option value="pronouns">Pronouns</option>
+            <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+            <option value="tenses">Tenses</option>
+          </select>
+        </li>
+        <li><button id="toggle-challenge" class="sidebar-btn" aria-label="Toggle challenge mode">⏱️ Challenge</button></li>
+        <li><button id="hint-btn" class="sidebar-btn" aria-label="Get a hint">💡 Hint</button></li>
+        <li><button id="clear-btn" class="sidebar-btn" aria-label="Reset passage">🔄 Reset</button></li>
+        <li><button id="share-btn" class="sidebar-btn" aria-label="Share score">📤 Share</button></li>
+      </ul>
+    </nav>
+    <div class="level-info">
+      <span id="level">Level: Apprentice</span>
+    </div>
+  </aside>
 
-  <div id="feedback"></div>
-
-  <div class="status-bar">
-    <span id="progress">📖 Progress: 1 / 15</span>
-    <span id="score">⭐ Score: 0</span>
-    <span id="lives">⭐ Stars: 0</span>
-    <div id="progress-bar-container"><div id="progress-bar"></div></div>
-    <div id="timer-container"><div id="timer-bar"></div></div>
-    <button id="prev-btn">⬅️</button>
-    <button id="next-btn">➡️</button>
-  </div>
-
-  <button id="menu-btn">☰</button>
-  <div id="menu" class="menu hidden" aria-hidden="true">
-    <button id="speak-passage-btn">🔊</button>
-    <button id="hint-btn">💡</button>
-    <button id="clear-btn">🗑️</button>
-    <button id="highlight-clues-btn">🔍</button>
-    <button id="toggle-challenge">⏱️</button>
-  </div>
-  <button id="fullscreen-btn">⤢</button>
+  <!-- Main Content -->
+  <main>
+    <div class="game-container">
+      <div id="passage-text" aria-label="Grammar passage"></div>
+      <div id="word-box" aria-label="Available words"></div>
+    </div>
+    <!-- Feedback -->
+    <div id="feedback" aria-live="assertive"></div>
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span id="progress">Progress: 1 / 15</span>
+      <span id="score">Score: 0</span>
+      <span id="stars">Stars: 0</span>
+      <span id="timer">Time: 60s</span>
+      <div id="progress-bar-container"><div id="progress-bar"></div></div>
+      <div id="timer-container"><div id="timer-bar"></div></div>
+      <!-- Progress Stepper -->
+      <div id="progress-stepper" class="progress-stepper" aria-label="Progress stepper"></div>
+      <div class="navigation-buttons">
+        <button id="prev-btn" aria-label="Previous passage">⬅️ Prev</button>
+        <button id="next-btn" aria-label="Next passage">Next ➡️</button>
+      </div>
+    </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
