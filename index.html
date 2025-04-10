@@ -4,89 +4,149 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lora:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-dyslexic/1.0.0/OpenDyslexic-Regular.min.css" integrity="sha512-0LJHTx5mCJlI6+KNeYchpPsptJo6WHyc+dcYf3ABdyIkn4bNyVLw6OfTEap79+34HKSfd1x2ElcCFstVaW0Kkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <!-- Tutorial Modal for Onboarding -->
-  <div id="tutorial-modal" class="modal">
+  <!-- Storyline Modal -->
+  <div id="storyline-modal" class="modal">
     <div class="modal-content">
-      <h2>Welcome to Grammar Cloze Adventure!</h2>
-      <p>
-        Drag or tap a word to fill in each blank. Use the sidebar for hints and settings. When you are ready, press the "Submit" button to check your answers.
-      </p>
-      <button id="tutorial-close-btn" class="modal-btn">Let's Begin</button>
+      <h2>The Wizard's Quest</h2>
+      <p id="storyline-text">Welcome, young wizard! Let’s begin your quest.</p>
+      <button id="start-quest" class="modal-btn">Begin Quest</button>
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Progress Dashboard Modal -->
+  <div id="progress-dashboard-modal" class="modal">
+    <div class="modal-content">
+      <h2>Your Progress</h2>
+      <canvas id="progress-chart"></canvas>
+      <p id="progress-summary"></p>
+      <button id="close-dashboard" class="modal-btn">Close</button>
+      <button id="notify-parents" class="modal-btn">Notify Parents</button>
+    </div>
+  </div>
+
   <header>
     <h1>Grammar Cloze Adventure</h1>
     <p class="instructions">
-      Drag or tap a word to fill in the blanks. Use the sidebar for more options and hints. Then press "Submit" to check your answers.
+      Drag or tap a word to fill in the blanks. Use the sidebar for hints and controls!
     </p>
-    <button id="toggle-theme" class="theme-toggle">Light Mode</button>
-    <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
+    <button id="toggle-theme" class="theme-toggle" aria-label="Toggle dark/light mode">
+      Switch to Light Mode
+    </button>
+    <button id="view-progress" class="theme-toggle" aria-label="View progress">
+      View Progress
+    </button>
   </header>
 
-  <!-- Sidebar for Settings -->
+  <div id="wizard-advice" class="wizard-advice" aria-live="polite">
+    <img src="wizard-icon.png" alt="Wizard" class="wizard-mascot" />
+    <img src="sidekick-dragon.png" alt="Dragon" class="sidekick-mascot" />
+    Greetings, young wizard! Ready to save the kingdom of grammar?
+  </div>
+
   <aside class="sidebar">
-    <label for="grammar-type">Grammar Type:</label>
-    <select id="grammar-type">
-      <option value="prepositions">Prepositions</option>
-      <option value="conjunctions">Conjunctions</option>
-      <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
-      <option value="pronouns">Pronouns</option>
-      <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
-      <option value="tenses">Tenses</option>
-    </select>
-    <br>
-    <label for="timer-setting">Timer (seconds):</label>
-    <select id="timer-setting">
-      <option value="60" selected>60</option>
-      <option value="30">30</option>
-      <option value="off">Off</option>
-    </select>
-    <br>
-    <button id="toggle-dyslexia">Toggle Dyslexia Font</button>
-    <br>
-    <label for="text-size-slider">Text Size:</label>
-    <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4">
-    <br>
-    <button id="toggle-challenge">⏱️ Challenge</button>
+    <nav>
+      <ul>
+        <li>
+          <label for="grammar-type">Grammar Type:</label>
+          <select id="grammar-type" aria-label="Select grammar type">
+            <option value="prepositions">Prepositions</option>
+            <option value="conjunctions">Conjunctions</option>
+            <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
+            <option value="pronouns">Pronouns</option>
+            <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
+            <option value="tenses">Tenses</option>
+          </select>
+        </li>
+        <li>
+          <label for="difficulty-level">Difficulty:</label>
+          <select id="difficulty-level" aria-label="Select difficulty level">
+            <option value="P1">Primary 1</option>
+            <option value="P2">Primary 2</option>
+            <option value="P3">Primary 3</option>
+          </select>
+        </li>
+        <li>
+          <label for="timer-setting">Timer:</label>
+          <select id="timer-setting" aria-label="Select timer duration">
+            <option value="60" selected>60 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="off">Off</option>
+          </select>
+        </li>
+        <li>
+          <label for="text-size-slider">Text Size:</label>
+          <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4">
+        </li>
+        <li>
+          <button id="toggle-challenge" class="sidebar-btn" aria-label="Toggle challenge mode">
+            ⏱️ Challenge
+          </button>
+        </li>
+        <li>
+          <button id="hint-btn" class="sidebar-btn" aria-label="Get a hint">
+            🪄 Hint
+          </button>
+        </li>
+        <li>
+          <button id="clear-btn" class="sidebar-btn" aria-label="Reset passage">
+            🔄 Reset
+          </button>
+        </li>
+        <li>
+          <button id="share-btn" class="sidebar-btn" aria-label="Share score">
+            📤 Share
+          </button>
+        </li>
+        <li>
+          <button id="read-passage-btn" class="sidebar-btn" aria-label="Listen to passage">
+            🔊 Listen
+          </button>
+        </li>
+        <li>
+          <button id="toggle-dyslexia" class="sidebar-btn" aria-label="Toggle dyslexia-friendly font">
+            Toggle Dyslexia Font
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <div class="level-info">
+      <span id="level">Level: Apprentice</span>
+    </div>
   </aside>
 
-  <!-- Main Game Content -->
   <main>
     <div class="game-container">
       <div id="passage-text" aria-label="Grammar passage"></div>
       <div id="word-box" aria-label="Available words"></div>
     </div>
-    <!-- Navigation Buttons (Submit included) -->
-    <div class="navigation-buttons">
-      <button id="submit-btn" aria-label="Submit Answers">Submit</button>
-      <button id="prev-btn" aria-label="Previous Passage">⬅️ Prev</button>
-      <button id="next-btn" aria-label="Next Passage">Next ➡️</button>
-    </div>
     <div id="feedback" aria-live="assertive"></div>
     <div class="status-bar">
-      <span id="progress"></span>
-      <span id="score"></span>
-      <span id="stars"></span>
-      <span id="timer"></span>
-      <div id="progress-bar-container">
-        <div id="progress-bar"></div>
+      <span id="progress"><i class="icon progress-icon"></i> Progress: 1 / 15</span>
+      <span id="score"><i class="icon score-icon"></i> Score: 0</span>
+      <span id="stars"><i class="icon stars-icon"></i> Stars: 0</span>
+      <span id="timer"><i class="icon timer-icon"></i> Time: 60s</span>
+      <div id="progress-bar-container"><div id="progress-bar"></div></div>
+      <div id="timer-container"><div id="timer-bar"></div></div>
+      <div id="progress-stepper" class="progress-stepper" aria-label="Progress stepper"></div>
+      <div class="navigation-buttons">
+        <button id="prev-btn" aria-label="Previous passage">⬅️ Prev</button>
+        <button id="next-btn" aria-label="Next passage">Next ➡️</button>
       </div>
-      <div id="timer-container">
-        <div id="timer-bar"></div>
-      </div>
-      <span id="level"></span>
     </div>
   </main>
 
-  <!-- Audio Elements -->
+  <!-- Audio Elements for Sound Effects -->
   <audio id="correct-sound" src="correct.mp3"></audio>
   <audio id="incorrect-sound" src="incorrect.mp3"></audio>
+  <audio id="background-music" src="mystical-forest.mp3" loop></audio>
 
   <script src="script.js"></script>
 </body>
