@@ -4,13 +4,13 @@
 
 /* CSS Variables */
 :root {
-  --dark-bg: #2c3e50;
-  --dark-secondary: #3a5276;
-  --dark-text: #ecf0f1;
-  --light-bg: #f0e6ff;
-  --light-secondary: #dcedc8;
-  --light-text: #2c3e50;
-  --accent-color: #fbc02d;
+  --dark-bg: #2c1a4d;       /* Deep purple */
+  --dark-secondary: #4a2e7a;  /* Secondary dark purple */
+  --dark-text: #f0e4ff;      /* Light text for dark mode */
+  --light-bg: #f0e6ff;       /* Light lavender background */
+  --light-secondary: #ffd700; /* Gold accent */
+  --light-text: #2c3e50;     /* Dark text for light mode */
+  --accent-color: #ffd700;   /* Gold for highlights */
   --correct-bg: #e8f5e9;
   --incorrect-bg: #ffe6e6;
   --modal-bg: #ffffff;
@@ -48,7 +48,7 @@ body.dyslexia #word-box {
 
 /* Modal */
 .modal {
-  display: none; /* Initially hidden; shown via JS */
+  display: none; /* Shown via JS */
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -117,7 +117,7 @@ body.light-mode .instructions {
   color: var(--light-text);
 }
 
-/* Theme Toggle and Sidebar Toggle Buttons */
+/* Theme and Sidebar Toggle Buttons */
 .theme-toggle, .sidebar-toggle {
   position: absolute;
   padding: 5px 10px;
@@ -142,9 +142,7 @@ body.light-mode .instructions {
   display: none;
 }
 @media (max-width: 768px) {
-  .sidebar-toggle {
-    display: block;
-  }
+  .sidebar-toggle { display: block; }
 }
 
 /* Sidebar */
@@ -183,11 +181,14 @@ body.light-mode main {
 
 /* Game Container */
 .game-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   gap: 20px;
-  justify-content: center;
-  margin-bottom: 20px;
+  max-width: 1000px;
+  margin: 0 auto 20px;
+}
+@media (max-width: 768px) {
+  .game-container { grid-template-columns: 1fr; }
 }
 #passage-text,
 #word-box {
@@ -206,12 +207,10 @@ body:not(.light-mode) #word-box {
   color: var(--dark-text);
 }
 #passage-text {
-  flex: 2;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   line-height: 1.8;
 }
 #word-box {
-  flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 10px;
@@ -238,16 +237,12 @@ body:not(.light-mode) #word-box {
   transform: scale(1.1);
   background-color: #ffca28;
 }
-.word.dragging {
-  opacity: 0.6;
-}
+.word.dragging { opacity: 0.6; }
 .word.selected {
   background: #ffca28;
   box-shadow: 0 0 10px rgba(255,215,0,0.6);
 }
-.word:focus {
-  outline: 2px solid #2980b9;
-}
+.word:focus { outline: 2px solid #2980b9; }
 .blank {
   display: inline-block;
   width: 80px;
@@ -260,9 +255,7 @@ body:not(.light-mode) #word-box {
   transition: color 0.3s;
   color: var(--light-text);
 }
-body:not(.light-mode) .blank {
-  color: var(--dark-text);
-}
+body:not(.light-mode) .blank { color: var(--dark-text); }
 .blank.drag-over::after {
   content: "";
   position: absolute;
@@ -273,10 +266,7 @@ body:not(.light-mode) .blank {
   background: rgba(255,215,0,0.3);
   border: 2px dashed #ffd700;
 }
-.blank.filled {
-  border-bottom: none;
-  font-weight: bold;
-}
+.blank.filled { border-bottom: none; font-weight: bold; }
 .blank.correct {
   color: #2ecc71;
   background-color: var(--correct-bg);
@@ -311,9 +301,7 @@ body:not(.light-mode) .blank {
   z-index: 10;
 }
 .blank-container:hover .hint-for-blank,
-.blank:focus + .hint-for-blank {
-  opacity: 1;
-}
+.blank:focus + .hint-for-blank { opacity: 1; }
 .hint-for-blank:hover {
   transform: scale(1.2);
   background-color: #fdd835;
@@ -439,7 +427,7 @@ body:not(.light-mode) .status-bar {
   .blank.incorrect { border: 3px solid #e74c3c; }
 }
 @media (max-width: 768px) {
-  .game-container { flex-direction: column; align-items: center; }
+  .game-container { grid-template-columns: 1fr; }
   .sidebar { width: 250px; height: 100%; left: -250px; }
   .sidebar.open { left: 0; }
   main { margin-left: 0; }
