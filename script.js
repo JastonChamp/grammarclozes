@@ -1023,15 +1023,15 @@ let hintUsage = {};
 let selectedWord = null;
 let timeLeft = 60;
 let timerInterval = null;
-let challengeMode = true;
+let challengeMode = true; // true = Challenge Mode (timer enabled), false = Practice Mode.
 let level = "Apprentice";
 
 // ----------------------
 // DOM Elements
 // ----------------------
 const grammarSelect = document.getElementById("grammar-type");
-let passageText = document.getElementById("passage-text");
-let wordBox = document.getElementById("word-box");
+const passageText = document.getElementById("passage-text");
+const wordBox = document.getElementById("word-box");
 const feedbackDisplay = document.getElementById("feedback");
 const nextPassageButton = document.getElementById("next-btn");
 const prevPassageButton = document.getElementById("prev-btn");
@@ -1040,6 +1040,7 @@ const clearButton = document.getElementById("clear-btn");
 const shareButton = document.getElementById("share-btn");
 const readPassageButton = document.getElementById("read-passage-btn");
 const toggleChallengeButton = document.getElementById("toggle-challenge");
+const submitButton = document.getElementById("submit-btn");
 const progressDisplay = document.getElementById("progress");
 const scoreDisplay = document.getElementById("score");
 const starsDisplay = document.getElementById("stars");
@@ -1056,6 +1057,22 @@ toggleDyslexiaButton.addEventListener("click", () => {
 });
 
 // ----------------------
+// Guided Tutorial Modal (Onboarding)
+// ----------------------
+const tutorialModal = document.getElementById("tutorial-modal");
+const tutorialCloseButton = document.getElementById("tutorial-close-btn");
+if (!localStorage.getItem("hasSeenTutorial")) {
+  tutorialModal.style.display = "flex";
+} else {
+  tutorialModal.style.display = "none";
+}
+tutorialCloseButton.addEventListener("click", () => {
+  tutorialModal.style.display = "none";
+  localStorage.setItem("hasSeenTutorial", "true");
+  speak("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in the blanks. Then press submit to check your answers.");
+});
+
+// ----------------------
 // Speech Synthesis Setup – UK Female Fallback
 // ----------------------
 const synth = window.speechSynthesis;
@@ -1065,8 +1082,7 @@ function loadVoices() {
   voices = synth.getVoices();
   ukFemaleVoice = voices.find(voice =>
     voice.lang === "en-GB" &&
-    (voice.name.toLowerCase().includes("female") ||
-     voice.name === "Samantha" || voice.name === "Kate")
+    (voice.name.toLowerCase().includes("female") || voice.name === "Samantha" || voice.name === "Kate")
   ) || voices.find(voice => voice.lang === "en-GB");
   console.log("Voices loaded:", voices.length);
 }
@@ -1074,30 +1090,21 @@ loadVoices();
 synth.onvoiceschanged = loadVoices;
 function speak(text) {
   if (!window.speechSynthesis) {
-    feedbackDisplay.textContent = "Speech synthesis not supported in this browser.";
+    feedbackDisplay.textContent = "Speech synthesis not supported.";
     return;
   }
   if (synth.speaking) synth.cancel();
   loadVoices();
   if (!voices.length) {
-    feedbackDisplay.textContent = "Speech unavailable. Voices not loaded.";
+    feedbackDisplay.textContent = "Voices not loaded.";
     return;
   }
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-GB";
-  if (ukFemaleVoice) utterance.voice = ukFemaleVoice;
+  utterance.voice = ukFemaleVoice || voices[0];
   utterance.rate = 0.9;
   utterance.pitch = 1.1;
   synth.speak(utterance);
-}
-
-// ----------------------
-// Onboarding
-// ----------------------
-if (!localStorage.getItem("hasSeenTutorial")) {
-  alert("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank. Use the sidebar for hints and controls!");
-  localStorage.setItem("hasSeenTutorial", "true");
-  speak("Welcome to Grammar Cloze Adventure! Drag or tap a word to fill in each blank.");
 }
 
 // ----------------------
@@ -1124,7 +1131,7 @@ function updateStatus() {
   progressDisplay.textContent = `Progress: ${currentPassageIndex + 1} / ${window.passages[currentGrammarType].length}`;
   timerDisplay.textContent = `Time: ${timeLeft}s`;
   progressBar.style.width = `${((currentPassageIndex + 1) / window.passages[currentGrammarType].length) * 100}%`;
-  if (challengeMode) {
+  if (challengeMode && timerSettingSelect.value !== "off") {
     timerBar.style.width = `${(timeLeft / parseInt(timerSettingSelect.value)) * 100}%`;
     timerBar.style.backgroundColor =
       timeLeft > (parseInt(timerSettingSelect.value) * 0.5)
@@ -1147,14 +1154,12 @@ function startTimer() {
     updateStatus();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      feedbackDisplay.textContent = "Time's up! Moving to next passage.";
-      speak("Time's up! Moving to next passage.");
-      setTimeout(() => nextPassageButton.click(), 1000);
+      feedbackDisplay.textContent = "Time's up! Please submit your answers.";
+      speak("Time's up! Please submit your answers.");
     }
   }, 1000);
 }
 
-// Animation helper: fade out then in a DOM element
 function fadeOutIn(element, callback) {
   element.style.transition = "opacity 0.5s ease";
   element.style.opacity = 0;
@@ -1162,6 +1167,25 @@ function fadeOutIn(element, callback) {
     callback();
     element.style.opacity = 1;
   }, 500);
+}
+
+// ----------------------
+// Narrative Intro Function
+// ----------------------
+function getNarrativeIntro(grammarType, index) {
+  const story = {
+    prepositions: [
+      "Our wizard begins his quest to map the enchanted forest.",
+      "With each step, he unlocks a new spell to navigate the realm."
+    ],
+    conjunctions: [
+      "In a moment of choice, the wizard faces decisions that shape his destiny.",
+      "Every connection he makes weaves his adventure tighter."
+    ]
+    // Add intros for other grammar types as needed.
+  };
+  const chapters = story[grammarType] || ["Begin your adventure!"];
+  return `${chapters[index % chapters.length]} (Chapter ${index + 1} of ${window.passages[grammarType].length})`;
 }
 
 // ----------------------
@@ -1183,6 +1207,7 @@ function displayPassage() {
     feedbackDisplay.textContent = "Error: Missing required passage data.";
     return;
   }
+
   const blanks = passage.text.match(/\d+/g) || [];
   if (passage.answers.length !== blanks.length ||
       passage.clueWords.length !== blanks.length ||
@@ -1190,8 +1215,9 @@ function displayPassage() {
     feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
   }
 
-  // Generate passage HTML with highlighted keywords and blank containers
-  let passageHTML = passage.text;
+  let passageHTML = `<p class="narrative-intro">${getNarrativeIntro(currentGrammarType, currentPassageIndex)}</p>`;
+  passageHTML += passage.text;
+
   if (passage.clueWords) {
     passage.clueWords.forEach((clues, index) => {
       const blankNum = index + 1;
@@ -1212,14 +1238,12 @@ function displayPassage() {
   fadeOutIn(passageText, () => {
     passageText.innerHTML = passageHTML;
     
-    // Attach drag-and-drop events to blank containers
     document.querySelectorAll(".blank-container").forEach(container => {
       container.addEventListener("dragover", handleContainerDragOver);
       container.addEventListener("dragleave", handleContainerDragLeave);
       container.addEventListener("drop", handleContainerDrop);
     });
     
-    // Attach click and keydown events to blanks
     document.querySelectorAll(".blank").forEach(blank => {
       blank.addEventListener("click", () => {
         if (selectedWord && !blank.classList.contains("filled")) {
@@ -1239,7 +1263,6 @@ function displayPassage() {
       });
     });
     
-    // **Attach event listeners for hint buttons inside the callback**
     document.querySelectorAll(".hint-for-blank").forEach(button => {
       button.addEventListener("click", function () {
         const blankNum = this.getAttribute("data-blank");
@@ -1263,12 +1286,10 @@ function displayPassage() {
     });
   });
   
-  // Populate word box
   wordBox.innerHTML = shuffle([...passage.wordBox])
     .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
     .join("");
-
-  // Attach events to words
+  
   document.querySelectorAll(".word").forEach(word => {
     word.addEventListener("dragstart", handleDragStart);
     word.addEventListener("dragend", handleDragEnd);
@@ -1285,13 +1306,13 @@ function displayPassage() {
       }
     });
   });
-
+  
   if (challengeMode) startTimer();
   updateStatus();
 }
 
 // ----------------------
-// Drag-and-Drop Handlers for Blank Containers
+// Drag-and-Drop Handlers
 // ----------------------
 function handleContainerDragOver(e) {
   e.preventDefault();
@@ -1311,9 +1332,6 @@ function handleContainerDrop(e) {
   }
 }
 
-// ----------------------
-// Standard Drag Handlers for Words
-// ----------------------
 let draggedItem = null;
 function handleDragStart(e) {
   draggedItem = e.target;
@@ -1326,42 +1344,51 @@ function handleDragEnd(e) {
 }
 
 // ----------------------
-// Word Placement and Feedback
+// Word Placement and Checking
 // ----------------------
 function placeWord(blank, word) {
   blank.textContent = word;
   blank.classList.add("filled");
-  // Animate word placement with a scaling effect
   blank.style.transition = "transform 0.3s ease";
   blank.style.transform = "scale(1.2)";
-  setTimeout(() => {
-    blank.style.transform = "scale(1)";
-  }, 300);
+  setTimeout(() => { blank.style.transform = "scale(1)"; }, 300);
   checkAnswer(blank);
 }
 
 function checkAnswer(blank) {
-  const blankId = parseInt(blank.getAttribute("data-blank"));
+  const blankId = parseInt(blank.getAttribute("data-blank")) - 1;
   const userAnswer = blank.textContent.trim().toLowerCase();
-  const correctAnswer = window.passages[currentGrammarType][currentPassageIndex].answers[blankId - 1].toLowerCase();
+  const correctAnswer = window.passages[currentGrammarType][currentPassageIndex].answers[blankId].toLowerCase();
+  const explanations = {
+    prepositions: [
+      "'On' is correct because it shows the bag is on the table."
+      // You can expand this array for each blank.
+    ]
+    // Add explanations for other grammar types similarly.
+  };
   if (userAnswer === correctAnswer) {
     blank.classList.add("correct", "animate-correct");
     score += 10;
     stars += 1;
-    feedbackDisplay.textContent = "Correct! Great job!";
+    feedbackDisplay.textContent =
+      `Correct! ${explanations[currentGrammarType]?.[blankId] || "Well done!"}`;
     feedbackDisplay.style.color = "green";
-    speak("Correct! Great job!");
+    document.getElementById("correct-sound").play();
+    speak(feedbackDisplay.textContent);
   } else {
     blank.classList.add("incorrect", "animate-incorrect");
-    feedbackDisplay.textContent = "Incorrect! Hint: 'On' is used for surfaces.";
+    feedbackDisplay.textContent =
+      `Incorrect! The correct answer is '${correctAnswer}'. ` +
+      `${explanations[currentGrammarType]?.[blankId] || "Please check the context."}`;
     feedbackDisplay.style.color = "red";
-    speak("Incorrect! Try again.");
+    document.getElementById("incorrect-sound").play();
+    speak(feedbackDisplay.textContent);
   }
   updateStatus();
 }
 
 // ----------------------
-// Navigation and Other Controls
+// Navigation & Controls
 // ----------------------
 grammarSelect.addEventListener("change", () => {
   currentGrammarType = grammarSelect.value;
@@ -1372,32 +1399,6 @@ grammarSelect.addEventListener("change", () => {
 });
 
 nextPassageButton.addEventListener("click", () => {
-  const blanks = document.querySelectorAll(".blank");
-  let allFilled = true;
-  blanks.forEach(blank => {
-    if (!blank.classList.contains("filled")) allFilled = false;
-  });
-  if (allFilled) {
-    const passage = window.passages[currentGrammarType][currentPassageIndex];
-    let reviewText = "Review:\n";
-    passage.answers.forEach((ans, i) => {
-      reviewText += `Blank ${i + 1}: "${ans}" - ${passage.hints[i]}\n`;
-    });
-    alert(reviewText);
-    speak("Here’s your review!");
-    if (challengeMode) {
-      if (Object.keys(hintUsage).length === 0) {
-        score += 20;
-        feedbackDisplay.innerHTML = 'Correct! Bonus: <span class="bonus">+20!</span>';
-        speak("Bonus! 20 extra points for no hints.");
-      }
-      if (timeLeft > (parseInt(timerSettingSelect.value) * 0.5)) {
-        score += 10;
-        feedbackDisplay.innerHTML += ' <span class="bonus">+10!</span>';
-        speak("Plus 10 extra points for quick completion.");
-      }
-    }
-  }
   clearInterval(timerInterval);
   currentPassageIndex++;
   if (currentPassageIndex >= window.passages[currentGrammarType].length) {
@@ -1440,13 +1441,13 @@ hintButton.addEventListener("click", () => {
 shareButton.addEventListener("click", () => {
   const shareData = {
     title: "Grammar Cloze Adventure",
-    text: `I am a ${level} with a score of ${score} in Grammar Cloze Adventure! Can you beat my score?`,
+    text: `I am a ${level} with a score of ${score}! Can you beat my score?`,
     url: window.location.href
   };
   if (navigator.share) {
     navigator.share(shareData).catch(err => console.error("Error sharing:", err));
   } else {
-    alert("Sharing not supported on this browser.");
+    alert("Sharing not supported.");
   }
 });
 
@@ -1462,28 +1463,41 @@ readPassageButton.addEventListener("click", () => {
 
 toggleChallengeButton.addEventListener("click", () => {
   challengeMode = !challengeMode;
-  if (challengeMode) {
-    startTimer();
-    feedbackDisplay.textContent = "Challenge Mode ON";
-  } else {
+  toggleChallengeButton.textContent = challengeMode ? "⏱️ Challenge" : "⏱️ Practice";
+  if (challengeMode) startTimer();
+  else {
     clearInterval(timerInterval);
     timerBar.style.width = "0%";
-    feedbackDisplay.textContent = "Challenge Mode OFF";
   }
-  speak(`Challenge Mode ${challengeMode ? "ON" : "OFF"}`);
+  updateStatus();
 });
 
-// Light/Dark Theme Toggle
-toggleThemeButton.addEventListener("click", () => {
-  document.body.classList.toggle("light-mode");
-  if (document.body.classList.contains("light-mode")) {
-    toggleThemeButton.textContent = "Dark Mode";
-  } else {
-    toggleThemeButton.textContent = "Light Mode";
+submitButton.addEventListener("click", () => {
+  const blanks = document.querySelectorAll(".blank");
+  let allFilled = true;
+  blanks.forEach(blank => {
+    if (!blank.classList.contains("filled")) allFilled = false;
+  });
+  if (!allFilled) {
+    feedbackDisplay.textContent = "Please complete all blanks before submitting.";
+    feedbackDisplay.style.color = "red";
+    speak("Please complete all blanks before submitting.");
+    return;
+  }
+  let correctCount = 0;
+  blanks.forEach(blank => {
+    if (blank.classList.contains("correct")) correctCount++;
+  });
+  const rewardMessage = `Review: You got ${correctCount} out of ${blanks.length} correct.`;
+  feedbackDisplay.textContent = rewardMessage;
+  speak(rewardMessage);
+  if (challengeMode && Object.keys(hintUsage).length === 0) {
+    score += 20;
+    feedbackDisplay.innerHTML += ' <span class="bonus">+20!</span>';
+    speak("Bonus! 20 extra points for no hints.");
   }
 });
 
-// Keyboard Shortcuts: 'H' for hint, 'N' for next passage
 document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase() === "h") {
     hintButton.click();
@@ -1493,7 +1507,8 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ----------------------
-// Initialize Game
+// Initialize the Game
 // ----------------------
 displayPassage();
+updateStatus();
 updateStatus();
