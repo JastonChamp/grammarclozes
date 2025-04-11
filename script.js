@@ -2080,7 +2080,7 @@ subjectVerbAgreement: [
     ],
     hint: "Keep all subjects and verbs in proper number agreement."
   }
-];
+],
 pronouns: [
   {
     text: "Mary lost ___(1)___ book yesterday. She asked John if ___(2)___ had seen it. He said that ___(3)___ didn’t know where it was. ___(4)___ both looked for it. Later, ___(5)___ found it under the desk.",
@@ -3308,7 +3308,7 @@ pronouns: [
     ],
     hint: "Be sure that every pronoun fits naturally with its noun."
   }
-];
+],
 adjectivesAdverbs: [
   {
     text: "The ___(1)___ cat ran ___(2)___ across the yard. It jumped ___(3)___ onto the fence. The boy watched ___(4)___ as it moved ___(5)___ toward the tree.",
@@ -3812,7 +3812,7 @@ adjectivesAdverbs: [
     ],
     hint: "Use generic descriptive words suitable for any theatrical setting."
   }
-];
+],
 tenses: [
   {
     text: "Yesterday, I ___(1)___ to the park. My friends ___(2)___ there with me. We ___(3)___ games and ___(4)___ a picnic. The sun ___(5)___ brightly all day.",
@@ -4214,7 +4214,7 @@ tenses: [
     ],
     hint: "Keep the entire narrative in the simple past to reflect the completed interview."
   }
-];
+]
 
 
 
