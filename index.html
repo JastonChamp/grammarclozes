@@ -22,7 +22,11 @@
   <!-- Header -->
   <header>
     <h1>
-      <img src="wizard-icon.svg" alt="Wizard Icon" style="width: 40px; vertical-align: middle; margin-right: 10px;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 10px;">
+        <path d="M12 2L15 9H9L12 2Z" fill="#ffd700"/>
+        <path d="M12 9L15 15H9L12 9Z" fill="#ffd700"/>
+        <circle cx="12" cy="18" r="2" fill="#ffd700"/>
+      </svg>
       Grammar Cloze Adventure
     </h1>
     <p class="instructions">
@@ -34,7 +38,7 @@
 
   <!-- Sidebar for Settings -->
   <aside class="sidebar" aria-label="Settings and controls">
-    <label for="grammar-type">Grammar Type:</label>
+    <label for="grammar-type">📚 Grammar Type:</label>
     <select id="grammar-type" aria-label="Select grammar category">
       <option value="prepositions">Prepositions</option>
       <option value="conjunctions">Conjunctions</option>
@@ -47,7 +51,7 @@
       (Category selection disabled in this mode)
     </span>
     <br>
-    <label for="timer-setting">Timer (seconds):</label>
+    <label for="timer-setting">⏳ Timer (seconds):</label>
     <select id="timer-setting" aria-label="Select timer duration">
       <option value="60" selected>60</option>
       <option value="30">30</option>
@@ -56,7 +60,7 @@
     <br>
     <button id="toggle-dyslexia" aria-label="Toggle dyslexia-friendly font">Toggle Dyslexia Font</button>
     <br>
-    <label for="text-size-slider">Text Size:</label>
+    <label for="text-size-slider">🔤 Text Size:</label>
     <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4" aria-label="Adjust text size">
     <br>
     <button id="toggle-challenge" aria-label="Toggle challenge mode">⏱️ Challenge</button>
