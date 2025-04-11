@@ -43,7 +43,13 @@ body.light-mode {
 /* Dyslexia Mode */
 body.dyslexia #passage-text,
 body.dyslexia #word-box {
-  font-family: "OpenDyslexic", sans-serif;
+  font-family: "Open Dyslexic", sans-serif; /* Updated font name */
+}
+body.dyslexia main {
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2); /* Light cyan background for dyslexia mode */
+}
+body.light-mode.dyslexia main {
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2); /* Ensure consistency in light mode */
 }
 
 /* Modal */
@@ -281,10 +287,11 @@ body:not(.light-mode) #word-box {
   color: var(--dark-text);
 }
 #passage-text {
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-size: 1.4rem; /* Default size, matches initial slider value */
   line-height: 1.8;
 }
 #word-box {
+  font-size: 1rem; /* Default size for word box */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 10px;
