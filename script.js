@@ -1011,6 +1011,7 @@ window.passages = {
     }
   ]
 };
+
 // ----------------------
 // Global Game State
 // ----------------------
@@ -1052,14 +1053,42 @@ const levelDisplay = document.getElementById("level");
 const toggleThemeButton = document.getElementById("toggle-theme");
 const timerSettingSelect = document.getElementById("timer-setting");
 
-// Dyslexia-friendly font toggle
+// Dyslexia-friendly font toggle with debugging
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
 toggleDyslexiaButton.addEventListener("click", () => {
   document.body.classList.toggle("dyslexia");
   const isDyslexiaMode = document.body.classList.contains("dyslexia");
   toggleDyslexiaButton.textContent = isDyslexiaMode ? "Disable Dyslexia Font" : "Toggle Dyslexia Font";
   speak(isDyslexiaMode ? "Dyslexia-friendly font enabled" : "Dyslexia-friendly font disabled");
+  console.log("Dyslexia mode:", isDyslexiaMode);
+  console.log("Passage text font-family:", window.getComputedStyle(passageText).fontFamily);
+  console.log("Word box font-family:", window.getComputedStyle(wordBox).fontFamily);
+  // Log font-family of child elements
+  const narrativeIntro = passageText.querySelector(".narrative-intro");
+  if (narrativeIntro) {
+    console.log("Narrative intro font-family:", window.getComputedStyle(narrativeIntro).fontFamily);
+  }
+  const firstWord = wordBox.querySelector(".word");
+  if (firstWord) {
+    console.log("First word font-family:", window.getComputedStyle(firstWord).fontFamily);
+  }
 });
+
+// Test if Open Dyslexic font is loaded
+function testFontAvailability() {
+  const testDiv = document.createElement("div");
+  testDiv.style.fontFamily = '"Open Dyslexic"';
+  testDiv.style.position = "absolute";
+  testDiv.style.visibility = "hidden";
+  testDiv.textContent = "Test";
+  document.body.appendChild(testDiv);
+  const computedFont = window.getComputedStyle(testDiv).fontFamily;
+  document.body.removeChild(testDiv);
+  console.log("Open Dyslexic font test:", computedFont);
+  if (!computedFont.includes("Open Dyslexic")) {
+    console.warn("Open Dyslexic font may not be loaded correctly. Falling back to Comic Sans MS.");
+  }
+}
 
 // ----------------------
 // Guided Tutorial Modal (Onboarding)
@@ -1406,67 +1435,97 @@ function placeWord(blank, word) {
 
 function checkAnswer(blank) {
   const blankId = parseInt(blank.getAttribute("data-blank")) - 1;
-  const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
+  const passage = isFlatArray
+    ? window.passages[currentPassageIndex]
+    : window.passages[currentGrammarType][currentPassageIndex];
   const userAnswer = blank.textContent.trim().toLowerCase();
   const correctAnswer = passage.answers[blankId].toLowerCase();
-  const explanations = {
-    prepositions: [
-      "'On' is correct because it shows the bag is on the table.",
-      "'Through' is correct because Sally is looking out of the window.",
-      "'By' is correct because the bird is positioned near the fence.",
-      "'Under' is correct because the cat is hiding beneath the chair.",
-      "'Towards' is correct because Sally is moving in the direction of the door."
-    ],
-    conjunctions: [
-      "'But' is correct because it shows contrast between wanting to go outside and the rain.",
-      "'Until' is correct because Tom waited for the rain to stop.",
-      "'And' is correct because it connects the two actions after the rain stopped.",
-      "'Or' is correct because it presents two options: play or read.",
-      "'So' is correct because it shows the result of his choice to play."
-    ],
-    subjectVerbAgreement: [
-      "'Barks' is correct because 'the dog' is singular.",
-      "'Sleep' is correct because 'the cats' is plural.",
-      "'Has' is correct because 'each child' is singular.",
-      "'Works' is correct because 'the team' is treated as singular.",
-      "'Fly' is correct because 'many birds' is plural."
-    ],
-    pronouns: [
-      "'Her' is correct because it shows possession of the book by Mary.",
-      "'He' is correct because it refers to John.",
-      "'He' is correct because it refers to John again.",
-      "'They' is correct because it refers to both Mary and John.",
-      "'She' is correct because it refers to Mary finding the book."
-    ],
-    adjectivesAdverbs: [
-      "'Quick' is correct because it describes the cat (adjective).",
-      "'Quickly' is correct because it describes how the cat ran (adverb).",
-      "'High' is correct because it describes the jump (adjective).",
-      "'Carefully' is correct because it describes how the boy watched (adverb).",
-      "'Silently' is correct because it describes how it moved (adverb)."
-    ],
-    tenses: [
-      "'Went' is correct because it’s past tense for yesterday.",
-      "'Were' is correct because it’s past tense for friends being there.",
-      "'Played' is correct because it’s past tense for the games.",
-      "'Had' is correct because it’s past tense for the picnic.",
-      "'Shone' is correct because it’s past tense for the sun shining."
-    ]
-  };
+
+  // Use passage-specific explanations if provided
+  let explanation = "";
+  if (passage.explanations && Array.isArray(passage.explanations) && passage.explanations[blankId]) {
+    explanation = passage.explanations[blankId];
+  } else {
+    // Define global explanations for specific passages (if available) – these are specific,
+    // so we also define generic fallback explanations to use if the index is missing.
+    const globalExplanations = {
+      prepositions: [
+        "'On' is correct if it expresses contact with a surface.",
+        "'Through' is correct when indicating movement inside and out of something.",
+        "'By' is appropriate for indicating proximity.",
+        "'Under' works well when indicating something is beneath another object.",
+        "'Towards' is used for indicating direction."
+      ],
+      conjunctions: [
+        "'But' is used to show contrast.",
+        "'Until' indicates the time before an action or event ends.",
+        "'And' connects similar ideas.",
+        "'Or' presents an alternative or choice.",
+        "'So' indicates a result or consequence."
+      ],
+      subjectVerbAgreement: [
+        "Use the singular verb form with a singular subject.",
+        "Use the plural verb form with a plural subject.",
+        "Remember that phrases like 'each' require a singular verb.",
+        "Collective nouns may require singular agreement, depending on context.",
+        "Ensure that the verb matches the subject in number."
+      ],
+      pronouns: [
+        "Use the proper possessive pronoun to show ownership.",
+        "Select the subject or object pronoun based on its role in the sentence.",
+        "Make sure the pronoun clearly refers back to the intended noun.",
+        "Check that the pronoun’s case (subject/object) is correct.",
+        "Match the pronoun in number with its antecedent."
+      ],
+      adjectivesAdverbs: [
+        "Choose an adjective that appropriately describes the noun.",
+        "Use an adverb to modify how an action is performed.",
+        "Select words that convey the manner or quality of the action.",
+        "Ensure the modifier fits the context of the description.",
+        "The choice should enhance the meaning of the sentence."
+      ],
+      tenses: [
+        "Select the past tense form for actions completed in the past.",
+        "Use the past tense to reflect events that have already happened.",
+        "Choose the tense that best reflects the sequence of events.",
+        "The verb tense should match the time indicators in the sentence.",
+        "Ensure the verb form is consistent with the narrative."
+      ]
+    };
+
+    const genericFallbacks = {
+      prepositions: "Select the preposition that best expresses the spatial or directional relationship in this sentence.",
+      conjunctions: "Choose the conjunction that most appropriately links the ideas or clauses presented.",
+      subjectVerbAgreement: "Ensure the verb agrees with its subject in number.",
+      pronouns: "Pick the pronoun that correctly reflects the intended reference and matches the case.",
+      adjectivesAdverbs: "Choose the modifier that best fits the context of the sentence.",
+      tenses: "Select the verb form that correctly conveys the time or sequence of events."
+    };
+
+    // First, try using a global explanation specific to the index.
+    if (
+      globalExplanations[currentGrammarType] &&
+      Array.isArray(globalExplanations[currentGrammarType]) &&
+      globalExplanations[currentGrammarType][blankId]
+    ) {
+      explanation = globalExplanations[currentGrammarType][blankId];
+    } else {
+      // Otherwise, use a generic explanation for the grammar category.
+      explanation = genericFallbacks[currentGrammarType] || "Review the grammar rules.";
+    }
+  }
+
   if (userAnswer === correctAnswer) {
     blank.classList.add("correct", "animate-correct");
     score += 10;
     stars += 1;
-    feedbackDisplay.textContent =
-      `Correct! ${explanations[currentGrammarType]?.[blankId] || "Well done!"}`;
+    feedbackDisplay.textContent = `Correct! ${explanation}`;
     feedbackDisplay.style.color = "green";
     document.getElementById("correct-sound").play();
     speak(feedbackDisplay.textContent);
   } else {
     blank.classList.add("incorrect", "animate-incorrect");
-    feedbackDisplay.textContent =
-      `Incorrect! The correct answer is '${correctAnswer}'. ` +
-      `${explanations[currentGrammarType]?.[blankId] || "Please check the context."}`;
+    feedbackDisplay.textContent = `Incorrect! The correct answer is '${correctAnswer}'. ${explanation}`;
     feedbackDisplay.style.color = "red";
     document.getElementById("incorrect-sound").play();
     speak(feedbackDisplay.textContent);
@@ -1654,6 +1713,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Debug initial state
   console.log("Initial window.passages:", window.passages);
   console.log("Initial isFlatArray:", isFlatArray);
+
+  // Test font availability on load
+  testFontAvailability();
 
   // Ensure passages are defined before proceeding
   if (!window.passages) {
