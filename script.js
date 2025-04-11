@@ -1031,6 +1031,7 @@ let isFlatArray = Array.isArray(window.passages); // Detect if passages is a fla
 // DOM Elements
 // ----------------------
 const grammarSelect = document.getElementById("grammar-type");
+const grammarTypeMessage = document.getElementById("grammar-type-message");
 const passageText = document.getElementById("passage-text");
 const wordBox = document.getElementById("word-box");
 const feedbackDisplay = document.getElementById("feedback");
@@ -1211,7 +1212,9 @@ function displayPassage() {
 
   if (!passage) {
     passageText.innerHTML = "<p>Error: Passage not found.</p>";
-    feedbackDisplay.textContent = "Error: Passage not found.";
+    feedbackDisplay.textContent = isFlatArray
+      ? "Error: Passage not found."
+      : `Error: No passages available for ${currentGrammarType}. Please select another category.`;
     console.error("Passage not found at index", currentPassageIndex, "for type", currentGrammarType);
     return;
   }
@@ -1486,7 +1489,8 @@ shareButton.addEventListener("click", () => {
 readPassageButton.addEventListener("click", () => {
   const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
   if (passage && passage.text) {
-    const textToSpeak = passage.text.replace(/\d+/g, "blank");
+    // Replace ___(\d+)___ with "blank" for speech
+    const textToSpeak = passage.text.replace(/___\(\d+\)___/g, "blank");
     speak(textToSpeak);
   } else {
     feedbackDisplay.textContent = "Error: No passage to read.";
@@ -1530,6 +1534,11 @@ submitButton.addEventListener("click", () => {
   }
 });
 
+toggleThemeButton.addEventListener("click", () => {
+  document.body.classList.toggle("light-mode");
+  toggleThemeButton.textContent = document.body.classList.contains("light-mode") ? "Dark Mode" : "Light Mode";
+});
+
 document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase() === "h") {
     hintButton.click();
@@ -1542,11 +1551,16 @@ document.addEventListener("keydown", (e) => {
 // Initialize the Game
 // ----------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Hide grammar dropdown if using a flat array
+  // Handle grammar type dropdown visibility
   if (isFlatArray) {
     grammarSelect.style.display = "none";
+    grammarTypeMessage.style.display = "inline";
+  } else {
+    grammarSelect.style.display = "block";
+    grammarTypeMessage.style.display = "none";
   }
   displayPassage();
   updateStatus();
   updateStatus();
 });
+
