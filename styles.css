@@ -2,6 +2,15 @@
   Unified CSS: Clean, Accessible, Consistent Wizard Theme
 ---------------------------------------------------*/
 
+/* Load Open Dyslexic font locally */
+@font-face {
+  font-family: "Open Dyslexic";
+  src: url("fonts/OpenDyslexic-Regular.woff2") format("woff2"),
+       url("fonts/OpenDyslexic-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* CSS Variables */
 :root {
   --dark-bg: #2c1a4d;       /* Deep purple */
@@ -43,7 +52,7 @@ body.light-mode {
 /* Dyslexia Mode */
 body.dyslexia #passage-text,
 body.dyslexia #word-box {
-  font-family: "Open Dyslexic", sans-serif; /* Updated font name */
+  font-family: "Open Dyslexic", "Comic Sans MS", sans-serif !important; /* Added fallback and !important */
 }
 body.dyslexia main {
   background: linear-gradient(135deg, #e0f7fa, #b2ebf2); /* Light cyan background for dyslexia mode */
