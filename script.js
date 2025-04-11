@@ -3813,7 +3813,7 @@ adjectivesAdverbs: [
     hint: "Use generic descriptive words suitable for any theatrical setting."
   }
 ];
-tenses [
+tenses: [
   {
     text: "Yesterday, I ___(1)___ to the park. My friends ___(2)___ there with me. We ___(3)___ games and ___(4)___ a picnic. The sun ___(5)___ brightly all day.",
     wordBox: ["go", "went", "is", "was", "play", "played", "have", "had", "shine", "shone"],
