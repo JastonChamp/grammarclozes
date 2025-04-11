@@ -1,5 +1,5 @@
 /*--------------------------------------------------
-  Enhanced CSS: Modern, Magical, and Accessible Wizard Theme
+  Enhanced CSS: High-Contrast, Magical, and Accessible Wizard Theme
 ---------------------------------------------------*/
 
 /* Load Open Dyslexic font locally */
@@ -18,7 +18,7 @@
 :root {
   --dark-bg: #2c1a4d;       /* Deep purple */
   --dark-secondary: #4a3db1; /* Adjusted to match gradient */
-  --dark-text: #f0e4ff;      /* Light text for dark mode */
+  --dark-text: #ffffff;      /* Changed to white for better contrast */
   --light-bg: #f0e6ff;       /* Light lavender background */
   --light-secondary: #fff5cc; /* Softer gold for sidebar */
   --light-text: #1a2a44;     /* Darker text for light mode */
@@ -29,8 +29,8 @@
   --modal-text: #2c3e50;
   --parchment-start: #f5f5dc;
   --parchment-end: #e6e4c9;
-  --parchment-dark-start: #d4d4b0; /* Darker parchment for dark mode */
-  --parchment-dark-end: #b5b592;
+  --parchment-dark-start: #8a8765; /* Darker parchment for dark mode */
+  --parchment-dark-end: #6b6948;
 }
 
 /* Reset */
@@ -60,14 +60,14 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><circle cx="5" cy="5" r="1" fill="rgba(255,215,0,0.3)"/></svg>') repeat;
-  opacity: 0.2;
-  animation: sparkle 10s infinite linear;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><circle cx="7.5" cy="7.5" r="2" fill="rgba(255,215,0,0.5)"/></svg>') repeat;
+  opacity: 0.3;
+  animation: sparkle 8s infinite linear;
   z-index: -1;
 }
 @keyframes sparkle {
   0% { background-position: 0 0; }
-  100% { background-position: 100px 100px; }
+  100% { background-position: 150px 150px; }
 }
 body.light-mode {
   background: linear-gradient(135deg, var(--light-bg), var(--light-secondary));
@@ -84,7 +84,7 @@ body.dyslexia #word-box * {
 }
 body.dyslexia #passage-text,
 body.dyslexia #word-box {
-  box-shadow: 0 0 20px rgba(0, 188, 212, 0.7); /* Stronger cyan glow */
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.7);
   background: linear-gradient(var(--parchment-start), var(--parchment-end)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M0 0L20 20M20 0L0 20" stroke="rgba(0,188,212,0.1)" stroke-width="1"/></svg>') repeat;
 }
 body:not(.light-mode).dyslexia #passage-text,
@@ -159,6 +159,7 @@ h1 {
   font-weight: 700;
   background: linear-gradient(90deg, #ffd700, #ffca28);
   -webkit-background-clip: text;
+  -moz-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -238,6 +239,9 @@ body.light-mode .sidebar {
   font-weight: 600;
   margin-bottom: 5px;
   display: block;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 5px;
+  border-radius: 5px;
 }
 #grammar-type-message {
   margin-left: 5px;
@@ -374,6 +378,7 @@ body.light-mode main {
   min-width: 300px;
   min-height: 100px;
   color: var(--light-text);
+  font-weight: 500; /* Slightly bolder for readability */
 }
 body:not(.light-mode) #passage-text,
 body:not(.light-mode) #word-box {
@@ -383,6 +388,7 @@ body:not(.light-mode) #word-box {
 #passage-text *,
 #word-box * {
   color: inherit;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.2); /* Subtle shadow for readability */
 }
 #passage-text {
   font-size: 1.4rem;
@@ -410,7 +416,8 @@ body:not(.light-mode) #word-box {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 body:not(.light-mode) .narrative-intro {
-  color: #d1b3ff; /* Lighter purple for dark mode */
+  background: linear-gradient(135deg, #e6d9a9, #d4c78a); /* Darker for dark mode */
+  color: #ffffff; /* White for high contrast */
 }
 .narrative-intro::before {
   content: "";
@@ -449,6 +456,9 @@ body.light-mode .narrative-intro {
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.5);
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L15 9H9L12 2Z" fill="gold"/><path d="M12 9L15 15H9L12 9Z" fill="gold"/></svg>'), auto;
 }
+.control-buttons button:active {
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
 
 /* Words and Blanks */
 .blank-container {
@@ -457,21 +467,19 @@ body.light-mode .narrative-intro {
 }
 .word {
   background: linear-gradient(135deg, #ffd700, #ffca28);
-  color: var(--light-text);
+  color: #1a1a1a; /* Near black for high contrast */
   padding: 10px 15px;
   border-radius: 5px;
   cursor: move;
   user-select: none;
-  font-weight: bold;
+  font-weight: 600; /* Bolder for readability */
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-body:not(.light-mode) .word {
-  color: #1a2a44;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .word:hover {
   transform: scale(1.1) rotate(2deg);
   box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(135deg, #ffca28, #ffb300); /* Darker gold on hover */
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L15 9H9L12 2Z" fill="gold"/><path d="M12 9L15 15H9L12 9Z" fill="gold"/></svg>'), auto;
 }
 .word.dragging { opacity: 0.6; }
@@ -558,11 +566,11 @@ body:not(.light-mode) .blank { color: var(--dark-text); }
   transition: background-color 0.3s;
 }
 body:not(.light-mode) .keyword {
-  color: #d1b3ff;
+  color: #ffffff;
 }
 .keyword.highlighted {
   background-color: var(--accent-color);
-  color: #fff;
+  color: #1a1a1a;
   padding: 2px 6px;
   border-radius: 5px;
 }
@@ -692,6 +700,9 @@ body:not(.light-mode) .status-bar {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.5);
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L15 9H9L12 2Z" fill="gold"/><path d="M12 9L15 15H9L12 9Z" fill="gold"/></svg>'), auto;
+}
+.navigation-buttons button:active {
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 /* Feedback Display */
