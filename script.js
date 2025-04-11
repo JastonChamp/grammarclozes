@@ -1575,7 +1575,7 @@ window.passages = {
       hint: "Link ideas by identifying alternatives and outcomes."
     }
   ],
-subjectVerbAgreement = [
+subjectVerbAgreement: [
   {
     text: "The chef ___(1)___ a gourmet dish every night. The cooks ___(2)___ diligently in the kitchen. Each recipe ___(3)___ high praise. The staff ___(4)___ smoothly during the dinner rush, and the equipment ___(5)___ spotless.",
     wordBox: ["prepare", "prepares", "work", "works", "receive", "receives", "operate", "operates", "remain", "remains"],
@@ -3309,7 +3309,7 @@ pronouns = [
     hint: "Be sure that every pronoun fits naturally with its noun."
   }
 ];
-adjectivesAdverbs = [
+adjectivesAdverbs: [
   {
     text: "The ___(1)___ cat ran ___(2)___ across the yard. It jumped ___(3)___ onto the fence. The boy watched ___(4)___ as it moved ___(5)___ toward the tree.",
     wordBox: ["quick", "quickly", "slow", "slowly", "high", "low", "attentive", "attentively", "silent", "silently"],
@@ -3813,7 +3813,7 @@ adjectivesAdverbs = [
     hint: "Use generic descriptive words suitable for any theatrical setting."
   }
 ];
-tenses = [
+tenses [
   {
     text: "Yesterday, I ___(1)___ to the park. My friends ___(2)___ there with me. We ___(3)___ games and ___(4)___ a picnic. The sun ___(5)___ brightly all day.",
     wordBox: ["go", "went", "is", "was", "play", "played", "have", "had", "shine", "shone"],
