@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grammar Cloze Adventure</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- ResponsiveVoice for text-to-speech -->
-  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
+  <!-- Load OpenDyslexic font for dyslexia mode -->
+  <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet">
 </head>
 <body>
   <!-- Tutorial Modal for Onboarding -->
@@ -32,9 +32,9 @@
   </header>
 
   <!-- Sidebar for Settings -->
-  <aside class="sidebar">
+  <aside class="sidebar" aria-label="Settings and controls">
     <label for="grammar-type">Grammar Type:</label>
-    <select id="grammar-type">
+    <select id="grammar-type" aria-label="Select grammar category">
       <option value="prepositions">Prepositions</option>
       <option value="conjunctions">Conjunctions</option>
       <option value="subjectVerbAgreement">Subject-Verb Agreement</option>
@@ -47,18 +47,18 @@
     </span>
     <br>
     <label for="timer-setting">Timer (seconds):</label>
-    <select id="timer-setting">
+    <select id="timer-setting" aria-label="Select timer duration">
       <option value="60" selected>60</option>
       <option value="30">30</option>
       <option value="off">Off</option>
     </select>
     <br>
-    <button id="toggle-dyslexia">Toggle Dyslexia Font</button>
+    <button id="toggle-dyslexia" aria-label="Toggle dyslexia-friendly font">Toggle Dyslexia Font</button>
     <br>
     <label for="text-size-slider">Text Size:</label>
-    <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4">
+    <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4" aria-label="Adjust text size">
     <br>
-    <button id="toggle-challenge">⏱️ Challenge</button>
+    <button id="toggle-challenge" aria-label="Toggle challenge mode">⏱️ Challenge</button>
   </aside>
 
   <!-- Main Game Content -->
