@@ -1052,6 +1052,7 @@ const timerBar = document.getElementById("timer-bar");
 const levelDisplay = document.getElementById("level");
 const toggleThemeButton = document.getElementById("toggle-theme");
 const timerSettingSelect = document.getElementById("timer-setting");
+
 // Dyslexia-friendly font toggle
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
 toggleDyslexiaButton.addEventListener("click", () => {
@@ -1184,8 +1185,23 @@ function getNarrativeIntro(grammarType, index) {
     conjunctions: [
       "In a moment of choice, the wizard faces decisions that shape his destiny.",
       "Every connection he makes weaves his adventure tighter."
+    ],
+    subjectVerbAgreement: [
+      "The wizard ensures his spells agree with the magic rules.",
+      "Each incantation must match its power source perfectly."
+    ],
+    pronouns: [
+      "The wizard identifies the right allies for his quest.",
+      "He assigns roles to each companion carefully."
+    ],
+    adjectivesAdverbs: [
+      "The wizard describes his journey with vivid words.",
+      "He casts spells swiftly and beautifully."
+    ],
+    tenses: [
+      "The wizard recalls past adventures in the realm.",
+      "He plans future quests with great care."
     ]
-    // Add intros for other grammar types as needed.
   };
   const chapters = story[grammarType] || ["Begin your adventure!"];
   const totalPassages = isFlatArray ? window.passages.length : window.passages[grammarType].length;
@@ -1393,10 +1409,47 @@ function checkAnswer(blank) {
   const correctAnswer = passage.answers[blankId].toLowerCase();
   const explanations = {
     prepositions: [
-      "'On' is correct because it shows the bag is on the table."
-      // Expand for each blank as needed
+      "'On' is correct because it shows the bag is on the table.",
+      "'Through' is correct because Sally is looking out of the window.",
+      "'By' is correct because the bird is positioned near the fence.",
+      "'Under' is correct because the cat is hiding beneath the chair.",
+      "'Towards' is correct because Sally is moving in the direction of the door."
+    ],
+    conjunctions: [
+      "'But' is correct because it shows contrast between wanting to go outside and the rain.",
+      "'Until' is correct because Tom waited for the rain to stop.",
+      "'And' is correct because it connects the two actions after the rain stopped.",
+      "'Or' is correct because it presents two options: play or read.",
+      "'So' is correct because it shows the result of his choice to play."
+    ],
+    subjectVerbAgreement: [
+      "'Barks' is correct because 'the dog' is singular.",
+      "'Sleep' is correct because 'the cats' is plural.",
+      "'Has' is correct because 'each child' is singular.",
+      "'Works' is correct because 'the team' is treated as singular.",
+      "'Fly' is correct because 'many birds' is plural."
+    ],
+    pronouns: [
+      "'Her' is correct because it shows possession of the book by Mary.",
+      "'He' is correct because it refers to John.",
+      "'He' is correct because it refers to John again.",
+      "'They' is correct because it refers to both Mary and John.",
+      "'She' is correct because it refers to Mary finding the book."
+    ],
+    adjectivesAdverbs: [
+      "'Quick' is correct because it describes the cat (adjective).",
+      "'Quickly' is correct because it describes how the cat ran (adverb).",
+      "'High' is correct because it describes the jump (adjective).",
+      "'Carefully' is correct because it describes how the boy watched (adverb).",
+      "'Silently' is correct because it describes how it moved (adverb)."
+    ],
+    tenses: [
+      "'Went' is correct because it’s past tense for yesterday.",
+      "'Were' is correct because it’s past tense for friends being there.",
+      "'Played' is correct because it’s past tense for the games.",
+      "'Had' is correct because it’s past tense for the picnic.",
+      "'Shone' is correct because it’s past tense for the sun shining."
     ]
-    // Add explanations for other grammar types similarly
   };
   if (userAnswer === correctAnswer) {
     blank.classList.add("correct", "animate-correct");
@@ -1548,19 +1601,54 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ----------------------
-// Initialize the Game
+// Function to Update Dropdown Visibility
 // ----------------------
-document.addEventListener("DOMContentLoaded", () => {
-  // Handle grammar type dropdown visibility
+function updateGrammarTypeDropdown() {
+  console.log("Updating dropdown visibility...");
+  console.log("window.passages:", window.passages);
+  console.log("isFlatArray:", isFlatArray);
+  console.log("grammarSelect:", grammarSelect);
+  console.log("grammarTypeMessage:", grammarTypeMessage);
+
+  if (!grammarSelect || !grammarTypeMessage) {
+    console.error("DOM elements not found: grammarSelect or grammarTypeMessage");
+    return;
+  }
+
   if (isFlatArray) {
+    console.log("Hiding dropdown (flat array mode)");
     grammarSelect.style.display = "none";
     grammarTypeMessage.style.display = "inline";
   } else {
+    console.log("Showing dropdown (category-based mode)");
     grammarSelect.style.display = "block";
     grammarTypeMessage.style.display = "none";
   }
+}
+
+// ----------------------
+// Initialize the Game
+// ----------------------
+document.addEventListener("DOMContentLoaded", () => {
+  // Debug initial state
+  console.log("Initial window.passages:", window.passages);
+  console.log("Initial isFlatArray:", isFlatArray);
+
+  // Ensure passages are defined before proceeding
+  if (!window.passages) {
+    console.error("window.passages is not defined!");
+    feedbackDisplay.textContent = "Error: Passages data not loaded.";
+    return;
+  }
+
+  // Update isFlatArray after passages are confirmed to be loaded
+  isFlatArray = Array.isArray(window.passages);
+  console.log("Updated isFlatArray after load:", isFlatArray);
+
+  // Update dropdown visibility
+  updateGrammarTypeDropdown();
+
+  // Initialize the game
   displayPassage();
   updateStatus();
-  updateStatus();
 });
-
