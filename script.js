@@ -1011,10 +1011,11 @@ window.passages = {
     }
   ]
 };
+
 // ----------------------
 // Global Game State
 // ----------------------
-let currentGrammarType = "prepositions";
+let currentGrammarType = "prepositions"; // Only used if passages are category-based
 let currentPassageIndex = 0;
 let score = 0;
 let stars = 0;
@@ -1024,6 +1025,7 @@ let timeLeft = 60;
 let timerInterval = null;
 let challengeMode = true; // true = Challenge Mode (timer enabled), false = Practice Mode.
 let level = "Apprentice";
+let isFlatArray = Array.isArray(window.passages); // Detect if passages is a flat array
 
 // ----------------------
 // DOM Elements
@@ -1127,9 +1129,10 @@ function updateLevel() {
 function updateStatus() {
   scoreDisplay.textContent = `Score: ${score}`;
   starsDisplay.textContent = `Stars: ${stars}`;
-  progressDisplay.textContent = `Progress: ${currentPassageIndex + 1} / ${window.passages[currentGrammarType].length}`;
+  const totalPassages = isFlatArray ? window.passages.length : window.passages[currentGrammarType].length;
+  progressDisplay.textContent = `Progress: ${currentPassageIndex + 1} / ${totalPassages}`;
   timerDisplay.textContent = `Time: ${timeLeft}s`;
-  progressBar.style.width = `${((currentPassageIndex + 1) / window.passages[currentGrammarType].length) * 100}%`;
+  progressBar.style.width = `${((currentPassageIndex + 1) / totalPassages) * 100}%`;
   if (challengeMode && timerSettingSelect.value !== "off") {
     timerBar.style.width = `${(timeLeft / parseInt(timerSettingSelect.value)) * 100}%`;
     timerBar.style.backgroundColor =
@@ -1184,7 +1187,8 @@ function getNarrativeIntro(grammarType, index) {
     // Add intros for other grammar types as needed.
   };
   const chapters = story[grammarType] || ["Begin your adventure!"];
-  return `${chapters[index % chapters.length]} (Chapter ${index + 1} of ${window.passages[grammarType].length})`;
+  const totalPassages = isFlatArray ? window.passages.length : window.passages[grammarType].length;
+  return `${chapters[index % chapters.length]} (Chapter ${index + 1} of ${totalPassages})`;
 }
 
 // ----------------------
@@ -1194,16 +1198,29 @@ function displayPassage() {
   clearInterval(timerInterval);
   hintUsage = {};
   selectedWord = null;
-  const passage = window.passages[currentGrammarType]?.[currentPassageIndex];
+
+  // Determine the passage based on structure
+  let passage;
+  if (isFlatArray) {
+    passage = window.passages[currentPassageIndex];
+  } else {
+    passage = window.passages[currentGrammarType]?.[currentPassageIndex];
+  }
+
+  console.log("Current passage:", passage); // Debug log
+
   if (!passage) {
     passageText.innerHTML = "<p>Error: Passage not found.</p>";
     feedbackDisplay.textContent = "Error: Passage not found.";
+    console.error("Passage not found at index", currentPassageIndex, "for type", currentGrammarType);
     return;
   }
+
   if (!passage.text || !Array.isArray(passage.wordBox) || !Array.isArray(passage.answers) ||
       !Array.isArray(passage.clueWords) || !Array.isArray(passage.hints)) {
     passageText.innerHTML = "<p>Error: Invalid passage data.</p>";
     feedbackDisplay.textContent = "Error: Missing required passage data.";
+    console.error("Invalid passage data:", passage);
     return;
   }
 
@@ -1212,6 +1229,7 @@ function displayPassage() {
       passage.clueWords.length !== blanks.length ||
       passage.hints.length !== blanks.length) {
     feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
+    console.warn("Mismatch in passage data:", passage);
   }
 
   let passageHTML = `<p class="narrative-intro">${getNarrativeIntro(currentGrammarType, currentPassageIndex)}</p>`;
@@ -1301,7 +1319,7 @@ function setupPassageInteractions() {
     button.addEventListener("click", function () {
       const blankNum = this.getAttribute("data-blank");
       const hintIndex = parseInt(blankNum) - 1;
-      const passage = window.passages[currentGrammarType][currentPassageIndex];
+      const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
       if (passage.hints && passage.hints[hintIndex]) {
         feedbackDisplay.textContent = passage.hints[hintIndex];
         feedbackDisplay.style.color = "blue";
@@ -1367,8 +1385,9 @@ function placeWord(blank, word) {
 
 function checkAnswer(blank) {
   const blankId = parseInt(blank.getAttribute("data-blank")) - 1;
+  const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
   const userAnswer = blank.textContent.trim().toLowerCase();
-  const correctAnswer = window.passages[currentGrammarType][currentPassageIndex].answers[blankId].toLowerCase();
+  const correctAnswer = passage.answers[blankId].toLowerCase();
   const explanations = {
     prepositions: [
       "'On' is correct because it shows the bag is on the table."
@@ -1401,17 +1420,20 @@ function checkAnswer(blank) {
 // Navigation & Controls
 // ----------------------
 grammarSelect.addEventListener("change", () => {
-  currentGrammarType = grammarSelect.value;
-  currentPassageIndex = 0;
-  timeLeft = (timerSettingSelect.value === "off") ? 0 : parseInt(timerSettingSelect.value);
-  displayPassage();
-  updateStatus();
+  if (!isFlatArray) {
+    currentGrammarType = grammarSelect.value;
+    currentPassageIndex = 0;
+    timeLeft = (timerSettingSelect.value === "off") ? 0 : parseInt(timerSettingSelect.value);
+    displayPassage();
+    updateStatus();
+  }
 });
 
 nextPassageButton.addEventListener("click", () => {
   clearInterval(timerInterval);
   currentPassageIndex++;
-  if (currentPassageIndex >= window.passages[currentGrammarType].length) {
+  const totalPassages = isFlatArray ? window.passages.length : window.passages[currentGrammarType].length;
+  if (currentPassageIndex >= totalPassages) {
     feedbackDisplay.textContent = "Game Over! Final Score: " + score;
     speak("Game Over! Your final score is " + score);
     return;
@@ -1440,7 +1462,7 @@ clearButton.addEventListener("click", () => {
 });
 
 hintButton.addEventListener("click", () => {
-  const passage = window.passages[currentGrammarType][currentPassageIndex];
+  const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
   if (passage.hint) {
     feedbackDisplay.textContent = passage.hint;
     feedbackDisplay.style.color = "blue";
@@ -1462,7 +1484,7 @@ shareButton.addEventListener("click", () => {
 });
 
 readPassageButton.addEventListener("click", () => {
-  const passage = window.passages[currentGrammarType][currentPassageIndex];
+  const passage = isFlatArray ? window.passages[currentPassageIndex] : window.passages[currentGrammarType][currentPassageIndex];
   if (passage && passage.text) {
     const textToSpeak = passage.text.replace(/\d+/g, "blank");
     speak(textToSpeak);
@@ -1519,8 +1541,11 @@ document.addEventListener("keydown", (e) => {
 // ----------------------
 // Initialize the Game
 // ----------------------
-// Wrap initialization in DOMContentLoaded to ensure DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+  // Hide grammar dropdown if using a flat array
+  if (isFlatArray) {
+    grammarSelect.style.display = "none";
+  }
   displayPassage();
   updateStatus();
   updateStatus();
