@@ -1056,6 +1056,9 @@ const timerSettingSelect = document.getElementById("timer-setting");
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
 toggleDyslexiaButton.addEventListener("click", () => {
   document.body.classList.toggle("dyslexia");
+  const isDyslexiaMode = document.body.classList.contains("dyslexia");
+  toggleDyslexiaButton.textContent = isDyslexiaMode ? "Disable Dyslexia Font" : "Toggle Dyslexia Font";
+  speak(isDyslexiaMode ? "Dyslexia-friendly font enabled" : "Dyslexia-friendly font disabled");
 });
 
 // ----------------------
@@ -1492,6 +1495,15 @@ grammarSelect.addEventListener("change", () => {
     displayPassage();
     updateStatus();
   }
+});
+
+// Add event listener for text size slider
+const textSizeSlider = document.getElementById("text-size-slider");
+textSizeSlider.addEventListener("input", () => {
+  const textSize = textSizeSlider.value;
+  passageText.style.fontSize = `${textSize}rem`;
+  wordBox.style.fontSize = `${textSize * 0.8}rem`; // Slightly smaller for word box
+  speak(`Text size adjusted to ${textSize} rem`);
 });
 
 nextPassageButton.addEventListener("click", () => {
