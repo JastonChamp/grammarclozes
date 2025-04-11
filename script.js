@@ -1011,7 +1011,6 @@ window.passages = {
     }
   ]
 };
-
 // ----------------------
 // Global Game State
 // ----------------------
@@ -1471,6 +1470,16 @@ function checkAnswer(blank) {
   }
   updateStatus();
 }
+
+// ----------------------
+// Sidebar Toggle
+// ----------------------
+const sidebar = document.querySelector(".sidebar");
+const sidebarToggle = document.getElementById("sidebar-toggle");
+
+sidebarToggle.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
 
 // ----------------------
 // Navigation & Controls
