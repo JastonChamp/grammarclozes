@@ -687,7 +687,7 @@ window.passages = {
       hints: [
         "Select the conjunction that links the two types of comparisons.",
         "Choose the connector that offers alternatives for flight options.",
-       . "Pick the word that shows a result of balancing considerations.",
+        "Pick the word that shows a result of balancing considerations.",
         "Select the conjunction that adds the family's preferences.",
         "Choose the word that explains why these choices simplified travel."
       ],
