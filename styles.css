@@ -165,6 +165,12 @@ body.light-mode .sidebar {
 .sidebar.open {
   left: 0;
 }
+#grammar-type-message {
+  margin-left: 5px;
+}
+body.light-mode #grammar-type-message {
+  color: var(--light-text);
+}
 
 /* Main Content */
 main {
