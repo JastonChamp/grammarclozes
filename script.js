@@ -3805,7 +3805,7 @@ adjectivesAdverbs = [
     ],
     hints: [
       "Select an adjective that sets the mood for the theater.",
-     , "Choose an adverb for how the theater was illuminated.",
+      "Choose an adverb for how the theater was illuminated.",
       "Pick an adverb that reflects the passion in the actors’ performance.",
       "Select an adverb that describes how the dialogue was delivered.",
       "Choose an adverb that conveys the audience's reaction."
