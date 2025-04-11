@@ -148,7 +148,7 @@ body.light-mode .instructions {
 /* Sidebar */
 .sidebar {
   position: fixed;
-  left: -250px;
+  left: 0; /* Visible by default on larger screens */
   top: 0;
   width: 250px;
   height: 100%;
@@ -163,7 +163,7 @@ body.light-mode .sidebar {
   color: var(--light-text);
 }
 .sidebar.open {
-  left: 0;
+  left: 0; /* For smaller screens when toggled */
 }
 #grammar-type-message {
   margin-left: 5px;
@@ -172,17 +172,84 @@ body.light-mode #grammar-type-message {
   color: var(--light-text);
 }
 
+/* Style the dropdown */
+#grammar-type {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: var(--light-text);
+  border: 1px solid #2ecc71;
+  margin-bottom: 10px;
+  width: 100%;
+}
+body:not(.light-mode) #grammar-type {
+  background-color: #4a2e7a;
+  color: var(--dark-text);
+}
+
+/* Style the timer setting dropdown */
+#timer-setting {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: var(--light-text);
+  border: 1px solid #2ecc71;
+  margin-bottom: 10px;
+  width: 100%;
+}
+body:not(.light-mode) #timer-setting {
+  background-color: #4a2e7a;
+  color: var(--dark-text);
+}
+
+/* Style the text size slider */
+#text-size-slider {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Style sidebar buttons */
+.sidebar button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.sidebar button:hover {
+  background-color: #2980b9;
+}
+
 /* Main Content */
 main {
+  margin-left: 270px; /* Space for sidebar */
   padding: 20px;
   border-radius: 10px;
-  transition: background 0.3s;
+  transition: background 0.3s, margin-left 0.3s;
 }
 body:not(.light-mode) main {
   background: linear-gradient(135deg, #4a6fa5, #3a5276);
 }
 body.light-mode main {
   background: linear-gradient(135deg, var(--light-bg), var(--light-secondary));
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .sidebar {
+    left: -250px; /* Hidden by default on smaller screens */
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  main {
+    margin-left: 0; /* No sidebar space on smaller screens */
+  }
 }
 
 /* Game Container */
@@ -222,6 +289,20 @@ body:not(.light-mode) #word-box {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 10px;
   justify-items: center;
+}
+
+/* Narrative Intro Styling */
+.narrative-intro {
+  background-color: rgba(255, 215, 0, 0.1); /* Light gold background */
+  border-left: 4px solid var(--accent-color); /* Gold border on the left */
+  padding: 10px;
+  margin-bottom: 15px;
+  font-style: italic;
+  color: #8e44ad; /* Purple color to match the wizard theme */
+  border-radius: 5px;
+}
+body.light-mode .narrative-intro {
+  color: #6c3483; /* Slightly darker purple for light mode */
 }
 
 /* Control Buttons */
