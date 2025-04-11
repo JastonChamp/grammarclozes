@@ -1011,7 +1011,6 @@ window.passages = {
     }
   ]
 };
-
 // ----------------------
 // Global Game State
 // ----------------------
@@ -1235,61 +1234,21 @@ function displayPassage() {
             </span>`;
   });
 
-  fadeOutIn(passageText, () => {
+  // Skip fade animation on initial load to avoid rendering issues
+  if (currentPassageIndex === 0 && Object.keys(hintUsage).length === 0) {
     passageText.innerHTML = passageHTML;
-    
-    document.querySelectorAll(".blank-container").forEach(container => {
-      container.addEventListener("dragover", handleContainerDragOver);
-      container.addEventListener("dragleave", handleContainerDragLeave);
-      container.addEventListener("drop", handleContainerDrop);
+    setupPassageInteractions();
+  } else {
+    fadeOutIn(passageText, () => {
+      passageText.innerHTML = passageHTML;
+      setupPassageInteractions();
     });
-    
-    document.querySelectorAll(".blank").forEach(blank => {
-      blank.addEventListener("click", () => {
-        if (selectedWord && !blank.classList.contains("filled")) {
-          placeWord(blank, selectedWord.textContent);
-          selectedWord.classList.remove("selected");
-          selectedWord = null;
-          updateStatus();
-        }
-      });
-      blank.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && selectedWord && !blank.classList.contains("filled")) {
-          placeWord(blank, selectedWord.textContent);
-          selectedWord.classList.remove("selected");
-          selectedWord = null;
-          updateStatus();
-        }
-      });
-    });
-    
-    document.querySelectorAll(".hint-for-blank").forEach(button => {
-      button.addEventListener("click", function () {
-        const blankNum = this.getAttribute("data-blank");
-        const hintIndex = parseInt(blankNum) - 1;
-        if (passage.hints && passage.hints[hintIndex]) {
-          feedbackDisplay.textContent = passage.hints[hintIndex];
-          feedbackDisplay.style.color = "blue";
-          speak(passage.hints[hintIndex]);
-          if (!hintUsage[blankNum] && challengeMode) {
-            hintUsage[blankNum] = true;
-            score = Math.max(0, score - 5);
-            feedbackDisplay.textContent += " (-5 points for hint)";
-            updateStatus();
-          }
-        }
-        document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
-        setTimeout(() => {
-          document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.remove("highlighted"));
-        }, 3000);
-      });
-    });
-  });
-  
+  }
+
   wordBox.innerHTML = shuffle([...passage.wordBox])
     .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
     .join("");
-  
+
   document.querySelectorAll(".word").forEach(word => {
     word.addEventListener("dragstart", handleDragStart);
     word.addEventListener("dragend", handleDragEnd);
@@ -1306,9 +1265,60 @@ function displayPassage() {
       }
     });
   });
-  
+
   if (challengeMode) startTimer();
   updateStatus();
+}
+
+// Extract interaction setup into a separate function for clarity
+function setupPassageInteractions() {
+  document.querySelectorAll(".blank-container").forEach(container => {
+    container.addEventListener("dragover", handleContainerDragOver);
+    container.addEventListener("dragleave", handleContainerDragLeave);
+    container.addEventListener("drop", handleContainerDrop);
+  });
+
+  document.querySelectorAll(".blank").forEach(blank => {
+    blank.addEventListener("click", () => {
+      if (selectedWord && !blank.classList.contains("filled")) {
+        placeWord(blank, selectedWord.textContent);
+        selectedWord.classList.remove("selected");
+        selectedWord = null;
+        updateStatus();
+      }
+    });
+    blank.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && selectedWord && !blank.classList.contains("filled")) {
+        placeWord(blank, selectedWord.textContent);
+        selectedWord.classList.remove("selected");
+        selectedWord = null;
+        updateStatus();
+      }
+    });
+  });
+
+  document.querySelectorAll(".hint-for-blank").forEach(button => {
+    button.addEventListener("click", function () {
+      const blankNum = this.getAttribute("data-blank");
+      const hintIndex = parseInt(blankNum) - 1;
+      const passage = window.passages[currentGrammarType][currentPassageIndex];
+      if (passage.hints && passage.hints[hintIndex]) {
+        feedbackDisplay.textContent = passage.hints[hintIndex];
+        feedbackDisplay.style.color = "blue";
+        speak(passage.hints[hintIndex]);
+        if (!hintUsage[blankNum] && challengeMode) {
+          hintUsage[blankNum] = true;
+          score = Math.max(0, score - 5);
+          feedbackDisplay.textContent += " (-5 points for hint)";
+          updateStatus();
+        }
+      }
+      document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.add("highlighted"));
+      setTimeout(() => {
+        document.querySelectorAll(`.keyword-${blankNum}`).forEach(el => el.classList.remove("highlighted"));
+      }, 3000);
+    });
+  });
 }
 
 // ----------------------
@@ -1362,9 +1372,9 @@ function checkAnswer(blank) {
   const explanations = {
     prepositions: [
       "'On' is correct because it shows the bag is on the table."
-      // You can expand this array for each blank.
+      // Expand for each blank as needed
     ]
-    // Add explanations for other grammar types similarly.
+    // Add explanations for other grammar types similarly
   };
   if (userAnswer === correctAnswer) {
     blank.classList.add("correct", "animate-correct");
@@ -1509,6 +1519,9 @@ document.addEventListener("keydown", (e) => {
 // ----------------------
 // Initialize the Game
 // ----------------------
-displayPassage();
-updateStatus();
-updateStatus();
+// Wrap initialization in DOMContentLoaded to ensure DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  displayPassage();
+  updateStatus();
+  updateStatus();
+});
