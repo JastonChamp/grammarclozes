@@ -50,9 +50,14 @@ body.light-mode {
 }
 
 /* Dyslexia Mode */
+body.dyslexia {
+  font-family: "Open Dyslexic", "Comic Sans MS", sans-serif !important; /* Temporary test */
+}
 body.dyslexia #passage-text,
-body.dyslexia #word-box {
-  font-family: "Open Dyslexic", "Comic Sans MS", sans-serif !important; /* Added fallback and !important */
+body.dyslexia #word-box,
+body.dyslexia #passage-text *,
+body.dyslexia #word-box * {
+  font-family: "Open Dyslexic", "Comic Sans MS", sans-serif !important; /* Apply to all child elements */
 }
 body.dyslexia main {
   background: linear-gradient(135deg, #e0f7fa, #b2ebf2); /* Light cyan background for dyslexia mode */
