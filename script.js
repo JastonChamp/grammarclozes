@@ -2083,25 +2083,25 @@ subjectVerbAgreement: [
 ],
 pronouns: [
   {
-    text: "Mary lost ___(1)___ book yesterday. She asked John if ___(2)___ had seen it. He said that ___(3)___ didn’t know where it was. ___(4)___ both looked for it. Later, ___(5)___ found it under the desk.",
-    wordBox: ["she", "her", "he", "it", "they", "them"],
-    answers: ["her", "he", "he", "they", "she"],
-    clueWords: [
-      ["Mary", "book"],
-      ["John"],
-      ["didn’t know"],
-      ["both", "looked"],
-      ["found", "desk"]
-    ],
-    hints: [
-      "Choose the possessive pronoun that shows the book belongs to Mary.",
-      "Select the subject pronoun that refers to John.",
-      "Pick the subject pronoun that should refer to the person who did not know.",
-      "Determine the plural subject pronoun for two people.",
-      "Select the subject pronoun that indicates who eventually found the book."
-    ],
-    hint: "Match each blank with the pronoun that correctly reflects the role (subject, object, or possessive)."
-  },
+  text: "Mary lost ___(1)___ book yesterday. She asked John if ___(2)___ had seen it. He replied that ___(3)___ didn’t know where it was. Although both of them searched everywhere, ___(4)___ eventually discovered it, and ___(5)___ was very relieved.",
+  wordBox: ["she", "her", "he", "it", "they", "them"],
+  answers: ["her", "he", "he", "she", "she"],
+  clueWords: [
+    ["Mary", "book"],
+    ["John"],
+    ["replied", "didn’t know"],
+    ["both", "searched"],
+    ["discovered", "relieved"]
+  ],
+  hints: [
+    "Choose the possessive pronoun that shows the book belongs to Mary.",
+    "Select the subject pronoun that refers to John.",
+    "Pick the subject pronoun that refers to the person who did not know.",
+    "Determine the subject pronoun for the person who eventually discovered the book.",
+    "Select the subject pronoun that reflects who was very relieved."
+  ],
+  hint: "Match each blank with the pronoun that correctly reflects its role (subject, object, or possessive)."
+},
   {
     text: "The principal congratulated ___(1)___ on the new project. ___(2)___ was impressed by the innovative ideas. Later, the team thanked ___(3)___ for the support, and ___(4)___ all recognized ___(5)___ contributions.",
     wordBox: ["she", "he", "they", "them", "her", "his", "their"],
