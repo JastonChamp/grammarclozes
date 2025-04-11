@@ -2081,7 +2081,7 @@ subjectVerbAgreement: [
     hint: "Keep all subjects and verbs in proper number agreement."
   }
 ];
-pronouns = [
+pronouns: [
   {
     text: "Mary lost ___(1)___ book yesterday. She asked John if ___(2)___ had seen it. He said that ___(3)___ didn’t know where it was. ___(4)___ both looked for it. Later, ___(5)___ found it under the desk.",
     wordBox: ["she", "her", "he", "it", "they", "them"],
