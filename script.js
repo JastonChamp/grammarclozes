@@ -23,6 +23,13 @@ window.passages = {
         "Which preposition suggests a movement following an action?",
         "Pick the preposition that signifies movement toward a destination."
       ],
+      semanticHints: [
+        "Think of how an object rests upon another item.",
+        "Focus on the direction of Jamie's gaze toward the hills.",
+        "Imagine being inside the wide expanse of the sky.",
+        "Consider an action that happens after chasing the ball.",
+        "Visualize walking toward a specific location."
+      ],
       hint: "Remember to use the objects around you as clues."
     },
     {
@@ -36,12 +43,19 @@ window.passages = {
         ["crates"],
         ["walked", "entrance"]
       ],
-      hints: [
+     hints: [
         "Which preposition best indicates the basket’s placement on the counter?",
         "Select the one that shows where the shoppers directed their look.",
         "Choose the preposition that indicates moving among the stalls.",
         "Which word implies being hidden beneath an object?",
         "Pick the preposition that shows movement toward the entrance."
+      ],
+      semanticHints: [
+        "Picture the basket resting on top of a surface.",
+        "Think of where people aim their sight in a market.",
+        "Visualize weaving in and out between stalls.",
+        "Consider the idea of being beneath something solid.",
+        "Imagine approaching the main doorway."
       ],
       hint: "Remember to use the objects around you as clues."
     },
@@ -4657,13 +4671,25 @@ function placeWord(blank, word) {
   checkAnswer(blank);
 }
 
-function checkAnswer(blank) {
+function checkAnswer(blank) {␊
   const blankId = parseInt(blank.getAttribute("data-blank")) - 1;
   const passage = isFlatArray
     ? window.passages[currentPassageIndex]
     : window.passages[currentGrammarType][currentPassageIndex];
   const userAnswer = blank.textContent.trim().toLowerCase();
   const correctAnswer = passage.answers[blankId].toLowerCase();
+
+  // Retrieve semantic hint if provided
+  let semanticHint = "";
+  if (passage.semanticHints && Array.isArray(passage.semanticHints)) {
+    if (passage.semanticHints[blankId]) {
+      semanticHint = passage.semanticHints[blankId];
+    } else {
+      semanticHint = "Consider the context for meaning.";
+    }
+  } else {
+    semanticHint = "Consider the context for meaning.";
+  }
 
   // Use passage-specific explanations if provided
   let explanation = "";
@@ -4747,13 +4773,13 @@ function checkAnswer(blank) {
     feedbackDisplay.style.color = "green";
     document.getElementById("correct-sound").play();
     speak(feedbackDisplay.textContent);
-  } else {
-    blank.classList.add("incorrect", "animate-incorrect");
-    feedbackDisplay.textContent = `Incorrect! The correct answer is '${correctAnswer}'. ${explanation}`;
-    feedbackDisplay.style.color = "red";
-    document.getElementById("incorrect-sound").play();
-    speak(feedbackDisplay.textContent);
-  }
+  } else {␊
+    blank.classList.add("incorrect", "animate-incorrect");␊
+    feedbackDisplay.textContent = `Incorrect! The correct answer is '${correctAnswer}'. ${explanation} ${semanticHint}`;
+    feedbackDisplay.style.color = "red";␊
+    document.getElementById("incorrect-sound").play();␊
+    speak(feedbackDisplay.textContent);␊
+  }␊
   updateStatus();
 }
 
