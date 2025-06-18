@@ -7,7 +7,18 @@ window.passages = {
  prepositions: [
     {
       text: "During a walk in the park, Jamie set down the bag ___(1)___ a bench and gazed ___(2)___ the distant hills. A kite soared ___(3)___ the sky, and a dog chased a ball ___(4)___. Later, Jamie strolled ___(5)___ the gate.",
-      wordBox: ["on", "in", "under", "by", "through", "around", "towards", "after", "to"],
+       wordBox: ["on", "in", "under", "by", "through", "around", "towards", "after", "to"],
+      wordHints: [
+        "Used for surfaces",
+        "Indicates being inside",
+        "Positioned below",
+        "Located next to",
+        "Moving from one side to the other",
+        "Encircling something",
+        "Shows direction",
+        "Following something",
+        "Toward a destination"
+      ],
       answers: ["on", "towards", "in", "after", "to"],
       clueWords: [
         ["bag", "bench"],
@@ -4551,8 +4562,11 @@ function displayPassage() {
     });
   }
 
-  wordBox.innerHTML = shuffle([...passage.wordBox])
-    .map(word => `<div class="word" draggable="true" tabindex="0">${word}</div>`)
+ wordBox.innerHTML = shuffle([...passage.wordBox])
+    .map((word, index) => {
+      const hint = passage.wordHints?.[index] ?? word;
+      return `<div class="word" draggable="true" tabindex="0" aria-label="${word}" title="${hint}">${word}</div>`;
+    })
     .join("");
 
   document.querySelectorAll(".word").forEach(word => {
