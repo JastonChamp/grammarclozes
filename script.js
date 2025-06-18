@@ -4685,7 +4685,7 @@ function placeWord(blank, word) {
   checkAnswer(blank);
 }
 
-function checkAnswer(blank) {␊
+function checkAnswer(blank) {
   const blankId = parseInt(blank.getAttribute("data-blank")) - 1;
   const passage = isFlatArray
     ? window.passages[currentPassageIndex]
@@ -4787,13 +4787,13 @@ function checkAnswer(blank) {␊
     feedbackDisplay.style.color = "green";
     document.getElementById("correct-sound").play();
     speak(feedbackDisplay.textContent);
-  } else {␊
-    blank.classList.add("incorrect", "animate-incorrect");␊
+  } else {
+    blank.classList.add("incorrect", "animate-incorrect");
     feedbackDisplay.textContent = `Incorrect! The correct answer is '${correctAnswer}'. ${explanation} ${semanticHint}`;
-    feedbackDisplay.style.color = "red";␊
-    document.getElementById("incorrect-sound").play();␊
-    speak(feedbackDisplay.textContent);␊
-  }␊
+    feedbackDisplay.style.color = "red";
+    document.getElementById("incorrect-sound").play();
+    speak(feedbackDisplay.textContent);
+  }
   updateStatus();
 }
 
