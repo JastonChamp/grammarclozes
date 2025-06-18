@@ -4235,6 +4235,9 @@ let challengeMode = true; // true = Challenge Mode (timer enabled), false = Prac
 let level = "Apprentice";
 let isFlatArray = Array.isArray(window.passages); // Detect if passages is a flat array
 
+// Debug flag for optional console output
+const debug = false;
+
 // ----------------------
 // DOM Elements
 // ----------------------
@@ -4482,12 +4485,25 @@ function displayPassage() {
     return;
   }
 
-  const blanks = passage.text.match(/\d+/g) || [];
-  if (passage.answers.length !== blanks.length ||
-      passage.clueWords.length !== blanks.length ||
-      passage.hints.length !== blanks.length) {
-    feedbackDisplay.textContent = "Warning: Mismatch in blanks, answers, clues, or hints.";
-    console.warn("Mismatch in passage data:", passage);
+ const blanks = passage.text.match(/\d+/g) || [];
+  const blankCount = blanks.length;
+  const answerCount = passage.answers.length;
+  const clueCount = passage.clueWords.length;
+  const hintCount = passage.hints.length;
+
+  const mismatch = [];
+  if (answerCount !== blankCount) mismatch.push(`answers (${answerCount})`);
+  if (clueCount !== blankCount) mismatch.push(`clues (${clueCount})`);
+  if (hintCount !== blankCount) mismatch.push(`hints (${hintCount})`);
+
+  if (mismatch.length) {
+    feedbackDisplay.textContent =
+      `Warning: ${blankCount} blanks, but ${mismatch.join(', ')}.`;
+    console.warn(
+      `Mismatch in passage data: blanks=${blankCount}`,
+      { answers: answerCount, clues: clueCount, hints: hintCount },
+      passage
+    );
   }
 
   let passageHTML = `<p class="narrative-intro">${getNarrativeIntro(currentGrammarType, currentPassageIndex)}</p>`;
