@@ -1,0 +1,4 @@
+.gitkeep
+
+src: url("fonts/OpenDyslexic-Regular.woff2") format("woff2"),
+     url("fonts/OpenDyslexic-Regular.woff") format("woff");
