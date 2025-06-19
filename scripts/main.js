@@ -292,7 +292,7 @@ function displayPassage() {
   passageHTML = passage.text;
 
   if (passage.clueWords) {
-    passage.clueWords.forEach((clues, index) => {␊
+    passage.clueWords.forEach((clues, index) => {
       const blankNum = index + 1;
       clues.forEach(clue => {
         const regex = new RegExp(`\\b${clue}\\b`, "gi");
