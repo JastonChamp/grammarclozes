@@ -11,31 +11,31 @@
   <div id="tutorial-modal" class="modal">
     <div class="modal-content">
       <h2>Welcome to Grammar Cloze Adventure!</h2>
-      <p>
-        Drag or tap a word to fill in each blank. Use the sidebar for hints and settings.
-        When you’re ready, press "Submit" to check your answers.
-      </p>
+      <p>Follow these steps:</p>
+      <ol>
+        <li>Drag or tap a word from the word box to fill a blank.</li>
+        <li>Use the 💡 Hint button or keywords for help.</li>
+        <li>Press ✅ Submit to check your answers.</li>
+      </ol>
       <button id="tutorial-close-btn" class="modal-btn">Let's Begin</button>
     </div>
   </div>
 
   <!-- Header -->
   <header>
-   <div class="header-controls">
+    <div class="header-controls">
       <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
       <button id="toggle-theme" class="theme-toggle">Light Mode</button>
     </div>
     <h1>
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 10px;">
-        <path d="M12 2L15 9H9L12 2Z" fill="#ffd700"/>
-        <path d="M12 9L15 15H9L12 9Z" fill="#ffd700"/>
-        <circle cx="12" cy="18" r="2" fill="#ffd700"/>
+        <path d="M12 2L15 9H9L12 2Z" fill="#D4A017"/>
+        <path d="M12 9L15 15H9L12 9Z" fill="#D4A017"/>
+        <circle cx="12" cy="18" r="2" fill="#D4A017"/>
       </svg>
       Grammar Cloze Adventure
     </h1>
-    <p class="instructions">
-      Drag or tap a word to fill in the blanks, then press "Submit" for detailed feedback.
-    </p>
+    <p class="instructions">Drag or tap a word to fill blanks, then submit for feedback.</p>
   </header>
 
   <!-- Sidebar for Settings -->
@@ -49,9 +49,7 @@
       <option value="adjectivesAdverbs">Adjectives & Adverbs</option>
       <option value="tenses">Tenses</option>
     </select>
-    <span id="grammar-type-message" style="display: none; color: #f0e4ff; font-size: 0.9em;">
-      (Category selection disabled in this mode)
-    </span>
+    <span id="grammar-type-message" style="display: none; color: #f0e4ff; font-size: 0.9em;">(Category selection disabled)</span>
     <br>
     <label for="timer-setting">⏳ Timer (seconds):</label>
     <select id="timer-setting" aria-label="Select timer duration">
@@ -66,6 +64,8 @@
     <input type="range" id="text-size-slider" min="1" max="2" step="0.1" value="1.4" aria-label="Adjust text size">
     <br>
     <button id="toggle-challenge" aria-label="Toggle challenge mode">⏱️ Challenge</button>
+    <br>
+    <button id="toggle-high-contrast" aria-label="Toggle high contrast mode">Toggle High Contrast</button>
   </aside>
 
   <!-- Main Game Content -->
@@ -76,14 +76,15 @@
     </div>
     <!-- Control Buttons -->
     <div class="control-buttons">
-      <button id="hint-btn" aria-label="Get Hint">Hint (H)</button>
+      <button id="hint-btn" aria-label="Get Hint">💡 Hint (H)</button>
       <button id="clear-btn" aria-label="Clear Answers">Clear</button>
       <button id="share-btn" aria-label="Share Progress">Share</button>
       <button id="read-passage-btn" aria-label="Read Passage Aloud">Read Passage</button>
+      <button id="reset-words-btn" aria-label="Reset Words">Reset Words</button>
     </div>
     <!-- Navigation Buttons including Submit -->
     <div class="navigation-buttons">
-      <button id="submit-btn" aria-label="Submit Answers">Submit</button>
+      <button id="submit-btn" aria-label="Submit Answers">✅ Submit</button>
       <button id="prev-btn" aria-label="Previous Passage">⬅️ Prev</button>
       <button id="next-btn" aria-label="Next Passage">Next ➡️</button>
     </div>
@@ -100,6 +101,7 @@
         <div id="timer-bar"></div>
       </div>
       <span id="level"></span>
+      <span id="achievements"></span>
     </div>
   </main>
 
@@ -107,7 +109,7 @@
   <audio id="correct-sound" src="correct.mp3"></audio>
   <audio id="incorrect-sound" src="incorrect.mp3"></audio>
 
-<script type="module" src="scripts/main.js"></script>
+  <script type="module" src="scripts/main.js"></script>
   <script type="module" src="scripts/ui/events.js"></script>
 </body>
 </html>
