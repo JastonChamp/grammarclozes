@@ -2,6 +2,9 @@ import { state, displayPassage, updateStatus, startTimer, fadeOutIn } from "../m
 import { speak } from "../utils/speech.js";
 const grammarSelect = document.getElementById("grammar-type");
 const textSizeSlider = document.getElementById("text-size-slider");
+const passageText = document.getElementById("passage-text");
+const wordBox = document.getElementById("word-box");
+const feedbackDisplay = document.getElementById("feedback");
 const nextPassageButton = document.getElementById("next-btn");
 const prevPassageButton = document.getElementById("prev-btn");
 const clearButton = document.getElementById("clear-btn");
@@ -34,7 +37,6 @@ grammarSelect.addEventListener("change", () => {
 });
 
 // Add event listener for text size slider
-const textSizeSlider = document.getElementById("text-size-slider");
 textSizeSlider.addEventListener("input", () => {
   const textSize = textSizeSlider.value;
   passageText.style.fontSize = `${textSize}rem`;
