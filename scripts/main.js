@@ -612,6 +612,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStatus();
 });
 
+export { displayPassage, updateStatus, startTimer, fadeOutIn };
+
+window.displayPassage = displayPassage;
+window.updateStatus = updateStatus;
+window.startTimer = startTimer;
+window.fadeOutIn = fadeOutIn;
+
 window.displayPassage = displayPassage;
 window.updateStatus = updateStatus;
 window.startTimer = startTimer;
