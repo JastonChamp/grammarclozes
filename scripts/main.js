@@ -133,7 +133,6 @@ tutorialCloseButton.addEventListener("click", () => {
 //   utterance.rate = 0.9;
 //   utterance.pitch = 1.1;
 //   synth.speak(utterance);
-}
 
 // ----------------------
 // Utility Functions
