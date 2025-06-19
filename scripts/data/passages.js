@@ -1,10 +1,3 @@
-diff --git a//dev/null b/scripts/data/passages.js
-index 0000000000000000000000000000000000000000..c20f178d12bf68016d093dd40039029075a8619a 100644
---- a//dev/null
- b/scripts/data/passages.js
-@@ -0,0 1,4246 @@
-"use strict";
-
 // =======================
 // Full Passages Data
 // =======================
