@@ -617,5 +617,3 @@ window.displayPassage = displayPassage;
 window.updateStatus = updateStatus;
 window.startTimer = startTimer;
 window.fadeOutIn = fadeOutIn;
-export { state };
-export { displayPassage, updateStatus, startTimer, fadeOutIn };
