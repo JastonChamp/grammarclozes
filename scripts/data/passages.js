@@ -675,7 +675,7 @@ export const passages = {
     {
       text: "At a summer picnic, friends gathered outdoors, ___(1)___ they prepared various dishes to share. They could relax under the sun ___(2)___ engage in lively conversations, ___(3)___ everyone enjoyed the balanced festivities, ___(4)___ the atmosphere was joyful, ___(5)___ memories were made.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "or", "because", "as", "so"],
+     
       // Replace "as" with one of our allowed words. Use "because" is already used; perhaps "since" is not allowed.
       // Let's adjust: 1: "and", 2: "or", 3: "since" is not allowed; we can use "because", but then 4: "while", 5: "so".
       // Alternatively, I'll use: answers: ["and", "or", "but", "so", "because"].
@@ -867,7 +867,7 @@ export const passages = {
     {
       text: "In a heated classroom discussion, students shared ideas, ___(1)___ some disagreed vehemently. The teacher listened patiently, ___(2)___ emphasized respectful debate. Opinions flowed freely, ___(3)___ disagreements were resolved ___(4)___ mutual understanding prevailed, ___(5)___ the session ended on a positive note.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "but", "and", "when", "so"],
+     
       // "when" is not in our wordBox; replace with allowed words. We'll choose "because" instead.
       answers: ["and", "but", "and", "because", "so"],
       clueWords: [
@@ -889,11 +889,11 @@ export const passages = {
     {
       text: "At an international conference, speakers presented research findings, ___(1)___ delegates asked challenging questions. The keynote address was inspiring, ___(2)___ sparked a lively debate among experts. Participants could network ___(3)___ exchange contacts, ___(4)___ both were encouraged, ___(5)___ follow-up collaborations were organized.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "which", "or", "and", "so"],
+      
       // "which" is not among our allowed conjunctions; adjust to a valid one.
       // I'll change 2: Instead of "which sparked a lively debate" I'll use "and" or "so".
       // Let’s rephrase: "The keynote address was inspiring, ___(2)___ it sparked a lively debate." → use "so".
-      // Then answers become: 1: "and", 2: "so", 3: "or", 4: "and", 5: "so". 
+       // Then answers become: 1: "and", 2: "so", 3: "or", 4: "and", 5: "so".
       // But we already have "so" twice in a row. Instead, for 5, maybe use "because".
       answers: ["and", "so", "or", "and", "because"],
       clueWords: [
@@ -915,7 +915,7 @@ export const passages = {
     {
       text: "During a lively concert, the band played upbeat songs, ___(1)___ the crowd danced and sang along. The stage lights flickered ___(2)___ created an electric atmosphere, ___(3)___ the energy was contagious, ___(4)___ performers fed off the audience's enthusiasm, ___(5)___ the night turned unforgettable.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "which", "so", "as", "so"],
+    
       // Again, remove "which" and "as" (not in the allowed list). Adjust to:
       // 1: "and", 2: "and", 3: "because", 4: "while", 5: "so"
       answers: ["and", "and", "because", "while", "so"],
@@ -1478,7 +1478,7 @@ export const passages = {
     {
       text: "At an academic symposium, researchers presented their findings, ___(1)___ engaged in spirited discussion. Some supported the theories, ___(2)___ challenged the conclusions. Opinions diverged ___(3)___ the debate was lively, ___(4)___ participants learned from every perspective, ___(5)___ paving the way for future studies.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "but", "as", "so", "because"],
+     
       // "as" is not allowed, so replace with "while":
       answers: ["and", "but", "while", "so", "because"],
       clueWords: [
@@ -2208,7 +2208,7 @@ pronouns: [
   {
     text: "In a science experiment, the technician collected samples and prepared them carefully. ___(1)___ analyzed under the microscope revealed unexpected patterns. The results impressed the team, ___(2)___ confirmed many predictions. Later, the lead researcher praised ___(3)___ for innovation, and the study ___(4)___ a breakthrough that changed the field, leaving ___(5)___ a lasting impact.",
     wordBox: ["he", "she", "it", "they", "them", "his", "her", "their"],
-    answers: ["they", "they", "her", "became", "it"],
+    
     // Note: In blank (4) we need a pronoun—but "became" is a verb. We can rephrase blank (4) as: "and the study ___(4)___ recognized as a breakthrough" → use "was" is a verb. We need to insert a pronoun here, so adjust the text:
     // Let's rephrase passage 6 as follows:
     text: "In a science experiment, the technician collected samples and prepared them carefully. ___(1)___ examined under the microscope revealed unexpected patterns. The results impressed the team, ___(2)___ confirmed many predictions. Later, the lead researcher praised ___(3)___ for innovation, and the study earned ___(4)___ recognition as a breakthrough, leaving ___(5)___ a lasting impact.",
@@ -2713,7 +2713,7 @@ pronouns: [
   {
     text: "During a charity fundraiser, the organizers arranged donation boxes, and ___(1)___ placed them at strategic spots. Attendees dropped contributions into ___(2)___ boxes, and the volunteers collected ___(3)___ regularly. The event coordinator thanked ___(4)___ for their generosity, and everyone appreciated ___(5)___ spirit of community.",
     wordBox: ["he", "she", "they", "them", "it", "his", "her", "their"],
-    answers: ["they", "theirs", "them", "them", "their"],
+   
     // Note: For blank (2) we need an object pronoun that represents "the donation boxes"—here we might choose "them" but that would be repetitive.
     // We want to include a possessive form: but our allowed wordBox for pronouns might be "their" or "theirs". Use "their" might fit: "... dropped contributions into their boxes." But that implies boxes belonging to the organizers.
     // Instead, adjust blank (2) to: "Attendees dropped contributions into ___(2)___ boxes" → answer: "the boxes" is already in text. We need a pronoun replacement that makes sense. I'll rephrase the sentence slightly:
@@ -2829,7 +2829,7 @@ pronouns: [
   {
     text: "During a holiday celebration, the family gathered in the living room, and ___(1)___ all exchanged warm greetings. The grandmother recounted cherished memories, and the relatives shared ___(2)___ stories with laughter. Later, the hosts thanked ___(3)___ for their attendance, and everyone embraced ___(4)___ with joy, leaving ___(5)___ with lasting fondness.",
     wordBox: ["he", "she", "they", "them", "it", "his", "her", "their"],
-    answers: ["they", "their", "them", "each other", "them"],
+    
     // Note: "each other" isn't in our set but we can instead use "they" if that's acceptable.
     // We'll adjust blank (4) to use "they" meaning "everyone embraced them" but that would not be clear.
     // Alternatively, we can mimic the idea: "and everyone embraced one another" but that isn't a pronoun.
@@ -3796,7 +3796,7 @@ adjectivesAdverbs: [
   {
     text: "The ___(1)___ market bustled with energy. Vendors displayed ___(2)___ produce, and shoppers moved ___(3)___ among the stalls. The air was filled with ___(4)___ aromas, and the overall mood was ___(5)___ joyful.",
     wordBox: ["lively", "fresh", "busily", "aromatic", "remarkably", "vibrant", "energetically"],
-    answers: ["lively", "fresh", "busily", "aromatically", "remarkably"],
+    
     // Note: "aromatically" is not common; revise blank (4) to "richly" describing aromas.
     answers: ["lively", "fresh", "busily", "richly", "remarkably"],
     clueWords: [
@@ -4217,7 +4217,7 @@ tenses: [
   {
     text: "After the interview, I ___(1)___ a deep sense of relief. The interviewer ___(2)___ many insightful questions, and I ___(3)___ thoughtful answers. By the end, I ___(4)___ hopeful about my chances, and my friend ___(5)___ congratulated me on my performance.",
     wordBox: ["felt", "feel", "asked", "asks", "gave", "gave", "became", "became", "was", "is"],
-    answers: ["felt", "asked", "gave", "became", "congratulated"],
+   
     // For blank (5), "congratulated" is a verb, so we want a past verb. I'll adjust it:
     // Revised: "and my friend congratulated me on my performance."
     answers: ["felt", "asked", "gave", "became", "congratulated"],
