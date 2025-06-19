@@ -179,9 +179,16 @@ body.light-mode .instructions {
   color: var(--light-text);
 }
 
+/* Header Controls */
+.header-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
 /* Theme and Sidebar Toggle Buttons */
 .theme-toggle, .sidebar-toggle {
-  position: absolute;
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
@@ -197,13 +204,12 @@ body.light-mode .instructions {
   box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L15 9H9L12 2Z" fill="gold"/><path d="M12 9L15 15H9L12 9Z" fill="gold"/></svg>'), auto;
 }
-.theme-toggle {
-  top: 10px;
-  right: 10px;
+.theme-toggle:focus-visible,
+.sidebar-toggle:focus-visible {
+  outline: 2px solid #2980b9;
+  box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.5);
 }
 .sidebar-toggle {
-  top: 10px;
-  left: 10px;
   display: none;
 }
 @media (max-width: 768px) {
