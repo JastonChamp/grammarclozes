@@ -623,3 +623,4 @@ window.displayPassage = displayPassage;
 window.updateStatus = updateStatus;
 window.startTimer = startTimer;
 window.fadeOutIn = fadeOutIn;
+export { displayPassage, updateStatus, startTimer, fadeOutIn };
