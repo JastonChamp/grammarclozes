@@ -94,12 +94,24 @@
       <span id="score"></span>
       <span id="stars"></span>
       <span id="timer"></span>
-      <div id="progress-bar-container">
-        <div id="progress-bar"></div>
-      </div>
-      <div id="timer-container">
-        <div id="timer-bar"></div>
-      </div>
+       <div
+          id="progress-bar-container"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="progress-bar"></div>
+        </div>
+        <div
+          id="timer-container"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="timer-bar"></div>
+        </div>
       <span id="level"></span>
       <span id="achievements"></span>
     </div>
