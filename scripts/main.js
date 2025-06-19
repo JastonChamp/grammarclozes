@@ -157,9 +157,9 @@ function updateStatus() {
   scoreDisplay.textContent = `Score: ${state.score}`;
   starsDisplay.textContent = `Stars: ${state.stars}`;
   const totalPassages = state.isFlatArray ? window.passages.length : window.passages[state.currentGrammarType].length;
-  progressDisplay.textContent = `Progress: ${state.currentPassageIndex  1} / ${totalPassages}`;
+ progressDisplay.textContent = `Progress: ${state.currentPassageIndex + 1} / ${totalPassages}`;
   timerDisplay.textContent = `Time: ${state.timeLeft}s`;
-  progressBar.style.width = `${((state.currentPassageIndex  1) / totalPassages) * 100}%`;
+  progressBar.style.width = `${((state.currentPassageIndex + 1) / totalPassages) * 100}%`;
   if (state.challengeMode && timerSettingSelect.value !== "off") {
     timerBar.style.width = `${(state.timeLeft / parseInt(timerSettingSelect.value)) * 100}%`;
     timerBar.style.backgroundColor =
@@ -230,7 +230,7 @@ function getNarrativeIntro(grammarType, index) {
   };
   const chapters = story[grammarType] || ["Begin your adventure!"];
   const totalPassages = state.isFlatArray ? window.passages.length : window.passages[grammarType].length;
-  return `${chapters[index % chapters.length]} (Chapter ${index  1} of ${totalPassages})`;
+ return `${chapters[index % chapters.length]} (Chapter ${index + 1} of ${totalPassages})`;
 }
 
 // ----------------------
@@ -293,8 +293,8 @@ function displayPassage() {
   passageHTML = passage.text;
 
   if (passage.clueWords) {
-    passage.clueWords.forEach((clues, index) => {
-      const blankNum = index  1;
+    passage.clueWords.forEach((clues, index) => {␊
+      const blankNum = index + 1;
       clues.forEach(clue => {
         const regex = new RegExp(`\\b${clue}\\b`, "gi");
         passageHTML = passageHTML.replace(regex,
