@@ -39,6 +39,8 @@ const starsDisplay = document.getElementById("stars");
 const timerDisplay = document.getElementById("timer");
 const progressBar = document.getElementById("progress-bar");
 const timerBar = document.getElementById("timer-bar");
+const progressBarContainer = document.getElementById("progress-bar-container");
+const timerContainer = document.getElementById("timer-container");
 const levelDisplay = document.getElementById("level");
 const achievementsDisplay = document.getElementById("achievements");
 const toggleThemeButton = document.getElementById("toggle-theme");
@@ -215,12 +217,17 @@ function updateStatus() {
   const totalPassages = state.isFlatArray ? window.passages.length : window.passages[state.currentGrammarType].length;
   progressDisplay.textContent = `Progress: ${state.currentPassageIndex + 1} / ${totalPassages}`;
   timerDisplay.textContent = `Time: ${state.timeLeft}s`;
-  progressBar.style.width = `${((state.currentPassageIndex + 1) / totalPassages) * 100}%`;
+  const progressPercent = ((state.currentPassageIndex + 1) / totalPassages) * 100;
+  progressBar.style.width = `${progressPercent}%`;
+  progressBarContainer.setAttribute("aria-valuenow", Math.round(progressPercent));
   if (state.challengeMode && timerSettingSelect.value !== "off") {
-    timerBar.style.width = `${(state.timeLeft / parseInt(timerSettingSelect.value)) * 100}%`;
+    const timerPercent = (state.timeLeft / parseInt(timerSettingSelect.value)) * 100;
+    timerBar.style.width = `${timerPercent}%`;
+    timerContainer.setAttribute("aria-valuenow", Math.round(timerPercent));
     timerBar.style.backgroundColor = state.timeLeft > 30 ? "#27ae60" : state.timeLeft > 10 ? "orange" : "red";
   } else {
     timerBar.style.width = "0%";
+    timerContainer.setAttribute("aria-valuenow", "0");
   }
   updateLevel();
   achievementsDisplay.textContent = `Achievements: ${state.achievements.join(", ") || "None"}`;
