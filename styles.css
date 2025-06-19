@@ -276,12 +276,29 @@ body:not(.light-mode) main {
 body.light-mode main {
   background: linear-gradient(135deg, var(--light-bg), var(--light-secondary));
 }
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+    left: -200px;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar.open + main {
+    margin-left: 220px;
+  }
+  .sidebar + main {
+    margin-left: 0;
+  }
+  .game-container {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 768px) {
   .sidebar { left: -250px; }
   .sidebar.open { left: 0; }
   main { margin-left: 0; }
 }
-
 /* Game Container */
 .game-container {
   display: grid;
