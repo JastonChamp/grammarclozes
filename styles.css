@@ -197,7 +197,7 @@ h1 {
 .sidebar-toggle {
   display: none;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar-toggle { display: block; }
 }
 
