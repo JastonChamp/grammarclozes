@@ -1,5 +1,5 @@
 export const synth = window.speechSynthesis;
-let voices = [];
+export let voices = [];
 let ukFemaleVoice = null;
 
 export function loadVoices() {
@@ -12,6 +12,7 @@ export function loadVoices() {
           voice.name === "Samantha" ||
           voice.name === "Kate")
     ) || voices.find((voice) => voice.lang === "en-GB");
+  return voices;
 }
 
 loadVoices();
@@ -28,7 +29,12 @@ export function speak(text) {
   }
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-GB";
-  utterance.voice = ukFemaleVoice || voices[0];
+  const select = document.getElementById("voice-select");
+  let chosen = null;
+  if (select && select.value) {
+    chosen = voices.find(v => v.name === select.value);
+  }
+  utterance.voice = chosen || ukFemaleVoice || voices[0];
   utterance.rate = 0.9;
   utterance.pitch = 1.1;
   synth.speak(utterance);
