@@ -336,26 +336,28 @@ function displayPassage() {
 
   if (!passage) {
     passageText.innerHTML = "<p>Error: Passage not found.</p>";
-    feedbackDisplay.textContent = state.isFlatArray
-      ? "Error: Passage not found."
-      : `Error: No passages for ${state.currentGrammarType}.`;
-    return;
-  }
+const introHTML = `<p class="narrative-intro">${getNarrativeIntro(state.currentGrammarType, state.currentPassageIndex)}</p>`;
 
-  let passageHTML = `<p class="narrative-intro">${getNarrativeIntro(state.currentGrammarType, state.currentPassageIndex)}</p>`;
-  passageHTML += passage.text;
+  let processedText = passage.text;
 
   if (passage.clueWords) {
     passage.clueWords.forEach((clues, index) => {
       const blankNum = index + 1;
       clues.forEach(clue => {
         const regex = new RegExp(`\\b${clue}\\b`, "gi");
-        passageHTML = passageHTML.replace(regex, `<span class="keyword keyword-${blankNum}" title="Clue for blank ${blankNum}">${clue}</span>`);
+        processedText = processedText.replace(regex, `<span class="keyword keyword-${blankNum}" title="Clue for blank ${blankNum}">${clue}</span>`);
       });
     });
   }
-  passageHTML = passageHTML.replace(/___\((\d)\)___/g, (_, num) => {
+  processedText = processedText.replace(/___\((\d)\)___/g, (_, num) => {
     return `<span class="blank-container"><span class="blank" data-blank="${num}" tabindex="0">_</span><button class="hint-for-blank" data-blank="${num}" aria-label="Hint for blank ${num}">💡</button></span>`;
+  });
+
+  const passageHTML = introHTML + processedText;
+
+  fadeOutIn(passageText, () => {
+    passageText.innerHTML = passageHTML;
+    setupPassageInteractions();
   });
 
   fadeOutIn(passageText, () => {
