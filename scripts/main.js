@@ -71,7 +71,8 @@ function populateVoiceSelect() {
     const femaleUk = ukVoices.find(v =>
       v.name.toLowerCase().includes("female") ||
       v.name === "Samantha" ||
-      v.name === "Kate"
+      v.name === "Kate" ||
+      v.name === "Serena"
     );
     const defaultVoice = femaleUk || ukVoices[0];
     if (defaultVoice) {
@@ -80,7 +81,6 @@ function populateVoiceSelect() {
     }
   }
 }
-
 if (voiceSelect) {
   voiceSelect.addEventListener("change", () => {
     localStorage.setItem("preferredVoice", voiceSelect.value);
