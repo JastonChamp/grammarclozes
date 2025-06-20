@@ -432,7 +432,7 @@ export const passages = {
   conjunctions: [
     {
       text: "Jordan wanted to go to the park ___(1)___ it started to rain. He waited ___(2)___ the rain stopped, ___(3)___ he rushed outside. He could either play soccer ___(4)___ read a book, ___(5)___ he chose to play.",
-      wordBox: ["and", "but", "or", "because", "so", "although", "while"],
+           wordBox: ["and", "but", "or", "because", "so", "although", "while", "until", "then"],
       answers: ["but", "until", "then", "or", "so"],
       clueWords: [
         ["wanted", "rain"],
@@ -633,7 +633,7 @@ export const passages = {
     {
       text: "While preparing dinner, Ana preheated the oven, ___(1)___ she set the table. The aroma filled the kitchen ___(2)___ her family gathered eagerly. They could dine quietly ___(3)___ chat happily, ___(4)___ the mood was relaxed, ___(5)___ the meal brought everyone together.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "as", "or", "because", "so"],
+     answers: ["and", "while", "or", "because", "so"],
       clueWords: [
         ["preheated", "oven"],
         ["aroma", "filled"],
@@ -2127,7 +2127,7 @@ pronouns: [
 },
   {
     text: "The principal congratulated ___(1)___ on the new project. ___(2)___ was impressed by the innovative ideas. Later, the team thanked ___(3)___ for the support, and ___(4)___ all recognized ___(5)___ contributions.",
-    wordBox: ["she", "he", "they", "them", "her", "his", "their"],
+   wordBox: ["she", "he", "they", "them", "her", "his", "their", "him"],
     answers: ["them", "he", "him", "they", "his"],
     clueWords: [
       ["principal", "project"],
@@ -2312,7 +2312,7 @@ pronouns: [
   },
   {
     text: "At a community center, volunteers organized an event. ___(1)___ coordinated with local businesses, and ___(2)___ distributed flyers to residents. One volunteer collected donations, while another ensured that ___(3)___ received proper publicity. Afterwards, the organizers celebrated ___(4)___ for a successful turnout, and everyone admired ___(5)___ dedication.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+   wordBox: ["he", "she", "they", "them", "his", "her", "their", "it"],
     answers: ["she", "they", "it", "them", "their"],
     clueWords: [
       ["coordinated", "volunteers"],
@@ -2412,7 +2412,7 @@ pronouns: [
   },
   {
     text: "At a community center, volunteers organized an event. ___(1)___ coordinated with local businesses, and ___(2)___ distributed flyers to residents. One volunteer collected donations, while another ensured ___(3)___ received proper publicity. Afterwards, the organizers celebrated ___(4)___ for a successful turnout, and everyone admired ___(5)___ dedication.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+      wordBox: ["he", "she", "they", "them", "his", "her", "their", "it"],
     answers: ["she", "they", "it", "them", "their"],
     clueWords: [
       ["volunteers", "coordinated"],
@@ -2512,7 +2512,7 @@ pronouns: [
   },
   {
     text: "At a community center, volunteers organized an event. ___(1)___ coordinated with local businesses, and ___(2)___ distributed flyers to residents. One volunteer collected donations, while another ensured ___(3)___ received proper publicity. Afterwards, the organizers celebrated ___(4)___ for a successful turnout, and everyone admired ___(5)___ dedication.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+     wordBox: ["he", "she", "they", "them", "his", "her", "their", "it"],
     answers: ["she", "they", "it", "them", "their"],
     clueWords: [
       ["volunteers", "coordinated"],
@@ -2612,7 +2612,7 @@ pronouns: [
   },
   {
     text: "At a community center, volunteers organized an event. ___(1)___ coordinated with local businesses, and ___(2)___ distributed flyers to residents. One volunteer collected donations, while another ensured ___(3)___ received proper publicity. Afterwards, the organizers celebrated ___(4)___ for a successful turnout, and everyone admired ___(5)___ dedication.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+    wordBox: ["he", "she", "they", "them", "his", "her", "their", "it"],
     answers: ["she", "they", "it", "them", "their"],
     clueWords: [
       ["volunteers", "coordinated"],
@@ -2767,7 +2767,7 @@ pronouns: [
   },
   {
     text: "At an academic symposium, a researcher presented groundbreaking findings, and ___(1)___ captivated the audience. Many scholars applauded ___(2)___ innovative methods, and each participant noted ___(3)___ significance. The moderator later praised ___(4)___ for clarity, and the conference left ___(5)___ eager for further discussion.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+      wordBox: ["he", "she", "they", "them", "his", "her", "their", "its"],
     answers: ["he", "his", "its", "them", "them"],
     // For blank (3): "each participant noted ___ significance." Use "its" to refer to the finding's significance.
     clueWords: [
@@ -2853,7 +2853,7 @@ pronouns: [
   },
   {
     text: "At a university, a scholarship was awarded to a top student, and ___(1)___ received widespread acclaim. The dean congratulated ___(2)___ during the ceremony, and peers celebrated ___(3)___ achievement with pride. The award recognized ___(4)___ potential, and every faculty member praised ___(5)___ dedication.",
-    wordBox: ["he", "she", "they", "them", "his", "her", "their"],
+      wordBox: ["he", "she", "they", "them", "his", "her", "their", "him"],
     answers: ["he", "him", "his", "his", "his"],
     clueWords: [
       ["scholarship", "student"],
@@ -2973,7 +2973,7 @@ pronouns: [
   },
   {
     text: "At an academic symposium, a researcher presented groundbreaking findings, and ___(1)___ captivated the audience. Scholars applauded ___(2)___ innovative methods, and each participant noted ___(3)___ significance. The moderator later praised ___(4)___ for clarity, and the conference left ___(5)___ eager for further discussion.",
-    wordBox: ["he", "she", "it", "they", "them", "his", "her", "their"],
+      wordBox: ["he", "she", "it", "they", "them", "his", "her", "their", "its"],
     answers: ["he", "his", "its", "them", "them"],
     clueWords: [
       ["researcher", "presented"],
@@ -3073,7 +3073,7 @@ pronouns: [
   },
   {
     text: "At an academic symposium, a researcher presented groundbreaking findings, and ___(1)___ captivated the audience. Scholars lauded ___(2)___ innovative methods, and each participant noted ___(3)___ significance. The moderator later praised ___(4)___ for clarity, and the conference left ___(5)___ eager for further discussion.",
-    wordBox: ["he", "she", "it", "they", "them", "his", "her", "their"],
+   wordBox: ["he", "she", "it", "they", "them", "his", "her", "their", "its"],
     answers: ["he", "his", "its", "them", "them"],
     clueWords: [
       ["researcher", "presented"],
@@ -3173,7 +3173,7 @@ pronouns: [
   },
   {
     text: "At an academic symposium, a researcher presented groundbreaking findings, and ___(1)___ captivated the audience. Scholars lauded ___(2)___ innovative methods, and each participant noted ___(3)___ significance. The moderator later praised ___(4)___ for clarity, and the conference left ___(5)___ eager for further discussion.",
-    wordBox: ["he", "she", "it", "they", "them", "his", "her", "their"],
+       wordBox: ["he", "she", "it", "they", "them", "his", "her", "their", "its"],
     answers: ["he", "his", "its", "them", "them"],
     clueWords: [
       ["researcher", "presented"],
@@ -3273,7 +3273,7 @@ pronouns: [
   },
   {
     text: "At an academic symposium, a researcher presented groundbreaking findings, and ___(1)___ captivated the audience. Scholars lauded ___(2)___ innovative methods, and each participant noted ___(3)___ significance. The moderator later praised ___(4)___ for clarity, and the conference left ___(5)___ eager for further discussion.",
-    wordBox: ["he", "she", "it", "they", "them", "his", "her", "their"],
+     wordBox: ["he", "she", "it", "they", "them", "his", "her", "their", "its"],
     answers: ["he", "his", "its", "them", "them"],
     clueWords: [
       ["researcher", "presented"],
@@ -3798,7 +3798,7 @@ adjectivesAdverbs: [
     wordBox: ["lively", "fresh", "busily", "aromatic", "remarkably", "vibrant", "energetically"],
     
     // Note: "aromatically" is not common; revise blank (4) to "richly" describing aromas.
-    answers: ["lively", "fresh", "busily", "richly", "remarkably"],
+   answers: ["lively", "fresh", "busily", "aromatic", "remarkably"],
     clueWords: [
       ["market"],
       ["produce"],
@@ -3839,7 +3839,7 @@ adjectivesAdverbs: [
 tenses: [
   {
     text: "Yesterday, I ___(1)___ to the park. My friends ___(2)___ there with me. We ___(3)___ games and ___(4)___ a picnic. The sun ___(5)___ brightly all day.",
-    wordBox: ["go", "went", "is", "was", "play", "played", "have", "had", "shine", "shone"],
+      wordBox: ["go", "went", "is", "was", "play", "played", "have", "had", "shine", "shone", "were"],
     answers: ["went", "were", "played", "had", "shone"],
     clueWords: [["Yesterday", "park"], ["friends"], ["games"], ["picnic"], ["sun"]],
     hints: [
