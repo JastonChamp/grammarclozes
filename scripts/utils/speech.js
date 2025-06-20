@@ -10,7 +10,8 @@ export function loadVoices() {
         voice.lang === "en-GB" &&
         (voice.name.toLowerCase().includes("female") ||
           voice.name === "Samantha" ||
-          voice.name === "Kate")
+         voice.name === "Kate" ||
+          voice.name === "Serena")
     ) || voices.find((voice) => voice.lang === "en-GB");
   return voices;
 }
