@@ -3951,11 +3951,11 @@ tenses: [
   },
   {
     text: "Next week, our company ___(1)___ a major product launch. The marketing team ___(2)___ a comprehensive campaign, and customers ___(3)___ excited about the new features. By the end of the day, we ___(4)___ positive feedback, and the CEO ___(5)___ grateful for the success.",
-    wordBox: ["go", "will go", "give", "will give", "are", "will be", "have", "will have", "feel", "will feel"],
-    answers: ["will go", "will roll out", "will be", "will have received", "will be"],
+   
     // Note: Adjusting the second blank to "will roll out" for a marketing campaign
     // Ensure wordBox includes that option:
     wordBox: ["will go", "go", "will roll out", "roll out", "will be", "are", "will have received", "received", "will be", "is"],
+     answers: ["will go", "will roll out", "will be", "will have received", "will be"],
     clueWords: [["Next week"], ["company"], ["marketing team"], ["customers"], ["end of the day", "feedback"], ["CEO"]],
     hints: [
       "Select the future tense for the company’s product launch.",
