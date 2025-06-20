@@ -35,6 +35,20 @@ grammarSelect.addEventListener("change", () => {
     updateStatus();
   }
 });
+// Theme selection
+if (themeSelect) {
+  themeSelect.addEventListener("change", () => {
+    const choice = themeSelect.value;
+    document.body.classList.remove("light-mode", "theme1", "theme2");
+    if (choice === "light") {
+      document.body.classList.add("light-mode");
+    } else if (choice === "theme1") {
+      document.body.classList.add("theme1");
+    } else if (choice === "theme2") {
+      document.body.classList.add("theme2");
+    }
+  });
+}
 
 // Add event listener for text size slider
 textSizeSlider.addEventListener("input", () => {
