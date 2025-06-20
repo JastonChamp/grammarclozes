@@ -43,16 +43,20 @@ const progressBarContainer = document.getElementById("progress-bar-container");
 const timerContainer = document.getElementById("timer-container");
 const levelDisplay = document.getElementById("level");
 const achievementsDisplay = document.getElementById("achievements");
-const toggleThemeButton = document.getElementById("toggle-theme");
+cconst toggleThemeButton = document.getElementById("toggle-theme");
 const timerSettingSelect = document.getElementById("timer-setting");
 const voiceSelect = document.getElementById("voice-select");
 const textSizeSlider = document.getElementById("text-size-slider");
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
+const sparkleToggle = document.getElementById("sparkle-toggle");
 
 const resetWordsButton = document.getElementById("reset-words-btn");
 const sidebar = document.querySelector(".sidebar");
 const sidebarToggle = document.getElementById("sidebar-toggle");
 
+if (!document.body.classList.contains("sparkle")) {
+  document.body.classList.add("no-sparkle");
+}
 function populateVoiceSelect() {
   if (!voiceSelect) return;
   loadVoices();
@@ -206,7 +210,6 @@ submitButton.addEventListener("click", () => {
 
 toggleThemeButton.addEventListener("click", () => {
   document.body.classList.toggle("light-mode");
-  document.body.classList.toggle("sparkle");
   toggleThemeButton.textContent = document.body.classList.contains("light-mode") ? "Dark Mode" : "Light Mode";
 });
 
@@ -214,6 +217,18 @@ toggleDyslexiaButton.addEventListener("click", () => {
   document.body.classList.toggle("dyslexia");
   speak(document.body.classList.contains("dyslexia") ? "Dyslexia mode enabled" : "Dyslexia mode disabled");
 });
+
+if (sparkleToggle) {
+  sparkleToggle.addEventListener("change", () => {
+    if (sparkleToggle.checked) {
+      document.body.classList.add("sparkle");
+      document.body.classList.remove("no-sparkle");
+    } else {
+      document.body.classList.remove("sparkle");
+      document.body.classList.add("no-sparkle");
+    }
+  });
+}
 
 
 
@@ -334,9 +349,7 @@ function displayPassage() {
     passage = window.passages[state.currentGrammarType]?.[state.currentPassageIndex];
   }
 
-  if (!passage) {
-    passageText.innerHTML = "<p>Error: Passage not found.</p>";
-const introHTML = `<p class="narrative-intro">${getNarrativeIntro(state.currentGrammarType, state.currentPassageIndex)}</p>`;
+  const introHTML = `<p class="narrative-intro">${getNarrativeIntro(state.currentGrammarType, state.currentPassageIndex)}</p>`;
 
   let processedText = passage.text;
 
@@ -359,12 +372,6 @@ const introHTML = `<p class="narrative-intro">${getNarrativeIntro(state.currentG
     passageText.innerHTML = passageHTML;
     setupPassageInteractions();
   });
-
-  fadeOutIn(passageText, () => {
-    passageText.innerHTML = passageHTML;
-    setupPassageInteractions();
-  });
-
   wordBox.innerHTML = shuffle([...passage.wordBox])
     .map((word, index) => `<div class="word" draggable="true" tabindex="0" aria-label="${word}" title="${passage.wordHints?.[index] || word}">${word}</div>`)
     .join("");
