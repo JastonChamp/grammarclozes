@@ -1,6 +1,6 @@
 // scripts/main.js
 import { passages } from "./data/passages.js";
-import { speak, testFontAvailability } from "./utils/speech.js";
+import { speak, testFontAvailability, loadVoices, voices, synth } from "./utils/speech.js";
 window.passages = passages;
 
 // Global Game State
@@ -45,12 +45,35 @@ const levelDisplay = document.getElementById("level");
 const achievementsDisplay = document.getElementById("achievements");
 const toggleThemeButton = document.getElementById("toggle-theme");
 const timerSettingSelect = document.getElementById("timer-setting");
+const voiceSelect = document.getElementById("voice-select");
 const textSizeSlider = document.getElementById("text-size-slider");
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
 const toggleHighContrastButton = document.getElementById("toggle-high-contrast");
 const resetWordsButton = document.getElementById("reset-words-btn");
 const sidebar = document.querySelector(".sidebar");
 const sidebarToggle = document.getElementById("sidebar-toggle");
+
+function populateVoiceSelect() {
+  if (!voiceSelect) return;
+  loadVoices();
+  voiceSelect.innerHTML = "";
+  voices.forEach(v => {
+    const option = document.createElement("option");
+    option.value = v.name;
+    option.textContent = v.name;
+    voiceSelect.appendChild(option);
+  });
+  const saved = localStorage.getItem("preferredVoice");
+  if (saved) {
+    voiceSelect.value = saved;
+  }
+}
+
+if (voiceSelect) {
+  voiceSelect.addEventListener("change", () => {
+    localStorage.setItem("preferredVoice", voiceSelect.value);
+  });
+}
 
 // Event Listeners
 sidebarToggle.addEventListener("click", () => sidebar.classList.toggle("open"));
@@ -485,6 +508,10 @@ function checkAnswer(blank) {
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   testFontAvailability();
+  populateVoiceSelect();
+  synth.onvoiceschanged = () => {
+    populateVoiceSelect();
+  };
   if (!window.passages) {
     feedbackDisplay.textContent = "Error: Passages data not loaded.";
     return;
