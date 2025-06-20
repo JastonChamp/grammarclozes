@@ -14,6 +14,7 @@ const readPassageButton = document.getElementById("read-passage-btn");
 const toggleChallengeButton = document.getElementById("toggle-challenge");
 const submitButton = document.getElementById("submit-btn");
 const toggleThemeButton = document.getElementById("toggle-theme");
+const themeSelect = document.getElementById("theme-select");
 const timerSettingSelect = document.getElementById("timer-setting");
 const timerBar = document.getElementById("timer-bar");
 const sidebar = document.querySelector(".sidebar");
