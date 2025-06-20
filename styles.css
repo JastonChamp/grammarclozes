@@ -207,7 +207,9 @@ h1 {
   display: none;
 }
 @media (max-width: 1024px) {
-  .sidebar-toggle { display: block; }
+  .sidebar-toggle {
+    display: block;
+  }
 }
 
 /* Sidebar */
