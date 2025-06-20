@@ -15,8 +15,8 @@
 
 /* CSS Variables */
 :root {
-  --dark-bg: #4B2E87;       /* Deep purple */
-  --dark-secondary: #6A4BB1; /* Softer purple */
+ --dark-bg: #2c3e50;       /* Neutral dark */
+  --dark-secondary: #34495e; /* Slightly lighter */
   --dark-text: #ffffff;     /* White */
   --light-bg: #f0e6ff;      /* Light lavender */
   --light-secondary: #fff5cc; /* Softer gold */
@@ -34,8 +34,13 @@
   --theme1-text: #556b72;  /* Muted gray */
   --theme2-bg: #e8f5e9;    /* Gentle green */
   --theme2-text: #1b5e20;  /* Dark forest */
-  --bg-color: var(--dark-bg);
+ --bg-color: var(--dark-bg);
   --text-color: var(--dark-text);
+  --header-bg: linear-gradient(135deg, var(--dark-secondary), var(--dark-bg));
+  --main-bg: linear-gradient(135deg, var(--dark-secondary), var(--dark-bg));
+  --sidebar-bg: var(--dark-secondary);
+  --sidebar-text: var(--dark-text);
+  --keyword-color: var(--dark-text);
 }
 
 /* High Contrast Mode */
@@ -81,16 +86,24 @@ body.sparkle::before {
 body.light-mode {
   --bg-color: var(--light-bg);
   --text-color: var(--light-text);
+  --header-bg: linear-gradient(135deg, #fbc02d, #f1c40f);
+  --main-bg: linear-gradient(135deg, var(--light-bg), var(--light-secondary));
+  --sidebar-bg: var(--light-secondary);
+  --sidebar-text: var(--light-text);
+  --keyword-color: #8e44ad;
 }
 body.theme1 {
   --bg-color: var(--theme1-bg);
   --text-color: var(--theme1-text);
+  --header-bg: linear-gradient(135deg, #ffb3ba, #bae1ff);
+  --main-bg: linear-gradient(135deg, #ffdfba, #bae1ff);
 }
 body.theme2 {
   --bg-color: var(--theme2-bg);
   --text-color: var(--theme2-text);
+  --header-bg: linear-gradient(135deg, #2e7d32, #1b5e20);
+  --main-bg: linear-gradient(135deg, #a5d6a7, #66bb6a);
 }
-
 /* Dyslexia Mode */
 body.dyslexia #passage-text,
 body.dyslexia #word-box,
@@ -150,13 +163,9 @@ header {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   font-family: "Playfair Display", serif;
+  background: var(--header-bg);
 }
-body:not(.light-mode) header {
-  background: linear-gradient(135deg, #6A4BB1, #4B2E87);
-}
-body.light-mode header {
-  background: linear-gradient(135deg, #fbc02d, #f1c40f);
-}
+
 h1 {
   font-size: 3em;
   font-weight: 700;
@@ -211,13 +220,9 @@ h1 {
   padding: 20px;
   overflow-y: auto;
   transition: left 0.3s;
-  background-color: var(--dark-secondary);
-  color: var(--dark-text);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
   box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-}
-body.light-mode .sidebar {
-  background-color: var(--light-secondary);
-  color: var(--light-text);
 }
 .sidebar.open {
   left: 0;
@@ -282,12 +287,7 @@ main {
   border-radius: 10px;
   border: 2px dashed #D4A017;
   box-shadow: 0 0 15px rgba(212, 160, 23, 0.3);
-}
-body:not(.light-mode) main {
-  background: linear-gradient(135deg, #6A4BB1, #4B2E87);
-}
-body.light-mode main {
-  background: linear-gradient(135deg, var(--light-bg), var(--light-secondary));
+  background: var(--main-bg);
 }
 @media (max-width: 1024px) {
   .sidebar {
@@ -431,10 +431,9 @@ body:not(.light-mode) .narrative-intro {
 /* Keywords */
 .keyword {
   font-weight: bold;
-  color: #8e44ad;
+  color: var(--keyword-color);
   cursor: pointer;
 }
-body:not(.light-mode) .keyword { color: #ffffff; }
 .keyword:hover {
   background-color: var(--accent-color);
   color: #1a1a1a;
