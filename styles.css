@@ -419,6 +419,14 @@ body:not(.light-mode) .keyword { color: #ffffff; }
   color: #1a1a1a;
 }
 
+/* Highlighted clue */
+.highlighted {
+  background-color: var(--accent-color);
+  color: #1a1a1a;
+  border: 2px solid currentColor;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
 /* Status Bar */
 .status-bar {
   background: linear-gradient(var(--parchment-start), var(--parchment-end));
