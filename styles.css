@@ -26,10 +26,14 @@
   --incorrect-bg: #ffe6e6;
   --modal-bg: #ffffff;
   --modal-text: #2c3e50;
-  --parchment-start: #F5F5DC;
+   --parchment-start: #F5F5DC;
   --parchment-end: #D9CDA5;
   --parchment-dark-start: #8a8765;
   --parchment-dark-end: #6b6948;
+  --theme1-bg: #fdf6e3;    /* Soft beige */
+  --theme1-text: #556b72;  /* Muted gray */
+  --theme2-bg: #e8f5e9;    /* Gentle green */
+  --theme2-text: #1b5e20;  /* Dark forest */
   --bg-color: var(--dark-bg);
   --text-color: var(--dark-text);
 }
@@ -77,6 +81,14 @@ body.sparkle::before {
 body.light-mode {
   --bg-color: var(--light-bg);
   --text-color: var(--light-text);
+}
+body.theme1 {
+  --bg-color: var(--theme1-bg);
+  --text-color: var(--theme1-text);
+}
+body.theme2 {
+  --bg-color: var(--theme2-bg);
+  --text-color: var(--theme2-text);
 }
 
 /* Dyslexia Mode */
