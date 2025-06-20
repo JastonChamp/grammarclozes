@@ -228,7 +228,7 @@ body.light-mode .sidebar {
   margin-bottom: 5px;
   display: block;
 }
-#grammar-type, #timer-setting {
+#grammar-type, #timer-setting, #theme-select {
   padding: 8px;
   border-radius: 5px;
   background-color: #fff;
@@ -238,7 +238,8 @@ body.light-mode .sidebar {
   width: 100%;
 }
 body:not(.light-mode) #grammar-type,
-body:not(.light-mode) #timer-setting {
+body:not(.light-mode) #timer-setting,
+body:not(.light-mode) #theme-select {
   background-color: #5a4d8a;
   color: var(--dark-text);
 }
@@ -296,7 +297,7 @@ body.light-mode main {
   .sidebar.open {
     left: 0;
   }
-  .sidebar.open + main {
+ .sidebar.open + main {
     margin-left: 220px;
   }
   .sidebar + main {
@@ -305,11 +306,19 @@ body.light-mode main {
   .game-container {
     grid-template-columns: 1fr;
   }
+  #theme-select {
+    width: 100%;
+    padding: 10px;
+  }
 }
 @media (max-width: 768px) {
   .sidebar { left: -250px; }
   .sidebar.open { left: 0; }
   main { margin-left: 0; }
+  #theme-select {
+    width: 100%;
+    padding: 10px;
+  }
 }
 /* Game Container */
 .game-container {
