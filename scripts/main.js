@@ -145,6 +145,9 @@ hintButton.addEventListener("click", () => {
     feedbackDisplay.textContent = passage.hints[0] || "No hint available.";
     feedbackDisplay.style.color = "blue";
     speak(feedbackDisplay.textContent);
+  } else {
+    feedbackDisplay.textContent = "No hint available.";
+    speak("No hint available.");
   }
 });
 
@@ -185,8 +188,11 @@ submitButton.addEventListener("click", () => {
     speak(feedbackDisplay.textContent);
     return;
   }
-  let correctCount = 0;
-  blanks.forEach(blank => checkAnswer(blank));
+ let correctCount = 0;
+  blanks.forEach(blank => {
+    checkAnswer(blank);
+    if (blank.classList.contains("correct")) correctCount++;
+  });
   const totalBlanks = blanks.length;
   const rewardMessage = `Review: ${correctCount} of ${totalBlanks} correct.`;
   feedbackDisplay.textContent = rewardMessage;
