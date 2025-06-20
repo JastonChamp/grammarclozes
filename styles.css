@@ -60,9 +60,9 @@ body.high-contrast {
 }
 
 /* Body with Toggleable Sparkle Background */
-body {␊
-  background: var(--bg-color);␊
-  color: var(--text-color);␊
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
   font-family: "Nunito", sans-serif;
   line-height: 1.6;
   padding: 20px;
