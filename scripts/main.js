@@ -31,7 +31,7 @@ const hintButton = document.getElementById("hint-btn");
 const clearButton = document.getElementById("clear-btn");
 const shareButton = document.getElementById("share-btn");
 const readPassageButton = document.getElementById("read-passage-btn");
-const toggleChallengeButton = document.getElementById("toggle-challenge");
+
 const submitButton = document.getElementById("submit-btn");
 const progressDisplay = document.getElementById("progress");
 const scoreDisplay = document.getElementById("score");
@@ -48,7 +48,7 @@ const timerSettingSelect = document.getElementById("timer-setting");
 const voiceSelect = document.getElementById("voice-select");
 const textSizeSlider = document.getElementById("text-size-slider");
 const toggleDyslexiaButton = document.getElementById("toggle-dyslexia");
-const toggleHighContrastButton = document.getElementById("toggle-high-contrast");
+
 const resetWordsButton = document.getElementById("reset-words-btn");
 const sidebar = document.querySelector(".sidebar");
 const sidebarToggle = document.getElementById("sidebar-toggle");
@@ -76,7 +76,7 @@ if (voiceSelect) {
 }
 
 // Event Listeners
-sidebarToggle.addEventListener("click", () => sidebar.classList.toggle("open"));
+
 
 grammarSelect.addEventListener("change", () => {
   if (!state.isFlatArray) {
@@ -159,13 +159,7 @@ readPassageButton.addEventListener("click", () => {
   }
 });
 
-toggleChallengeButton.addEventListener("click", () => {
-  state.challengeMode = !state.challengeMode;
-  toggleChallengeButton.textContent = state.challengeMode ? "⏱️ Challenge" : "⏱️ Practice";
-  if (state.challengeMode) startTimer();
-  else clearInterval(state.timerInterval);
-  updateStatus();
-});
+
 
 submitButton.addEventListener("click", () => {
   const blanks = document.querySelectorAll(".blank");
@@ -203,10 +197,7 @@ toggleDyslexiaButton.addEventListener("click", () => {
   speak(document.body.classList.contains("dyslexia") ? "Dyslexia mode enabled" : "Dyslexia mode disabled");
 });
 
-toggleHighContrastButton.addEventListener("click", () => {
-  document.body.classList.toggle("high-contrast");
-  speak(document.body.classList.contains("high-contrast") ? "High contrast mode enabled" : "High contrast mode disabled");
-});
+
 
 resetWordsButton.addEventListener("click", () => {
   document.querySelectorAll(".blank").forEach(blank => {
