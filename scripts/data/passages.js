@@ -653,7 +653,7 @@ export const passages = {
     {
       text: "During a meeting at work, the manager outlined the new project, ___(1)___ the team listened attentively. Some members raised questions, ___(2)___ others nodded in agreement. The discussion was challenging ___(3)___ productive, ___(4)___ they eventually developed a solid strategy, ___(5)___ the project was approved.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "while", "yet", "so", "because"],
+     
       // If "yet" is not in our wordBox, we can replace it with "but" (or "and"). I'll use "but" here.
       answers: ["and", "while", "but", "so", "because"],
       clueWords: [
@@ -678,7 +678,7 @@ export const passages = {
      
       // Replace "as" with one of our allowed words. Use "because" is already used; perhaps "since" is not allowed.
       // Let's adjust: 1: "and", 2: "or", 3: "since" is not allowed; we can use "because", but then 4: "while", 5: "so".
-      // Alternatively, I'll use: answers: ["and", "or", "but", "so", "because"].
+     
       answers: ["and", "or", "but", "so", "because"],
       clueWords: [
         ["friends", "gathered"],
@@ -739,7 +739,7 @@ export const passages = {
     {
       text: "In the midst of a busy workshop, participants shared ideas freely, ___(1)___ some felt hesitant. The instructor encouraged everyone ___(2)___ join the dialogue, ___(3)___ creative thinking prevailed. While some preferred quiet reflection, ___(4)___ others thrived in group discussion, ___(5)___ the session ended with a lively brainstorming.",
       wordBox: ["and", "but", "or", "because", "so", "although", "while"],
-      answers: ["and", "to", "so", "while", "and"],
+     
       // Note: "to" is not in our wordBox. We must use only the allowed words.
       // Let’s rephrase: "The instructor encouraged everyone ___(2)___ join the dialogue" → use "and" (or "so that" but not allowed).
       // Instead, I'll rephrase sentence slightly: "The instructor encouraged everyone, ___(2)___ join the dialogue," is ambiguous.
