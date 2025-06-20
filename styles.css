@@ -10,8 +10,8 @@
   font-display: swap;
 }
 
-/* Load Playfair Display and Lora for magical theme */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap');
+/* Load Playfair Display for headings and Nunito for body text */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;700&display=swap');
 
 /* CSS Variables */
 :root {
@@ -60,10 +60,10 @@ body.high-contrast {
 }
 
 /* Body with Toggleable Sparkle Background */
-body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: "Lora", serif;
+body {␊
+  background: var(--bg-color);␊
+  color: var(--text-color);␊
+  font-family: "Nunito", sans-serif;
   line-height: 1.6;
   padding: 20px;
   max-width: 1200px;
@@ -233,7 +233,7 @@ h1 {
   margin-bottom: 5px;
   display: block;
 }
-#grammar-type, #timer-setting, #theme-select {
+#grammar-type, #timer-setting, #theme-select, #voice-select {
   padding: 8px;
   border-radius: 5px;
   background-color: #fff;
@@ -244,7 +244,8 @@ h1 {
 }
 body:not(.light-mode) #grammar-type,
 body:not(.light-mode) #timer-setting,
-body:not(.light-mode) #theme-select {
+body:not(.light-mode) #theme-select,
+body:not(.light-mode) #voice-select {
   background-color: #5a4d8a;
   color: var(--dark-text);
 }
