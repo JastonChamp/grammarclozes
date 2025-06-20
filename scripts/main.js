@@ -56,16 +56,28 @@ const sidebarToggle = document.getElementById("sidebar-toggle");
 function populateVoiceSelect() {
   if (!voiceSelect) return;
   loadVoices();
+  const ukVoices = voices.filter(v => v.lang === "en-GB");
   voiceSelect.innerHTML = "";
-  voices.forEach(v => {
+  ukVoices.forEach(v => {
     const option = document.createElement("option");
     option.value = v.name;
     option.textContent = v.name;
     voiceSelect.appendChild(option);
   });
   const saved = localStorage.getItem("preferredVoice");
-  if (saved) {
+  if (saved && ukVoices.some(v => v.name === saved)) {
     voiceSelect.value = saved;
+  } else {
+    const femaleUk = ukVoices.find(v =>
+      v.name.toLowerCase().includes("female") ||
+      v.name === "Samantha" ||
+      v.name === "Kate"
+    );
+    const defaultVoice = femaleUk || ukVoices[0];
+    if (defaultVoice) {
+      voiceSelect.value = defaultVoice.name;
+      localStorage.setItem("preferredVoice", defaultVoice.name);
+    }
   }
 }
 
