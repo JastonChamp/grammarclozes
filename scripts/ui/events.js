@@ -11,7 +11,7 @@ const clearButton = document.getElementById("clear-btn");
 const hintButton = document.getElementById("hint-btn");
 const shareButton = document.getElementById("share-btn");
 const readPassageButton = document.getElementById("read-passage-btn");
-const toggleChallengeButton = document.getElementById("toggle-challenge");
+
 const submitButton = document.getElementById("submit-btn");
 const toggleThemeButton = document.getElementById("toggle-theme");
 const themeSelect = document.getElementById("theme-select");
@@ -124,16 +124,7 @@ readPassageButton.addEventListener("click", () => {
   }
 });
 
-toggleChallengeButton.addEventListener("click", () => {
-  state.challengeMode = !state.challengeMode;
-  toggleChallengeButton.textContent = state.challengeMode ? "⏱️ Challenge" : "⏱️ Practice";
-  if (state.challengeMode) startTimer();
-  else {
-    clearInterval(state.timerInterval);
-    timerBar.style.width = "0%";
-  }
-  updateStatus();
-});
+
 
 submitButton.addEventListener("click", () => {
   const blanks = document.querySelectorAll(".blank");
