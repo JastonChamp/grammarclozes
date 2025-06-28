@@ -411,7 +411,7 @@ body:not(.light-mode) .narrative-intro {
   border-bottom: 3px dashed #2ecc71;
   margin: 0 5px;
   cursor: pointer;
-  font-size: 1.4em;
+  font-size: 1em;
 }
 .blank.filled { border-bottom: none; }
 .blank.correct { color: #2ecc71; background-color: var(--correct-bg); }
