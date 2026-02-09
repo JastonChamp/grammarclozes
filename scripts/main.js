@@ -5,7 +5,7 @@ import { speak, loadVoices } from './utils/speech.js';
 // STATE MANAGEMENT
 // ============================================
 const state = {
-  currentGrammarType: "prepositions",
+  currentGrammarType: "P1",
   currentPassageIndex: 0,
   score: 0,
   stars: 0,
@@ -32,21 +32,21 @@ const state = {
 // CONSTANTS
 // ============================================
 const categoryDescriptions = {
-  prepositions: "Master spatial and temporal relationships.",
-  conjunctions: "Learn connecting words and ideas.",
-  subjectVerbAgreement: "Match subjects with correct verb forms.",
-  pronouns: "Understand proper pronoun usage.",
-  adjectivesAdverbs: "Use descriptive and modifying words.",
-  tenses: "Master past, present, and future verb forms."
+  P1: "Basic prepositions, conjunctions, and common verbs.",
+  P2: "Simple tenses, prepositions, and conjunctions.",
+  P3: "Mixed grammar with moderate complexity.",
+  P4: "Tenses, conjunctions, subject-verb agreement, and pronouns.",
+  P5: "Advanced tenses, conditionals, relative clauses, and modals.",
+  P6: "PSLE-level grammar: inversions, subjunctive, and complex structures."
 };
 
 const categoryNames = {
-  prepositions: "Prepositions",
-  conjunctions: "Conjunctions",
-  subjectVerbAgreement: "Subject-Verb Agreement",
-  pronouns: "Pronouns",
-  adjectivesAdverbs: "Adjectives & Adverbs",
-  tenses: "Tenses"
+  P1: "Primary 1",
+  P2: "Primary 2",
+  P3: "Primary 3",
+  P4: "Primary 4",
+  P5: "Primary 5",
+  P6: "Primary 6"
 };
 
 const levelMilestones = [
@@ -128,6 +128,12 @@ function shuffle(arr) {
 function getPassages() {
   const cat = passages[state.currentGrammarType];
   return cat || [];
+}
+
+function setActiveLevel(level) {
+  document.querySelectorAll('.level-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.level === level);
+  });
 }
 
 // ============================================
@@ -302,8 +308,8 @@ function updateUI() {
   if (gemsCount) gemsCount.textContent = state.gems;
   if (totalStarsEl) totalStarsEl.textContent = state.totalStars;
 
-  // Mastery percentage
-  const totalPassages = 6 * 13; // 6 categories * ~13 passages each
+  // Mastery percentage (P1:5 + P2:5 + P3:10 + P4:10 + P5:10 + P6:10 = 50)
+  const totalPassages = 50;
   const mastery = Math.min(Math.round((state.passagesCompleted / totalPassages) * 100), 100);
   if (masteryPercent) masteryPercent.textContent = `${mastery}%`;
 
@@ -430,8 +436,8 @@ function displayPassage() {
 
   // Replace blanks
   html = html.replace(/___\s*\((\d)\)\s*___/g, (_, n) => {
-    const exp = p.explanations ? p.explanations[n - 1].replace(/"/g, '&quot;') : '';
-    return `<span class="blank" data-blank="${n}" data-exp="${exp}" tabindex="0"></span>` +
+    const semHint = p.semanticHints ? (p.semanticHints[n - 1] || '').replace(/"/g, '&quot;') : '';
+    return `<span class="blank" data-blank="${n}" data-exp="${semHint}" tabindex="0"></span>` +
            `<button class="hint-for-blank" data-blank="${n}">💡</button>`;
   });
 
@@ -717,14 +723,15 @@ function initEventListeners() {
     resetBtn.onclick = displayPassage;
   }
 
-  // Grammar type selection
-  if (grammarSelect) {
-    grammarSelect.onchange = (e) => {
-      state.currentGrammarType = e.target.value;
+  // Level pill selection
+  $$('.level-pill').forEach(pill => {
+    pill.onclick = () => {
+      state.currentGrammarType = pill.dataset.level;
       state.currentPassageIndex = 0;
+      setActiveLevel(pill.dataset.level);
       displayPassage();
     };
-  }
+  });
 
   // Timer
   if (timerSelect) {
@@ -839,10 +846,10 @@ function initEventListeners() {
   if (startDailyBtn) {
     startDailyBtn.onclick = () => {
       dailyChallengeModal?.classList.add('hidden');
-      const categories = Object.keys(categoryDescriptions);
-      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-      state.currentGrammarType = randomCategory;
-      if (grammarSelect) grammarSelect.value = randomCategory;
+      const levels = Object.keys(categoryDescriptions);
+      const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+      state.currentGrammarType = randomLevel;
+      setActiveLevel(randomLevel);
       state.currentPassageIndex = 0;
       displayPassage();
     };

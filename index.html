@@ -81,8 +81,8 @@
       </div>
 
       <div class="onboarding-features">
-        <div class="feature-tag"><span>✓</span> 6 Grammar Types</div>
-        <div class="feature-tag"><span>✓</span> 77+ Passages</div>
+        <div class="feature-tag"><span>✓</span> P1 to P6 Levels</div>
+        <div class="feature-tag"><span>✓</span> 50+ Passages</div>
         <div class="feature-tag"><span>✓</span> Progress Tracking</div>
         <div class="feature-tag"><span>✓</span> Achievements</div>
       </div>
@@ -182,23 +182,25 @@
         <span class="daily-btn-badge" id="daily-status">NEW</span>
       </button>
 
-      <!-- Navigation -->
+      <!-- Level Selection -->
       <nav class="sidebar-nav">
         <div class="nav-section">
-          <h3 class="nav-title">Grammar Type</h3>
-          <div class="category-selector">
-            <select id="grammar-type" class="select-modern">
-              <option value="prepositions">📍 Prepositions</option>
-              <option value="conjunctions">🔗 Conjunctions</option>
-              <option value="subjectVerbAgreement">✅ Subject-Verb Agreement</option>
-              <option value="pronouns">👤 Pronouns</option>
-              <option value="adjectivesAdverbs">✨ Adjectives & Adverbs</option>
-              <option value="tenses">⏰ Tenses</option>
-            </select>
+          <h3 class="nav-title">Primary Level</h3>
+          <div class="level-pills" id="level-pills">
+            <button class="level-pill active" data-level="P1">P1</button>
+            <button class="level-pill" data-level="P2">P2</button>
+            <button class="level-pill" data-level="P3">P3</button>
+            <button class="level-pill" data-level="P4">P4</button>
+            <button class="level-pill" data-level="P5">P5</button>
+            <button class="level-pill" data-level="P6">P6</button>
           </div>
-          <p class="category-desc" id="category-description">Master spatial and temporal relationships.</p>
+          <p class="category-desc" id="category-description">Basic prepositions, conjunctions, and common verbs.</p>
         </div>
       </nav>
+      <!-- Hidden select for backward compat -->
+      <select id="grammar-type" style="display:none;">
+        <option value="P1" selected>P1</option>
+      </select>
 
       <!-- Settings -->
       <div class="settings-section">
