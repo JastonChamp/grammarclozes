@@ -6,6 +6,7 @@ import { speak, loadVoices } from './utils/speech.js';
 // ============================================
 const state = {
   currentGrammarType: "P1",
+  currentCategory: null, // null means first category of the level
   currentPassageIndex: 0,
   score: 0,
   stars: 0,
@@ -31,7 +32,7 @@ const state = {
 // ============================================
 // CONSTANTS
 // ============================================
-const categoryDescriptions = {
+const levelDescriptions = {
   P1: "Basic prepositions, conjunctions, and common verbs.",
   P2: "Simple tenses, prepositions, and conjunctions.",
   P3: "Mixed grammar with moderate complexity.",
@@ -40,7 +41,7 @@ const categoryDescriptions = {
   P6: "PSLE-level grammar: inversions, subjunctive, and complex structures."
 };
 
-const categoryNames = {
+const levelNames = {
   P1: "Primary 1",
   P2: "Primary 2",
   P3: "Primary 3",
@@ -48,6 +49,19 @@ const categoryNames = {
   P5: "Primary 5",
   P6: "Primary 6"
 };
+
+function getCategoriesForLevel(level) {
+  const levelData = passages[level];
+  return levelData ? Object.keys(levelData) : [];
+}
+
+function getCurrentCategory() {
+  const categories = getCategoriesForLevel(state.currentGrammarType);
+  if (!state.currentCategory || !categories.includes(state.currentCategory)) {
+    state.currentCategory = categories[0] || null;
+  }
+  return state.currentCategory;
+}
 
 const levelMilestones = [
   { xp: 0, name: 'Apprentice', emoji: '🎓' },
@@ -126,13 +140,37 @@ function shuffle(arr) {
 }
 
 function getPassages() {
-  const cat = passages[state.currentGrammarType];
-  return cat || [];
+  const levelData = passages[state.currentGrammarType];
+  if (!levelData) return [];
+  const category = getCurrentCategory();
+  return category ? (levelData[category] || []) : [];
 }
 
 function setActiveLevel(level) {
   document.querySelectorAll('.level-pill').forEach(p => {
     p.classList.toggle('active', p.dataset.level === level);
+  });
+}
+
+function renderCategoryPills() {
+  const container = $("category-pills");
+  if (!container) return;
+
+  const categories = getCategoriesForLevel(state.currentGrammarType);
+  const current = getCurrentCategory();
+
+  container.innerHTML = categories.map(cat =>
+    `<button class="category-pill${cat === current ? ' active' : ''}" data-category="${cat}">${cat}</button>`
+  ).join("");
+
+  // Bind click events
+  container.querySelectorAll('.category-pill').forEach(pill => {
+    pill.onclick = () => {
+      state.currentCategory = pill.dataset.category;
+      state.currentPassageIndex = 0;
+      renderCategoryPills();
+      displayPassage();
+    };
   });
 }
 
@@ -308,8 +346,13 @@ function updateUI() {
   if (gemsCount) gemsCount.textContent = state.gems;
   if (totalStarsEl) totalStarsEl.textContent = state.totalStars;
 
-  // Mastery percentage (P1:5 + P2:5 + P3:10 + P4:10 + P5:10 + P6:10 = 50)
-  const totalPassages = 50;
+  // Mastery percentage — count all passages across all levels and categories
+  let totalPassages = 0;
+  for (const level of Object.keys(passages)) {
+    for (const cat of Object.keys(passages[level])) {
+      totalPassages += passages[level][cat].length;
+    }
+  }
   const mastery = Math.min(Math.round((state.passagesCompleted / totalPassages) * 100), 100);
   if (masteryPercent) masteryPercent.textContent = `${mastery}%`;
 
@@ -327,13 +370,13 @@ function updateUI() {
     levelProgressRing.setAttribute('stroke-dasharray', `${xpProgress}, 100`);
   }
 
-  // Category badge
+  // Category badge — show current category name
   const categoryBadge = $("category-badge");
-  if (categoryBadge) categoryBadge.textContent = categoryNames[state.currentGrammarType] || state.currentGrammarType;
+  if (categoryBadge) categoryBadge.textContent = getCurrentCategory() || levelNames[state.currentGrammarType] || state.currentGrammarType;
 
-  // Category description
+  // Level description
   const categoryDesc = $("category-description");
-  if (categoryDesc) categoryDesc.textContent = categoryDescriptions[state.currentGrammarType] || '';
+  if (categoryDesc) categoryDesc.textContent = levelDescriptions[state.currentGrammarType] || '';
 
   // Navigation buttons
   if (prevBtn) prevBtn.disabled = state.currentPassageIndex === 0;
@@ -727,8 +770,10 @@ function initEventListeners() {
   $$('.level-pill').forEach(pill => {
     pill.onclick = () => {
       state.currentGrammarType = pill.dataset.level;
+      state.currentCategory = null; // reset to first category
       state.currentPassageIndex = 0;
       setActiveLevel(pill.dataset.level);
+      renderCategoryPills();
       displayPassage();
     };
   });
@@ -846,10 +891,13 @@ function initEventListeners() {
   if (startDailyBtn) {
     startDailyBtn.onclick = () => {
       dailyChallengeModal?.classList.add('hidden');
-      const levels = Object.keys(categoryDescriptions);
+      const levels = Object.keys(levelDescriptions);
       const randomLevel = levels[Math.floor(Math.random() * levels.length)];
       state.currentGrammarType = randomLevel;
+      const categories = getCategoriesForLevel(randomLevel);
+      state.currentCategory = categories[Math.floor(Math.random() * categories.length)];
       setActiveLevel(randomLevel);
+      renderCategoryPills();
       state.currentPassageIndex = 0;
       displayPassage();
     };
@@ -878,6 +926,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   initEventListeners();
+  renderCategoryPills();
   displayPassage();
   updateUI();
 
